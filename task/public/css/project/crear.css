@@ -1,0 +1,14 @@
+@CHARSET "ISO-8859-1";
+
+#crear_comentario {
+	margin: 10px;
+	float: left;
+}
+
+.bloque {
+	width: 400px;
+	height: 200px;
+	overflow-y: scroll;
+	color: grey;
+	margin-bottom: 10px;
+}

@@ -1,0 +1,22 @@
+<div id="loguear">
+	<h1 class="center">
+		Inciar sesión
+	</h1>
+	<form action="<?php echo $this->baseUrl?>/usuario/loguear" method="post">
+		<div>
+			<label for="user_name">Nombre de Usuario:</label>
+			<input id="user_name" type="text" name="user_name">
+		</div>
+		<div>
+			<label for="password">Contraseña:</label>
+			<input id="password" type="password" name="password">
+		</div>
+		<input type="submit" value="Entrar" class="boton_gris" />
+	</form>
+</div>
+<?php if ($this->error):?>
+<div class="error">
+	<img alt="Error" src="<?php echo $this->webApp . '/img/error.gif';?>">
+	<?php echo $this->error;?>
+</div>
+<?php endif;?>

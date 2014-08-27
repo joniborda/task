@@ -1,0 +1,29 @@
+<?php if (isset($this->error)):?>
+<div id="div_form_project">
+	Ocurrió un error
+</div>
+<?php else:?>
+<div id="div_form_project">
+<style>
+	#form_edit_project h1 {
+		font-size: 18px;
+	}
+	#form_edit_project .glyphicon-trash {
+		float:right;
+	}
+	#form_edit_project .btn {
+		margin-top: 10px;
+	}
+	
+</style>
+	<form id="form_edit_project">
+		<h1>Editar proyecto:
+			<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->project->getId();?>"></a>
+		</h1>
+		<input name="name" class="name_project form-control" type="text" value="<?php echo $this->project->getName()?>"/>
+		<input name="id" type="hidden" value="<?php echo $this->project->getId()?>"/>
+		<a href="#" class="btn btn-default cancel_edit_project" >Cancelar</a>
+		<input type="submit" class="btn btn-primary" value="Editar"/>
+	</form>
+</div>
+<?php endif;?>

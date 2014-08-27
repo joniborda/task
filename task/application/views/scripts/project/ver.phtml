@@ -1,0 +1,16 @@
+<div id="ver_comentario">
+	<?php if ($this->respuestas != null):?>
+	<?php foreach($this->respuestas as $respuesta):?>
+	<div>
+		<?php echo $respuesta->getComment();?>
+		<?php echo $respuesta->getCreated();?>
+	</div>
+	<?php endforeach;?>
+	<?php endif;?>
+	<div>
+		<?php echo $this->comentario->getCreated();?>
+	</div>
+	<div>
+		<?php echo $this->comentario->getComment();?>
+	</div>
+</div>

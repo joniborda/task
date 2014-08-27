@@ -1,0 +1,46 @@
+@media (max-width: 800px) {
+	body {
+		font-size: 30px;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.tasks_list .show_status {
+		width: 6%;
+	}
+	
+	.tasks_list .title {
+		width: 58%;
+	}
+	
+	.tasks_list .task_users {
+		width: 33%;
+	}
+	
+	.tasks_list li {
+		padding: 0;
+		height: 100px;
+	}
+	
+	.tasks_list li .user {
+		line-height: 1;
+	}
+	
+	.projects_list .project {
+		width: 75%;
+		display: inline-block;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		vertical-align: middle;
+	}
+	
+	.projects_list .glyphicon-edit {
+		width: 13%;
+	}
+	
+	.projects_list .edit_project {
+		position: relative;
+		top: 5px;
+	}
+}

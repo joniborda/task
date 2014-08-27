@@ -1,0 +1,32 @@
+<?php if (isset($this->task)) :?>
+<?php echo $this->headLink()
+              ->prependStylesheet($this->webApp . '/css/task/view.css');?>
+	<div id="view_task">
+		<h2>
+		<?php $status = $this->task->getStatus();
+		if ($status) {
+			switch($status->getDescripcion()) {
+				case 'Openned':
+					$class = 'glyphicon-record';
+					break;
+				case 'Started':
+					$class = 'glyphicon-play-circle';
+					break;
+				case 'Done':
+					$class = 'glyphicon-ok-circle';
+					break;
+			}
+		} else {
+			$class = 'glyphicon-record';
+		}?>
+			<a href="#" class="show_status glyphicon <?php echo $class?>" value="<?php echo $this->task->getStatusId()?>" ></a>
+			<span class="title"><?php echo $this->task->getTitle();?></span>
+			<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->task->getId()?>" ></a>
+		</h2>
+		<div>
+			<span>Asignados: </span>
+			<?php $users = $this->task->getUsers();?>
+			<?php echo implode(', ', $users);?>
+		</div>
+	</div>
+<?php endif;?>
