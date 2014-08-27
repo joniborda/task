@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+#registrar {
+	margin-left: 10px;
+}
+
+#registrar label {
+	width: 200px;
+	display: inline-block;
+}
+
+#registrar p {
+	margin: auto;
+	padding: 10px;
+}
+
+
+#registrar .boton_gris {
+	margin-left: 206px;
+	margin-top: 10px;	
+}

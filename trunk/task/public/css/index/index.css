@@ -1,0 +1,164 @@
+@CHARSET "ISO-8859-1";
+
+#index {
+	height: 100%;
+}
+
+#index h1 {
+	margin: auto;
+	text-align: center;
+}
+
+#utility {
+	text-align: center;
+}
+
+.justify {
+	text-align: justify;
+	margin: 40px;
+}
+
+.alto {
+	height: 10px;
+}
+
+.menu_right {
+	float: left;
+	width: 70%;
+	height: 100%;
+	background-color: #FFF;
+	border-radius: 10px;
+}
+
+.menu_left {
+	float: left;
+	width: 30%;
+}
+
+.new_task {
+	width: 100%;
+	margin: 0;
+	padding-right: 35px;
+}
+
+.menu_right .glyphicon-plus {
+	float: right;
+	position: relative;
+	top: -30px;
+	left: -10px;
+	display: inline;
+	font-size: 27px;
+	height: 0px;
+}
+
+.projects_list {
+	padding: 0;
+}
+
+.projects_list li {
+	padding: 10px 10px 10px 0;
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	border: 1px solid;
+	list-style-type: none;
+}
+
+.project {
+	margin-left: 10px;
+	width: 100%;
+	display: inline-block;
+}
+
+.edit_project {
+	position: relative;
+	top: -20px;
+}
+
+.tasks_list {
+	color: #5D5A5A;
+	font-weight: normal;
+}
+
+.tasks_list .user {
+	font-size: 0.8em;
+	color: #5D5A5A;
+}
+
+.tasks_list .show_status {
+	text-decoration: none;
+	vertical-align: middle;	
+}
+
+.tasks_list .title {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 80%;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.tasks_list li {
+	line-height: 2.5;
+	padding: 0 5px;
+}
+
+.create_task_form, .search_form {
+	padding: 10px;
+}
+
+.search_form {
+	background-color: #65B867;
+}
+
+.search_form .glyphicon {
+	float: left;
+	left: 178px;
+	font-size: 13px;
+	top: -23px;
+}
+
+.search_form .search_task {
+	width: 200px;
+}
+
+.tooltip_status .glyphicon-ok-circle, .tasks_list .glyphicon-ok-circle {
+	color: #5ca77c;
+}
+
+.tooltip_status .glyphicon-record, .tasks_list li .glyphicon-record {
+	color: #2EB6FA;
+}
+
+.tooltip_status .glyphicon-play-circle, .tasks_list li .glyphicon-play-circle {
+	color: #E1DE00;
+}
+
+.tasks_list .task_users {
+	width: 15%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: middle;
+	height: 30px;
+}
+
+.detail_task {
+	position: fixed;
+	width: 40%;
+	top: 1px;
+	height: 100%;
+	right: 1px;
+	background-color: white;
+	display: none;
+	border-left: 2px solid;
+	padding-left: 10px;
+}
+
+.tasks_list .selected {
+	opacity: 0.3;	
+}
+.menu_left h1 {
+	font-size: 12px;
+}

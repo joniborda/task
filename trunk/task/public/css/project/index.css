@@ -1,0 +1,9 @@
+@CHARSET "ISO-8859-1";
+.sub-container {
+	background-color: white;
+	width: 500px;
+	height: 250px;
+	padding: 10px;
+	border-radius: 20px;
+	color: #000000;	
+}

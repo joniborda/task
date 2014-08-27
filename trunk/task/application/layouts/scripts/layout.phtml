@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Task</title>
+      <?php echo $this->headLink()
+              ->prependStylesheet($this->webApp . '/css/boxy.css')
+              ->prependStylesheet($this->webApp . '/css/tagit/tagit.ui-zendesk.css')
+              ->prependStylesheet($this->webApp . '/css/tagit/jquery.tagit.css')
+              ->prependStylesheet($this->webApp . '/css/jquery-ui-1.8.9.custom.css')
+              ->prependStylesheet($this->webApp . '/css/jquery-ui-1-10-4.css')
+              ->prependStylesheet($this->webApp . '/css/bootstrap/bootstrap.min.css')
+              ->prependStylesheet($this->webApp . '/css/bootstrap/bootstrap-theme.min.css')
+              ->appendStylesheet($this->webApp . '/css/estilo.css')
+              ->appendStylesheet($this->webApp . '/css/estilo_celular.css')
+              ->headLink(
+                  array(
+					'rel' => 'shortcut icon',
+					'href' => $this->webApp . '/img/frio2.png'
+                  ),
+				  'PREPEND'
+              );
+              echo $this->headScript()
+              	  ->prependFile($this->webApp . '/js/general.js')
+              	  ->prependFile($this->webApp . '/js/tagit/tag-it.min.js')
+                  ->prependFile($this->webApp . '/js/jquery.qtip-1.0.0-rc3.min.js')
+                  ->prependFile($this->webApp . '/js/jquery.boxy.js')
+                  ->prependFile($this->webApp . '/js/jquery.ui-1-10.js')
+                  ->prependFile($this->webApp . '/js/jquery.js');
+              
+      ?>
+      <script type="text/javascript">
+      	var base_url = '<?php echo $this->baseUrl;?>';
+      </script>
+    </head>
+    <body>
+		<div class="container contenedor">
+			<?php if ($this->user != null):?>
+			<div id="sidebar">
+				<a href="<?php echo $this->baseUrl;?>/comentario/crear" title="Puede enviarnos un comentario y le contestaremos por mail a la brevedad.">Comentar</a>
+				<a href="<?php echo $this->baseUrl;?>/comentario/enviados" title="Puede ver los comentarios que ha enviado a nuestra casilla de mail.">Enviados</a>
+			</div>
+			<?php endif;?>
+		
+			<?php echo $this->layout()->content;?>
+		</div>
+    </body>
+</html>

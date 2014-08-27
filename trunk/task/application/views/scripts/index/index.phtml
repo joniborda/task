@@ -1,0 +1,36 @@
+<div id="index">
+	<div class="menu_left">
+		<h1>MARCADOR DE TAREAS</h1>
+		<div class="projects">
+			<div class="project_title" >
+				Mis Proyectos
+				<span class="glyphicon glyphicon-plus btn" id="create_project"></span>
+			</div>
+			<ul class="projects_list">
+			<?php foreach ($this->projects as $project):?>
+				<li>
+					<a href="#<?php echo $project->getName();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
+					<a href="#" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
+				</li>
+			<?php endforeach;?>
+			</ul>
+		</div>
+		
+	</div>
+	<div class="menu_right">
+		<form class="search_form">
+			<input type="text" name="title" placeholder="Buscar una tarea" class="search_task form-control">
+			<span class="glyphicon glyphicon-search"></span>
+		</form>
+		<form class="create_task_form">
+			<input type="text" name="title" placeholder="Ingrese una nueva tarea" class="new_task form-control">
+			<input type="hidden" name="task_id" value="">
+			<span class="glyphicon glyphicon-plus"></span>
+			<ul class="tasks_list list-unstyled">
+			</ul>
+		</form>
+	</div>
+</div>
+<div class="detail_task">
+	
+</div>
