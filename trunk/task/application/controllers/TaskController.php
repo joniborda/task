@@ -149,6 +149,26 @@ class TaskController extends Zend_Controller_Action
 				$this->view->assign('response', true);
 			}
 		}
+	}
+	
+	public function asignAction()
+	{
+		$this->_helper->layout->setLayout('empty');
+		$id = $this->_request->getParam('id');
+		$name = $this->_request->getParam('name');
 		
+		$this->view->assign('response', false);
+		
+		if ($id != null) {			
+			$user = Application_Service_Locator::getUsuarioService()->getByName($name);
+			
+			if ($user) {
+				$ret = Application_Service_Locator::getUserTaskService()->crear($id, $user->getId());
+				
+				if ($ret) {
+					$this->view->assign('response', true);
+				}
+			}
+		}
 	}
 }
