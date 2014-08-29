@@ -31,4 +31,10 @@ $(document).ready(function() {
 		tooltipClass : 'container-tooltip'
 	});
 	resize();
+	/*
+	$('.autosize').autosize({ 
+		callback: function() { 
+			$(this).height($(this).height() - 20);
+		}
+	});*/
 });

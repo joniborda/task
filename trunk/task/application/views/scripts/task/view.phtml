@@ -2,7 +2,6 @@
 <?php echo $this->headLink()
               ->prependStylesheet($this->webApp . '/css/task/view.css');?>
 	<div id="view_task">
-		<h2>
 		<?php $status = $this->task->getStatus();
 		if ($status) {
 			switch($status->getDescripcion()) {
@@ -19,14 +18,24 @@
 		} else {
 			$class = 'glyphicon-record';
 		}?>
-			<a href="#" class="show_status glyphicon <?php echo $class?>" value="<?php echo $this->task->getStatusId()?>" ></a>
-			<span class="title"><?php echo $this->task->getTitle();?></span>
-			<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->task->getId()?>" ></a>
-		</h2>
 		<div>
+		<a href="#" class="left show_status glyphicon <?php echo $class?>" value="<?php echo $this->task->getStatusId()?>" ></a>
+		<form class="title_view_form left ">
+			<textarea name="title" class="autosize" ><?php echo $this->task->getTitle();?></textarea>
+		</form>
+		<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->task->getId()?>" ></a>
+		</div>
+		<div class="asign">
 			<span>Asignados: </span>
 			<?php $users = $this->task->getUsers();?>
 			<?php echo implode(', ', $users);?>
 		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				setTimeout(function() {
+						$('.autosize').autosize();
+				},1000);
+			});
+		</script>
 	</div>
 <?php endif;?>

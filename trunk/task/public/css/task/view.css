@@ -2,6 +2,7 @@
 
 #view_task {
 	padding-right: 10px;
+	font-size: 20px;	
 }
 
 #view_task .glyphicon, #view_task .glyphicon:hover {
@@ -10,4 +11,18 @@
 #view_task .remove {
 	float: right;
 	font-size: 18px;
+}
+#view_task form {
+	width: 80%;
+} 
+#view_task textarea {
+	border: 0;
+	width: 100%;
+}
+#view_task .asign {
+	clear: both;
+}
+
+#view_task .glyphicon-record {
+	width: 20%;	
 }
