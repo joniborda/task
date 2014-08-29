@@ -26,3 +26,7 @@
 #view_task .glyphicon-record {
 	width: 20%;	
 }
+#view_task .asign_user {
+	display: initial;
+	width: auto;
+}
