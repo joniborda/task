@@ -542,3 +542,13 @@ $(document).on('blur', '.title_view_form', function(e) {
 		// TODO: ERROR
 	});
 });
+
+$(document).keyup(function(e){
+	// SCAPE CODE
+	if(e.keyCode == 27) {
+		$('.detail_task').animate({
+			left: "slide",
+		    width: "toggle",
+		});
+	}
+});
