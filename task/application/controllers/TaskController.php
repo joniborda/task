@@ -1,5 +1,4 @@
 <?php
-
 class TaskController extends Zend_Controller_Action
 {
 	public function addAction()
@@ -131,5 +130,25 @@ class TaskController extends Zend_Controller_Action
 			$ret = $task_service->deleteById($id);
 			$this->view->assign('deleted', $ret);
 		}
+	}
+	
+	public function editAction()
+	{
+		$this->_helper->layout->setLayout('empty');
+		$id = $this->_request->getParam('id');
+		$title = $this->_request->getParam('title');
+		
+		$this->view->assign('response', false);
+		
+		if ($id != null) {
+			$task_service = Application_Service_Locator::getTaskService();
+			
+			$ret = $task_service->updateById($id, array('title' => $title));
+			
+			if ($ret > 0) {
+				$this->view->assign('response', true);
+			}
+		}
+		
 	}
 }

@@ -33,6 +33,7 @@
 .menu_left {
 	float: left;
 	width: 30%;
+	color: #000;
 }
 
 .new_task {
@@ -59,7 +60,7 @@
 	padding: 10px 10px 10px 0;
 	border-bottom-left-radius: 10px;
 	border-top-left-radius: 10px;
-	border: 1px solid;
+/* 	border: 1px solid; */
 	list-style-type: none;
 }
 

@@ -24,10 +24,9 @@ img {
 
 .contenedor {
 	min-height: 350px;
-	background-color: #A9F5A9;
 	width: 100%;
 	color: #BEE1BE;
-	background-color: #65B867;
+	background-color: #E9EAED;
 }
 
 #header {
@@ -155,9 +154,11 @@ textarea {
 }
 
 .right {
-	float: right
+	float: right;
 }
-
+.left {
+	float: left;
+}
 .projects_list .active {
 	background-color: #BEE1BE;
 }
@@ -198,6 +199,29 @@ textarea {
 	background-image: none;
 }
 .ui-dialog .ui-dialog-titlebar-close span {
-	margin-top: -8px;
-	left: -3%;
+	left: 0px;
+}
+
+.ui-button-icon-only span.ui-icon-closethick {
+	position: relative !important;
+	top: 1px !important;
+	display: inline-block !important;
+	font-family: 'Glyphicons Halflings';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: transparent;
+	text-indent: initial;
+	width: auto;
+	height: auto;
+	margin: 0px;
+}
+.ui-button-icon-only .ui-icon-closethick:before {	
+	content: "\e014";
+}
+.ui-widget-header {
+	background-color: #E9EAED;
+	border: 1px solid #E9EAED;
 }
