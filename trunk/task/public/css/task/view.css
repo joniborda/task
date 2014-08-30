@@ -45,6 +45,9 @@
 	padding: 2px 9px;
 	border-radius: 5px;
 }
+.user_asigned li:hover {
+	border-width: 2px;
+}
 .user_asigned li .glyphicon { 
 	margin-right: 5px;
 	vertical-align: text-top;
