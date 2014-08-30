@@ -160,23 +160,23 @@ textarea {
 	float: left;
 }
 .projects_list .active {
-	background-color: #BEE1BE;
+	background-color: #BABBBC;
 }
 
 .background_done {
-	background-color: #9AFFAF;
+/* 	background-color: #9AFFAF; */
 	color: #616161;
 	border-bottom: 1px solid #ccc;
 }
 
 .background_started {
-	background-color: #FFFFC1;
+/* 	background-color: #FFFFC1; */
 	color: #616161;
 	border-bottom: 1px solid #ccc;
 }
 
 .background_openned {
-	background-color: #d9edf7;
+/* 	background-color: #d9edf7; */
 	color: #616161;
 	border-bottom: 1px solid #ccc;
 }

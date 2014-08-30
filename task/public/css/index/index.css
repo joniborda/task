@@ -109,7 +109,7 @@
 }
 
 .search_form {
-	background-color: #65B867;
+	background-color: #4A5781;
 }
 
 .search_form .glyphicon {
@@ -158,7 +158,7 @@
 }
 
 .tasks_list .selected {
-	opacity: 0.3;	
+	background-color: #E9EAED;	
 }
 .menu_left h1 {
 	font-size: 12px;
