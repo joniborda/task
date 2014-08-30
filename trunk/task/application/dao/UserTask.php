@@ -101,5 +101,23 @@ class Application_Dao_UserTask
     	}
     	return $entries;
     }
+    
+    /**
+     * Remove a userTask
+     *
+     * @param Integer $task_id
+     * @param Integer $user_id
+     *
+     * @return Integer
+     */
+    public function remove($task_id, $user_id)
+    {
+    	$where = array(
+    		'task_id = ?' => $task_id,
+    		'user_id = ?' => $user_id
+    	);
+    	 
+    	return $this->getDbTable()->delete($where);
+    }
 }
 ?>
