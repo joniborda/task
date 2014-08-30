@@ -33,7 +33,10 @@
 			<?php $users = $this->task->getUsers();?>
 			<ul class="user_asigned">
 			<?php foreach ($users as $user):?>
-				<li><?php echo $user;?></li>
+				<li>
+					<a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>
+					<span class="user_name"><?php echo $user;?></span>
+				</li>
 			<?php endforeach;?>
 			</ul>
 		</div>
@@ -89,7 +92,15 @@ $(document).ready(function() {
 				'json'
 			).done(function(response) {
 				if (response) {
-					$('.user_asigned').append('<li value="' + ui.item.id + '">' + ui.item.label + '</li>');
+					$('.user_asigned').append(
+						'<li>' +
+							'<a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>' + 
+							'<span class="user_name">' +
+								ui.item.label +
+							'</span>' + 
+						'</li>'
+					);
+					
 					$(".detail_task .asign_user").val('');
 					$('.tasks_list li[value="'+ ultimo_selected_task + '"] .task_users').append(
 						'<a href="#' + ui.item.id + '" class="right user">' + ui.item.label + '</a>'
@@ -105,6 +116,38 @@ $(document).ready(function() {
 		response : function(event, ui) {
 		}
 	});
+});
+
+// CLICK REMOVE USER ASIGN
+$('.remove_user_asign').on('click', function(e) {
+		abrir_cargando();
+		e.preventDefault();
+		var _this = $(this);
+		var user_name = _this.closest('li').find('.user_name').html();
+		$.post(
+			base_url + '/task/removeasign', 
+			{
+				id : ultimo_selected_task,
+				name: user_name
+			},
+			'json'
+		).done(function(response) {
+			if (response) {
+				_this.closest('li').remove();
+				var task_users = $('.tasks_list li[value="'+ ultimo_selected_task + '"] .task_users a');
+				task_users.each(function(index, element) {
+					console.log(element);
+					if ($(element).html() == user_name) {
+						$(element).remove();
+					}
+				});
+			}
+		}).fail(function() {
+			
+		}).always(function() {
+			cerrar_cargando();
+		});;
+		return false;
 });
 		</script>
 	</div>

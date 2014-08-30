@@ -93,4 +93,17 @@ class Application_Service_UserTask
     {
     	return $this->_UserTaskDao->getAllByTaskId($task_id);
     }
+    
+    /**
+     * Remove a UserTask
+     *
+     * @param String $task_id
+     * @param String $user_id
+     *
+     * @return Integer
+     */
+    public function remove($task_id, $user_id)
+    {
+    	return $this->_UserTaskDao->remove($task_id, $user_id);
+    }
 }
