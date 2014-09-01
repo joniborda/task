@@ -80,6 +80,7 @@ $(document).on(
 										$('.tasks_list').append(
 												task_in_list(ret.id, title,
 														ret.users, ret.status));
+										$('.new_task').focus();
 									}
 								}
 								add_tooltip();
@@ -125,6 +126,8 @@ $(document).on(
 							}
 							location.hash = title_project;
 						}
+						
+						$('.detail_task').html('');
 						add_tooltip();
 					});
 });
@@ -548,10 +551,12 @@ $(document).on('blur', '.title_view_form', function(e) {
 $(document).keyup(function(e){
 	// SCAPE CODE
 	if(e.keyCode == 27) {
-		$('.detail_task').animate({
-			left: "slide",
-		    width: "toggle",
-		});
+		if ($('.detail_task #view_task').length != 0) {
+			$('.detail_task').animate({
+				left: "slide",
+			    width: "toggle",
+			});
+		}
 	}
 });
 
@@ -589,7 +594,7 @@ $(document).on(
 								}
 							}
 							// agregar el estado
-							location.hash = '';
+							location.hash = location.hash + '/';
 						}
 						add_tooltip();
 			});
