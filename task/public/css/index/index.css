@@ -123,15 +123,15 @@
 	width: 200px;
 }
 
-.tooltip_status .glyphicon-ok-circle, .tasks_list .glyphicon-ok-circle {
+.glyphicon-ok-circle {
 	color: #5ca77c;
 }
 
-.tooltip_status .glyphicon-record, .tasks_list li .glyphicon-record {
+.glyphicon-record {
 	color: #2EB6FA;
 }
 
-.tooltip_status .glyphicon-play-circle, .tasks_list li .glyphicon-play-circle {
+.glyphicon-play-circle {
 	color: #E1DE00;
 }
 
@@ -162,4 +162,8 @@
 }
 .menu_left h1 {
 	font-size: 12px;
+}
+
+.filters {
+	margin-left: 10px;
 }

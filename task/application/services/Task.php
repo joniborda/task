@@ -97,13 +97,13 @@ class Application_Service_Task
     }
     
     /**
-     * Consigue todos los Tasks de un Project
+     * Consigue todos los Tasks segun el filtro
      *
      * @return array
      */
-    public function getAllByProjectId($project_id)
+    public function getAllByFilters($project_id, $status_id)
     {
-    	return $this->_TaskDao->getAllByProjectId($project_id);
+    	return $this->_TaskDao->getAllByFilters($project_id, $status_id);
     }
     
     /**

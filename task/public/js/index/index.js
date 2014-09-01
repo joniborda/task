@@ -127,7 +127,7 @@ $(document).on(
 						}
 						add_tooltip();
 					});
-		});
+});
 
 function task_in_list(id, title, users, status_id) {
 	
@@ -303,7 +303,7 @@ $(document).on('click', '.change_status', function(e) {
 	e.preventDefault();
 	abrir_cargando();
 	var id = $(this).attr('value');
-	var descripcion = $(this).html();
+	var descripcion = $(this).attr('id');
 	
 	$.post('task/changestatus', {
 		id : id,
@@ -344,6 +344,8 @@ $(document).on('click', '.change_status', function(e) {
 				
 				li.find('a.show_status').attr('value', descripcion);
 				
+			} else {
+				alert('No se pudo cambiar el estado');
 			}
 		}
 	});
@@ -369,18 +371,18 @@ function add_tooltip() {
 			switch($(origin).attr('value')) {
 				case 'Openned': 
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" value="'+task_id+'">Started</a></li>' +
-						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" value="'+task_id+'">Done</a></li>';
+						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>' +
+						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Done" value="'+task_id+'">Hecha</a></li>';
 					break;
 				case 'Done':console.log('a');
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" value="'+task_id+'">Openned</a></li>' +
-						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" value="'+task_id+'">Started</a></li>';
+						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Openned" value="'+task_id+'">Abierta</a></li>' +
+						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>';
 					break;
 				case 'Started':
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" value="'+task_id+'">Openned</a></li>' +
-						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" value="'+task_id+'">Done</a></li>';
+						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Openned" value="'+task_id+'">Abierta</a></li>' +
+						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Done" value="'+task_id+'">Hecha</a></li>';
 					break;
 			}
 				
@@ -551,4 +553,44 @@ $(document).keyup(function(e){
 		    width: "toggle",
 		});
 	}
+});
+
+//CLICK SELECT STATUS
+$(document).on(
+		'click',
+		'.search_status',
+		function(e) {
+			e.preventDefault();
+			abrir_cargando();
+
+			$('.tasks_list').html('');
+			// cerrar el detalle de la tarea
+			$('.detail_task').animate({
+				left: "slide",
+			    width: "hide",
+			});
+			var status_id = $(this).attr('id');
+			
+			$.post('task/list', {
+				'id' : project_selected_id,
+				'status_id' : status_id 
+			}).complete(function(response, status) {
+						cerrar_cargando();
+						if (status == 'success') {
+							var ret = $.parseJSON(response.responseText);
+							if (ret.response == true) {
+
+								for ( var i = 0; i < ret.tasks.length; i++) {
+									$('.tasks_list').append(
+											task_in_list(ret.tasks[i].id,
+													ret.tasks[i].title,
+													ret.tasks[i].users,
+													ret.tasks[i].status));
+								}
+							}
+							// agregar el estado
+							location.hash = '';
+						}
+						add_tooltip();
+			});
 });

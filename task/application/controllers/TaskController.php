@@ -53,12 +53,12 @@ class TaskController extends Zend_Controller_Action
 	{
 		$this->_helper->layout->setLayout('empty');
 		$this->view->assign('response', array('response' => false));
-		
+		$status_id = $this->getRequest()->getParam('status_id', null);
 		if (
 				($project_id = $this->getRequest()->getParam('id'))
 		) {
 			if (
-					($tasks = Application_Service_Locator::getTaskService()->getAllByProjectId($project_id))
+					($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id))
 			) {
 				$ret = array();
 				foreach ($tasks as $task) {
