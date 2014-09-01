@@ -86,13 +86,21 @@ class Application_Dao_Task
     }
     
     /**
-     * Consigue todos los Tasks
+     * Consigue todos los Tasks segun el filtro
      *
      * @return array
      */
-    public function getAllByProjectId($project_id = null)
+    public function getAllByFilters($project_id = null, $status_id = null)
     {
-    	$resultSet = $this->getDbTable()->fetchAll(array('projects_id = ?'=>$project_id), 'id asc');
+    	$where = array(
+    		'projects_id = ?'=>$project_id
+    	);
+
+    	if (isset($status_id)) {
+    		$where['status_id = ?'] = $status_id;
+    	}
+    	
+    	$resultSet = $this->getDbTable()->fetchAll($where, 'id asc');
     	$entries = array();
 
     	foreach ($resultSet as $row) {
