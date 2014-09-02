@@ -13,3 +13,9 @@
 	margin: auto;
 	padding: 10px;
 }
+
+#loguear input {
+	width: 130px;
+	display: inline-block;
+}
+

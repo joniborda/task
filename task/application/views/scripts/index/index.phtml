@@ -2,6 +2,15 @@
 	<div class="menu_left">
 		<h1>MARCADOR DE TAREAS</h1>
 		<div class="projects">
+			<div class="user_logged">
+				<div class="right">
+				<?php if ($this->user != null):?>
+				<?php echo $this->user->getName();?>
+				<a class="glyphicon glyphicon-off" href="usuario/salir"></a>
+				<?php endif;?>
+				</div>
+				<div class="clear"></div>
+			</div>
 			<div class="project_title" >
 				Mis Proyectos
 				<span class="glyphicon glyphicon-plus btn" id="create_project"></span>

@@ -16,9 +16,12 @@ class TaskController extends Zend_Controller_Action
 				$users = array($session_user->getName());
 				$user_ids = array($session_user->getId());
 			} else {
-				// TODO: tirar error;
-				$users = array('Jonathan');
-				$user_ids = array(8);
+				$this->view->assign('response', 
+					array(
+						'response' => false,
+						'message' => 'No se logueó'
+					)
+				);
 			}
 		} else {
 			foreach ($users as $name) {
