@@ -78,7 +78,7 @@ class Application_Service_Usuario
      */
     public function login($user_name, $password, $rememberMe)
     {
-    	$user = $this->_usuarioDao->getByUserName($user_name);
+    	$user = $this->_usuarioDao->getByName($user_name);
     	
     	if ($user !== null) {
     		if ($user->getPassword() == $password) {

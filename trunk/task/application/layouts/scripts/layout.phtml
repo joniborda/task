@@ -37,13 +37,6 @@
     </head>
     <body>
 		<div class="container contenedor">
-			<?php if ($this->user != null):?>
-			<div id="sidebar">
-				<a href="<?php echo $this->baseUrl;?>/comentario/crear" title="Puede enviarnos un comentario y le contestaremos por mail a la brevedad.">Comentar</a>
-				<a href="<?php echo $this->baseUrl;?>/comentario/enviados" title="Puede ver los comentarios que ha enviado a nuestra casilla de mail.">Enviados</a>
-			</div>
-			<?php endif;?>
-		
 			<?php echo $this->layout()->content;?>
 		</div>
     </body>
