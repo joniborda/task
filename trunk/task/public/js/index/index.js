@@ -1,15 +1,21 @@
 var asign_user = '+';
-
+var prevent_close_detail = false;
 var project_selected_id = null;
+
 // CREAR DIALOG OF NEW PROJECT
 $(document).on('click', '#create_project', function(e) {
 	e.preventDefault();
 	abrir_cargando();
+	
 	$.post('project/create').complete(function(response, status) {
 		cerrar_cargando();
 		if (status == 'success' && response.responseText) {
 			$(response.responseText).dialog({
-				modal : true
+				modal : true,
+				close: function(e, ui) {
+					prevent_close_detail = true;
+					console.log('cerrando dialog');
+				}
 			});
 		}
 	});
@@ -29,6 +35,7 @@ $(document).on(
 							var ret = $.parseJSON(response.responseText);
 
 							if (ret.response == true) {
+								$('#div_form_project').dialog('close');
 								$('#div_form_project').dialog('destroy');
 								$('.projects_list').append(
 										'<li>' + 
@@ -377,7 +384,7 @@ function add_tooltip() {
 						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>' +
 						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Done" value="'+task_id+'">Hecha</a></li>';
 					break;
-				case 'Done':console.log('a');
+				case 'Done':
 					html_tooltip += 
 						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Openned" value="'+task_id+'">Abierta</a></li>' +
 						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>';
@@ -475,7 +482,7 @@ $(document).on('click', '#form_edit_project .remove',function(e){
 				},
 				'json'
 		).done(function(response) {
-			console.log(response);
+			
 			if (response) {
 				$('.projects_list .project[value="' + id + '"]').closest('li').remove();
 				$('.project:first').click();
@@ -501,7 +508,7 @@ $(document).on('click', '#view_task .remove', function(e) {
 				},
 				'json'
 		).done(function(response) {
-			console.log(response);
+			
 			if (response) {
 				$('.tasks_list li[value="'+ id + '"]').remove();
 				$('.detail_task').animate({
@@ -549,6 +556,10 @@ $(document).on('blur', '.title_view_form', function(e) {
 });
 
 $(document).keyup(function(e){
+	if (prevent_close_detail) {
+		prevent_close_detail = false;
+		return;
+	}
 	// SCAPE CODE
 	if(e.keyCode == 27) {
 		if ($('.detail_task #view_task').length != 0) {
