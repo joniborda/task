@@ -610,3 +610,15 @@ $(document).on(
 						add_tooltip();
 			});
 });
+
+// CLICK USER
+$(document).on('click', '.users_list .user', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	$.post('task/list', {
+		'id' : project_selected_id,
+		'status_id' : status_id 
+	}).complete(function(response, status) {
+		cerrar_cargando();
+	});
+});

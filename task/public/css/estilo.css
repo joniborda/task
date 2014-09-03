@@ -163,6 +163,10 @@ textarea {
 	background-color: #BABBBC;
 }
 
+.users_list .active {
+	background-color: #BABBBC;
+}
+
 .background_done {
 /* 	background-color: #9AFFAF; */
 	color: #616161;

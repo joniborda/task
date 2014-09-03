@@ -52,25 +52,25 @@
 	height: 0px;
 }
 
-.projects_list {
+.projects_list, .users_list {
 	padding: 0;
 }
 
-.projects_list li {
+.projects_list li, .users_list li {
 	padding: 5px 10px 5px 0;
 	border-bottom-left-radius: 10px;
 	border-top-left-radius: 10px;
 	list-style-type: none;
 }
 
-.project {
+.project, .user {
 	margin-left: 10px;
 	width: 100%;
 	display: inline-block;
 	line-height: 1;
 }
 
-.edit_project {
+.edit_project, .edit_user {
 	position: relative;
 	top: -20px;
 }
@@ -166,4 +166,7 @@
 
 .filters {
 	margin-left: 10px;
+}
+.user_logged {
+	padding-right: 10px;	
 }
