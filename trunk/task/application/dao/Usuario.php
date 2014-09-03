@@ -30,7 +30,7 @@ class Application_Dao_Usuario
 
     public function fetchAll()
     {
-        $resultSet = $this->getDbTable()->fetchAll(null,null,1,null);
+        $resultSet = $this->getDbTable()->fetchAll();
         $entries = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Usuario($row);

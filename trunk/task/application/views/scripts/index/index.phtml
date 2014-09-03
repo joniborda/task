@@ -11,6 +11,18 @@
 				</div>
 				<div class="clear"></div>
 			</div>
+			<div class="users_title" >
+				Usuarios
+				<span class="glyphicon glyphicon-plus btn" id="create_project"></span>
+			</div>
+			<ul class="users_list">
+			<?php foreach ($this->users as $user):?>
+				<li>
+					<a href="#<?php echo $user->getName();?>" class="user" value="<?php echo $user->getId();?>"><?php echo $user->getName();?></a>
+					<a href="#" class="edit_user" value="<?php echo $user->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
+				</li>
+			<?php endforeach;?>
+			</ul>
 			<div class="project_title" >
 				Mis Proyectos
 				<span class="glyphicon glyphicon-plus btn" id="create_project"></span>
