@@ -5,14 +5,17 @@
 		<?php $status = $this->task->getStatus();
 		if ($status) {
 			switch($status->getDescripcion()) {
-				case 'Openned':
+				case 'Abierta':
 					$class = 'glyphicon-record';
 					break;
-				case 'Started':
+				case 'Empezada':
 					$class = 'glyphicon-play-circle';
 					break;
-				case 'Done':
+				case 'Hecha':
 					$class = 'glyphicon-ok-circle';
+					break;
+				default:
+					$class = 'glyphicon-record';
 					break;
 			}
 		} else {
