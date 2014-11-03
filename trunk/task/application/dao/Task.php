@@ -34,7 +34,7 @@ class Application_Dao_Task
      */
     public function fetchAll()
     {
-        $resultSet = $this->getDbTable()->fetchAll(null,null,null,null);
+        $resultSet = $this->getDbTable()->fetchAll(null,array('id desc'),null,null);
         $entries = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Task($row);
@@ -100,7 +100,7 @@ class Application_Dao_Task
     		$where['status_id = ?'] = $status_id;
     	}
     	
-    	$resultSet = $this->getDbTable()->fetchAll($where, 'id asc');
+    	$resultSet = $this->getDbTable()->fetchAll($where, 'id desc');
     	$entries = array();
 
     	foreach ($resultSet as $row) {
@@ -122,9 +122,13 @@ class Application_Dao_Task
     {
     	if (is_array($data)) {
     		
+    		$data['last_modified'] = 'NOW()';
+    		
     		return $this->getDbTable()->update(
     			$data, 
-    			array('id = ?' => $id)
+    			array(
+    				'id = ?' => $id
+    			)
     		);
     	}
     }

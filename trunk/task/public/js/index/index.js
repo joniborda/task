@@ -146,17 +146,17 @@ function task_in_list(id, title, users, status_id) {
 	switch(status_id) {
 	case 1:
 	default:
-		status = 'Openned';
+		status = 'Abierto';
 		class_status = 'background_openned';
 		icon = 'glyphicon-record';
 		break;
 	case 2:
-		status = 'Started';
+		status = 'Empezado';
 		class_status = 'background_started';
 		icon = 'glyphicon-play-circle';
 		break;
 	case 3:
-		status = 'Done';
+		status = 'Terminado';
 		class_status = 'background_done';
 		icon = 'glyphicon-ok-circle';
 		break;
@@ -326,7 +326,7 @@ $(document).on('click', '.change_status', function(e) {
 				var li = $('.tasks_list').find('li[value="'+ id +'"]');
 				
 				switch(descripcion) {
-					case 'Openned':
+					case 'Abierto':
 						li.removeClass('background_done');
 						li.find('a.show_status').removeClass('glyphicon-ok-circle');
 						li.removeClass('background_started');
@@ -334,7 +334,7 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_openned');
 						li.find('a.show_status').addClass('glyphicon-record');
 						break;
-					case 'Done':
+					case 'Terminado':
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
 						li.removeClass('background_started');
@@ -342,7 +342,7 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_done');
 						li.find('a.show_status').addClass('glyphicon-ok-circle');
 						break;
-					case 'Started':
+					case 'Empezado':
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
 						li.removeClass('background_done');
@@ -379,20 +379,20 @@ function add_tooltip() {
 			var html_tooltip = 
 				'<div class="tooltip_status"><ul class="list-unstyled">';
 			switch($(origin).attr('value')) {
-				case 'Openned': 
+				case 'Abierto': 
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>' +
-						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Done" value="'+task_id+'">Hecha</a></li>';
+						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Empezado" value="'+task_id+'">Empezada</a></li>' +
+						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Terminado" value="'+task_id+'">Hecha</a></li>';
 					break;
-				case 'Done':
+				case 'Terminado':
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Openned" value="'+task_id+'">Abierta</a></li>' +
-						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Started" value="'+task_id+'">Empezada</a></li>';
+						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Abierto" value="'+task_id+'">Abierta</a></li>' +
+						'<li><span class="glyphicon glyphicon-play-circle"></span><a href="#" class="change_status" id="Empezado" value="'+task_id+'">Empezada</a></li>';
 					break;
-				case 'Started':
+				case 'Empezado':
 					html_tooltip += 
-						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Openned" value="'+task_id+'">Abierta</a></li>' +
-						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Done" value="'+task_id+'">Hecha</a></li>';
+						'<li><span class="glyphicon glyphicon-record"></span><a href="#" class="change_status" id="Abierto" value="'+task_id+'">Abierta</a></li>' +
+						'<li><span class="glyphicon glyphicon-ok-circle"></span><a href="#" class="change_status" id="Terminado" value="'+task_id+'">Hecha</a></li>';
 					break;
 			}
 				
