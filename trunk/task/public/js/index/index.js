@@ -118,6 +118,11 @@ $(document).on(
 				'id' : id
 			}).complete(
 					function(response, status) {
+					    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
+					        window.location = 'usuario/loguear';
+					        return false;
+					    }
+					    
 						cerrar_cargando();
 						if (status == 'success') {
 							var ret = $.parseJSON(response.responseText);
