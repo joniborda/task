@@ -24,7 +24,7 @@
 
 .menu_right {
 	float: left;
-	width: 70%;
+	width: 80%;
 	height: 100%;
 	background-color: #FFF;
 	border-radius: 10px;
@@ -32,7 +32,7 @@
 
 .menu_left {
 	float: left;
-	width: 30%;
+	width: 20%;
 	color: #000;
 }
 
@@ -65,9 +65,10 @@
 
 .project, .user {
 	margin-left: 10px;
-	width: 100%;
+	width: auto;
 	display: inline-block;
 	line-height: 1;
+	padding-top: 7px;
 }
 
 .edit_project, .edit_user {
@@ -102,6 +103,10 @@
 .tasks_list li {
 	line-height: 2.5;
 	padding: 0 5px;
+}
+
+.tasks_list .last_modified {
+	font-size: 0.7em;
 }
 
 .create_task_form, .search_form {
@@ -169,4 +174,35 @@
 }
 .user_logged {
 	padding-right: 10px;	
+}
+
+@media (max-width: 1300px) {
+	.menu_left {
+		width: 25%;
+	}
+	
+	.menu_right {
+		width: 75%;
+	}
+}
+
+
+@media (max-width: 800px) {
+	.menu_left {
+		width: 30%;
+	}
+	
+	.menu_right {
+		width: 70%;
+	}
+}
+
+@media (max-width: 740px) {
+	.menu_left {
+		width: 40%;
+	}
+	
+	.menu_right {
+		width: 60%;
+	}
 }

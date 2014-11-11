@@ -86,7 +86,7 @@ $(document).on(
 										$(input_name).val('');
 										$('.tasks_list').append(
 												task_in_list(ret.id, title,
-														ret.users, ret.status));
+														ret.users, ret.status, ret.last_modified));
 										$('.new_task').focus();
 									}
 								}
@@ -133,7 +133,7 @@ $(document).on(
 											task_in_list(ret.tasks[i].id,
 													ret.tasks[i].title,
 													ret.tasks[i].users,
-													ret.tasks[i].status));
+													ret.tasks[i].status, ret.tasks[i].last_modified));
 								}
 							}
 							location.hash = title_project;
@@ -144,7 +144,7 @@ $(document).on(
 					});
 });
 
-function task_in_list(id, title, users, status_id) {
+function task_in_list(id, title, users, status_id, last_modified) {
 	
 	var class_status = '';
 	var icon = '';
@@ -173,6 +173,26 @@ function task_in_list(id, title, users, status_id) {
 	for ( var i = 0; i < users.length; i++) {
 		ret += '<a href="#" class="right user">' + users[i] + '</a>';
 	}
+	
+	var date = new Date(last_modified);
+	var current_date = new Date();
+	
+	var anio = '';
+	if (date.getFullYear() != current_date.getFullYear()) {
+	    anio = ' de ' + date.getFullYear(); 
+	}
+	
+	var mes = '';
+	var dia = '';
+	// entre la semana actual
+	if (date > current_date.getWeek()[0] && current_date < date.getWeek()[1]) {	    
+	    dia = dias[date.getDay()];
+	} else {
+	    dia = date.getDate();
+	    mes = ' de ' + meses[date.getMonth()];
+	}
+	
+	ret +='<span class="right last_modified">' + dia + mes + anio  +'</span>';
 	
 	ret += '</div></li>';
 

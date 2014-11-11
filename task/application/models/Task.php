@@ -13,6 +13,7 @@ class Application_Model_Task
     protected $_descripcion;
     protected $_types_id;
     protected $_time;
+    protected $_last_modified;
     
     
     public function __construct($data = null)
@@ -31,6 +32,7 @@ class Application_Model_Task
                 $this->_descripcion = (isset($data['descripcion']) ? $data['descripcion'] : null);
                 $this->_types_id = (isset($data['types_id']) ? $data['types_id'] : null);
                 $this->_time = (isset($data['time']) ? $data['time'] : null);
+                $this->_last_modified = (isset($data['last_modified']) ? $data['last_modified'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_title = $data->title;
@@ -43,6 +45,7 @@ class Application_Model_Task
                 $this->_descripcion = $data->descripcion;
                 $this->_types_id = $data->types_id;
                 $this->_time = $data->time;
+                $this->_last_modified = $data->last_modified;
             }
         }
     }
@@ -141,5 +144,17 @@ class Application_Model_Task
 	    		->getById($this->_status_id);
     	}
     }
+
+    public function getLastModified()
+    {
+    	return $this->_last_modified;
+    }
+    
+    public function setLastModified($last_modified)
+    {
+    	$this->_last_modified = $last_modified;
+    	return $this;
+    }
+    
 }
 ?>
