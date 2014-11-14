@@ -14,6 +14,7 @@ class Application_Model_Task
     protected $_types_id;
     protected $_time;
     protected $_last_modified;
+    protected $_created;
     
     
     public function __construct($data = null)
@@ -33,6 +34,7 @@ class Application_Model_Task
                 $this->_types_id = (isset($data['types_id']) ? $data['types_id'] : null);
                 $this->_time = (isset($data['time']) ? $data['time'] : null);
                 $this->_last_modified = (isset($data['last_modified']) ? $data['last_modified'] : null);
+                $this->_created = (isset($data['created']) ? $data['created'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_title = $data->title;
@@ -46,6 +48,7 @@ class Application_Model_Task
                 $this->_types_id = $data->types_id;
                 $this->_time = $data->time;
                 $this->_last_modified = $data->last_modified;
+                $this->_created = $data->created;
             }
         }
     }
@@ -153,6 +156,17 @@ class Application_Model_Task
     public function setLastModified($last_modified)
     {
     	$this->_last_modified = $last_modified;
+    	return $this;
+    }
+
+    public function getCreated()
+    {
+    	return $this->_created;
+    }
+    
+    public function setCreated($created)
+    {
+    	$this->_created = $created;
     	return $this;
     }
     
