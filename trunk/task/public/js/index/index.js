@@ -86,7 +86,7 @@ $(document).on(
 										$(input_name).val('');
 										$('.tasks_list').append(
 												task_in_list(ret.id, title,
-														ret.users, ret.status, ret.last_modified));
+														ret.users, ret.status, ret.created));
 										$('.new_task').focus();
 									}
 								}
@@ -133,7 +133,7 @@ $(document).on(
 											task_in_list(ret.tasks[i].id,
 													ret.tasks[i].title,
 													ret.tasks[i].users,
-													ret.tasks[i].status, ret.tasks[i].last_modified));
+													ret.tasks[i].status, ret.tasks[i].created));
 								}
 							}
 							location.hash = title_project;
@@ -144,7 +144,7 @@ $(document).on(
 					});
 });
 
-function task_in_list(id, title, users, status_id, last_modified) {
+function task_in_list(id, title, users, status_id, created) {
 	
 	var class_status = '';
 	var icon = '';
@@ -174,8 +174,8 @@ function task_in_list(id, title, users, status_id, last_modified) {
 		ret += '<a href="#" class="right user">' + users[i] + '</a>';
 	}
 	
-	var date = new Date(last_modified);
-	var current_date = new Date();
+	var date = new Date(Date(created));
+	var current_date = new Date(Date());
 	
 	var anio = '';
 	if (date.getFullYear() != current_date.getFullYear()) {
@@ -192,7 +192,7 @@ function task_in_list(id, title, users, status_id, last_modified) {
 	    mes = ' de ' + meses[date.getMonth()];
 	}
 	
-	ret +='<span class="right last_modified">' + dia + mes + anio  +'</span>';
+	ret +='<span class="right created">' + dia + mes + anio  +'</span>';
 	
 	ret += '</div></li>';
 
@@ -626,7 +626,8 @@ $(document).on(
 											task_in_list(ret.tasks[i].id,
 													ret.tasks[i].title,
 													ret.tasks[i].users,
-													ret.tasks[i].status));
+													ret.tasks[i].status,
+													ret.tasks[i].created));
 								}
 							}
 							// agregar el estado

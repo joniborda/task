@@ -53,7 +53,7 @@ class UsuarioController extends Zend_Controller_Action
 	    	
 	    	try {
 		    	$user = Application_Service_Locator::getUsuarioService()
-		    		->login($user_name, $password, false);
+		    		->login($user_name, $password, true);
 		    	if (null !== $user) {
 		    		$this->_redirect('/');
 		    	}

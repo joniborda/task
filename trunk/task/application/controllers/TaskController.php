@@ -70,7 +70,7 @@ class TaskController extends Zend_Controller_Action
 						'title' => $task->getTitle(),
 						'users' => $task->getUsers(),
 						'status' => $task->getStatusId(),
-						'last_modified' => $task->getLastModified()
+						'created' => $task->getCreated()
 					);
 				}
 				$this->view->assign('response', array(

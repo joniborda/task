@@ -976,3 +976,9 @@ ALTER TABLE users
   ADD CONSTRAINT users_profiles_fk FOREIGN KEY (profile_id)
       REFERENCES profile (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE;
+
+      
+ALTER TABLE tasks ADD COLUMN last_modified timestamp with time zone DEFAULT now();
+
+ALTER TABLE tasks ADD COLUMN created timestamp with time zone DEFAULT now();
+UPDATE tasks SET created = last_modified;
