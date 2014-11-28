@@ -1,17 +1,17 @@
 <?php if (isset($this->task)) :?>
 <?php echo $this->headLink()
-              ->prependStylesheet($this->webApp . '/css/task/view.css');?>
+              ->prependStylesheet($this->webApp . '/css/task/view.css?a=' . rand());?>
 	<div id="view_task">
 		<?php $status = $this->task->getStatus();
 		if ($status) {
 			switch($status->getDescripcion()) {
-				case 'Abierta':
+				case 'Abierto':
 					$class = 'glyphicon-record';
 					break;
-				case 'Empezada':
+				case 'Empezado':
 					$class = 'glyphicon-play-circle';
 					break;
-				case 'Hecha':
+				case 'Terminado':
 					$class = 'glyphicon-ok-circle';
 					break;
 				default:
@@ -42,6 +42,28 @@
 				</li>
 			<?php endforeach;?>
 			</ul>
+		</div>
+		<div class="descripcion">
+			<?php echo $this->task->getDescripcion();?>
+		</div>
+		<div class="changes">
+			<?php if (!empty($this->changes)):?>
+			<?php foreach ($this->changes as $change):?>
+				<div >
+				<?php if ($change->getTitle() !== null):?>
+					<span>Cambio de título</span>
+					<span><?php echo $change->getTitle();?></span>
+					<span><?php echo $change->getCreated(true);?></span>
+				<?php endif;?>
+				<?php if ($change->getStatusId() !== null):?>
+					<span>Cambio de estado</span>
+					<span><?php echo $change->getStatus()->getDescripcion();?></span>
+					<span><?php echo $change->getCreated(true);?></span>
+				<?php endif;?>
+					<span><?php echo ($change->getUser()? $change->getUser()->getName() : '');?></span>
+				</div>
+			<?php endforeach;?>
+			<?php endif;?>
 		</div>
 		<script type="text/javascript">
 $(document).ready(function() {
