@@ -113,9 +113,9 @@ $(document).on(
 			$('.project').closest('li').removeClass('active');
 			$(this).closest('li').addClass('active');
 
-			var id = $(this).attr('value');
+			var project_id = $(this).attr('value');
 			$.post('task/list', {
-				'id' : id
+				'project_id' : project_id
 			}).complete(
 					function(response, status) {
 					    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
@@ -179,7 +179,7 @@ function task_in_list(id, title, users, status_id, created) {
 	
 	var anio = '';
 	if (date.getFullYear() != current_date.getFullYear()) {
-	    anio = ' de ' + date.getFullYear(); 
+	    anio = ' del ' + date.getFullYear(); 
 	}
 	
 	var mes = '';
@@ -613,7 +613,7 @@ $(document).on(
 			var status_id = $(this).attr('id');
 			
 			$.post('task/list', {
-				'id' : project_selected_id,
+				'project_id' : project_selected_id,
 				'status_id' : status_id 
 			}).complete(function(response, status) {
 						cerrar_cargando();
@@ -641,10 +641,29 @@ $(document).on(
 $(document).on('click', '.users_list .user', function(e) {
 	e.preventDefault();
 	abrir_cargando();
+	
+	var user_id = $(this).attr('value');
+	var user = $(this).html();
 	$.post('task/list', {
-		'id' : project_selected_id,
-		'status_id' : status_id 
+		'user_id' : user_id 
 	}).complete(function(response, status) {
-		cerrar_cargando();
+			cerrar_cargando();
+			$('.tasks_list').html('');
+			if (status == 'success') {
+				var ret = $.parseJSON(response.responseText);
+				if (ret.response == true) {
+					for ( var i = 0; i < ret.tasks.length; i++) {
+						$('.tasks_list').append(
+							task_in_list(ret.tasks[i].id,
+									ret.tasks[i].title,
+									ret.tasks[i].users,
+									ret.tasks[i].status));
+					}
+				}
+				location.hash = 'user:' + user;
+			}
+			
+			$('.detail_task').html('');
+			add_tooltip();
 	});
 });

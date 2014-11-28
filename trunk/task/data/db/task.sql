@@ -982,3 +982,23 @@ ALTER TABLE tasks ADD COLUMN last_modified timestamp with time zone DEFAULT now(
 
 ALTER TABLE tasks ADD COLUMN created timestamp with time zone DEFAULT now();
 UPDATE tasks SET created = last_modified;
+
+CREATE TABLE change_tasks
+(
+  id serial NOT NULL,
+  task_id integer not null,
+  title character varying,
+  projects_id integer,
+  status_id integer,
+  priorities_id integer,
+  start timestamp without time zone,
+  "end" timestamp without time zone,
+  realized integer,
+  descripcion character varying(250),
+  types_id integer,
+  "time" time without time zone,
+  created timestamp with time zone DEFAULT now(),
+  CONSTRAINT change_tasks_pk PRIMARY KEY (id)
+);
+ALTER TABLE change_tasks ADD COLUMN user_id integer NOT NULL;
+ALTER TABLE tasks ADD COLUMN user_id integer;

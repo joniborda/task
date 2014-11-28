@@ -73,7 +73,8 @@ class Application_Service_Locator
     {
     	return new Application_Service_Task(
     			new Application_Dao_Task(),
-    			new Application_Dao_UserTask()
+    			new Application_Dao_UserTask(),
+    			new Application_Dao_ChangeTask()
     	);
     }
     
@@ -98,6 +99,18 @@ class Application_Service_Locator
     {
     	return new Application_Service_Status(
     			new Application_Dao_Status()
+    	);
+    }
+    
+    /**
+     * Get the ChangeTask service.
+     *
+     * @return Application_Service_ChangeTask
+     */
+    public static function getChangeTaskService()
+    {
+    	return new Application_Service_ChangeTask(
+    			new Application_Dao_ChangeTask()
     	);
     }
 }

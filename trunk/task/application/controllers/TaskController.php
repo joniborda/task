@@ -57,27 +57,26 @@ class TaskController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('empty');
 		$this->view->assign('response', array('response' => false));
 		$status_id = $this->getRequest()->getParam('status_id', null);
+		$user_id = $this->getRequest()->getParam('user_id', null);
+		$project_id = $this->getRequest()->getParam('project_id', null);
+		
 		if (
-				($project_id = $this->getRequest()->getParam('id'))
+			($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id))
 		) {
-			if (
-					($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id))
-			) {
-				$ret = array();
-				foreach ($tasks as $task) {
-					$ret[] = array(
-						'id' => $task->getId(),
-						'title' => $task->getTitle(),
-						'users' => $task->getUsers(),
-						'status' => $task->getStatusId(),
-						'created' => $task->getCreated()
-					);
-				}
-				$this->view->assign('response', array(
-						'response' => true,
-						'tasks' => $ret
-				));
+			$ret = array();
+			foreach ($tasks as $task) {
+				$ret[] = array(
+					'id' => $task->getId(),
+					'title' => $task->getTitle(),
+					'users' => $task->getUsers(),
+					'status' => $task->getStatusId(),
+					'created' => $task->getCreated()
+				);
 			}
+			$this->view->assign('response', array(
+					'response' => true,
+					'tasks' => $ret
+			));
 		}
 	}
 
@@ -91,15 +90,21 @@ class TaskController extends Zend_Controller_Action
 		
 		$status = Application_Service_Locator::getStatusService()->getByDescripcion($descripcion);
 		
-		if ($status) {
-			$data = array(
-				'id' => $id,
-				'status_id' => $status->getId()
-			);
+		
+		$userSession = Application_Service_Locator::getSessionService()->getUser();
+		if ($userSession) {
 			
-			$ret = Application_Service_Locator::getTaskService()->updateById($id, $data);
-			if ($ret) {
-				$this->view->assign('response', array('response' => true));
+			if ($status) {
+				$data = array(
+					'id' => $id,
+					'status_id' => $status->getId(),
+					'user_id' => $userSession->getId()
+				);
+				
+				$ret = Application_Service_Locator::getTaskService()->updateById($id, $data);
+				if ($ret) {
+					$this->view->assign('response', array('response' => true));
+				}
 			}
 		}
 	}
@@ -117,6 +122,8 @@ class TaskController extends Zend_Controller_Action
 			
 			if ($task != null) {
 				$this->view->assign('task', $task);
+				$changesTask = Application_Service_Locator::getChangeTaskService()->getAllByTask($task->getId());
+				$this->view->assign('changes' , $changesTask);
 			}
 		}
 	}
@@ -194,6 +201,37 @@ class TaskController extends Zend_Controller_Action
 					$this->view->assign('response', true);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Search task by filters
+	 */
+	public function searchAction()
+	{
+		$this->_helper->layout->setLayout('empty');
+		$this->view->assign('response', array('response' => false));
+		
+		$status_id = $this->getRequest()->getParam('status_id', null);
+		$user_id = $this->getRequest()->getParam('user_id', 8);
+		$project_id = $this->getRequest()->getParam('id', null);
+		
+		$tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id);
+		
+		if (!empty($tasks)) {
+			$ret = array();
+			foreach ($tasks as $task) {
+				$ret[] = array(
+						'id' => $task->getId(),
+						'title' => $task->getTitle(),
+						'users' => $task->getUsers(),
+						'status' => $task->getStatusId()
+				);
+			}
+			$this->view->assign('response', array(
+					'response' => true,
+					'tasks' => $ret
+			));
 		}
 	}
 }

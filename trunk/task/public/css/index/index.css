@@ -73,7 +73,7 @@
 
 .edit_project, .edit_user {
 	position: relative;
-	top: -20px;
+	top: 0px;
 }
 
 .tasks_list {

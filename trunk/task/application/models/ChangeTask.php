@@ -1,8 +1,9 @@
 <?php 
 
-class Application_Model_Task
+class Application_Model_ChangeTask
 {
     protected $_id;
+    protected $_task_id;
     protected $_title;
     protected $_projects_id;
     protected $_status_id;
@@ -13,9 +14,9 @@ class Application_Model_Task
     protected $_descripcion;
     protected $_types_id;
     protected $_time;
-    protected $_last_modified;
     protected $_created;
-    protected $_user_id;    
+    protected $_user_id;
+    
     
     public function __construct($data = null)
     {
@@ -23,6 +24,7 @@ class Application_Model_Task
             
             if (is_array($data)) {
                 $this->_id = $data['id'];
+                $this->_task_id = $data['task_id'];
                 $this->_title = (isset($data['title']) ? $data['title'] : null);
                 $this->_projects_id = (isset($data['projects_id']) ? $data['projects_id'] : null);
                 $this->_status_id = (isset($data['status_id']) ? $data['status_id'] : null);
@@ -33,11 +35,11 @@ class Application_Model_Task
                 $this->_descripcion = (isset($data['descripcion']) ? $data['descripcion'] : null);
                 $this->_types_id = (isset($data['types_id']) ? $data['types_id'] : null);
                 $this->_time = (isset($data['time']) ? $data['time'] : null);
-                $this->_last_modified = (isset($data['last_modified']) ? $data['last_modified'] : null);
                 $this->_created = (isset($data['created']) ? $data['created'] : null);
                 $this->_user_id = (isset($data['user_id']) ? $data['user_id'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
+                $this->_task_id = $data->task_id;
                 $this->_title = $data->title;
                 $this->_projects_id = $data->projects_id;
                 $this->_status_id = $data->status_id;
@@ -48,7 +50,6 @@ class Application_Model_Task
                 $this->_descripcion = $data->descripcion;
                 $this->_types_id = $data->types_id;
                 $this->_time = $data->time;
-                $this->_last_modified = $data->last_modified;
                 $this->_created = $data->created;
                 $this->_user_id = $data->user_id;
             }
@@ -57,9 +58,9 @@ class Application_Model_Task
  
     public function __set($name, $value)
     {
-    	$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
-    	$method = 'set' . $filter->filter($name);
-    	
+        $filter = new Zend_Filter_Word_UnderscoreToCamelCase();
+        $method = 'set' . $filter->filter($name);
+        
         if (('mapper' == $name) || !method_exists($this, $method)) {
             throw new Exception('Invalid guestbook property');
         }
@@ -69,8 +70,7 @@ class Application_Model_Task
     public function __get($name)
     {
     	$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
-        $method = 'get' . $filter->filter($name);
-        
+    	$method = 'get' . $filter->filter($name);
         if (('mapper' == $name) || !method_exists($this, $method)) {
             throw new Exception('Invalid property ' . $method);
         }
@@ -85,6 +85,17 @@ class Application_Model_Task
     public function setId($id)
     {
     	$this->_id = $id;
+    	return $this;
+    }
+    
+    public function getTaskId()
+    {
+    	return $this->_task_id;
+    }
+    
+    public function setTaskId($task_id)
+    {
+    	$this->_task_id = $task_id;
     	return $this;
     }
     
@@ -165,26 +176,61 @@ class Application_Model_Task
     	return $this;
     }
 
-    public function getCreated()
+    public function getCreated($formateado = false)
     {
+    	$dias = array(
+   			'dom',
+    		'lun',
+   			'mar',
+   			'mie',
+   			'jue',
+   			'vie',
+   			'sab'
+    	);
+    	
+    	$meses = array(
+   			'ene',
+   			'feb',
+    		'mar',
+    		'abr',
+    		'may',
+   			'jun',
+   			'jul',
+   			'ago',
+    		'sep',
+    		'oct',
+    		'nov',
+    		'dic'
+    	);
+    	
+    	if ($formateado) {
+	    	$created = new Zend_Date($this->_created);
+	    	$now = new Zend_Date();
+	    	$anio = '';
+	    	if ($created->get('yyyy') != $now->get('yyyy')) {
+	    		$anio = ' del ' . $created->get('yyyy');
+	    	}
+	    	$mes = '';
+	    	$dia = '';
+	    	
+	    	// Es el mismo año y la misma semana
+	    	if ($created->get('yyyy') == $now->get('yyyy') &&
+	    		$now->get('w') == $created->get('w')) {
+	    		
+	    		$dia = $dias[$created->get('eee')];
+	    	} else {
+	    		$dia = $created->get('d');
+	    		$mes = ' de ' . $meses[$created->get('M')];
+	    	}
+	    	
+	    	return $dia . $mes . $anio;
+    	}
     	return $this->_created;
     }
     
     public function setCreated($created)
     {
     	$this->_created = $created;
-    	return $this;
-    }
-
-    public function getDescripcion()
-    {
-    	return $this->_descripcion;
-    }
-    
-    public function setDescripcion($descripcion)
-    {
-    	$this->_descripcion = $descripcion;
-    	
     	return $this;
     }
     
@@ -197,6 +243,14 @@ class Application_Model_Task
     {
     	$this->_user_id = $user_id;
     	return $this;
+    }
+    
+    public function getUser()
+    {
+    	if ($this->user_id) {
+	    	return Application_Service_Locator::getUsuarioService()
+	    		->getById($this->_user_id);
+    	}
     }
 }
 ?>

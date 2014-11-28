@@ -37,10 +37,17 @@ class Application_Service_Task
      */
     private $_UserTaskDao;
     
-    public function __construct(Application_Dao_Task $TaskDao, Application_Dao_UserTask $UserTaskDao)
+    /**
+     * @var Application_Dao_ChangeTask
+     */
+    private $_ChangeTaskDao;
+    
+    public function __construct(Application_Dao_Task $TaskDao, Application_Dao_UserTask $UserTaskDao,
+    		Application_Dao_ChangeTask $ChangeTaskDao)
     {
         $this->_TaskDao = $TaskDao;
         $this->_UserTaskDao = $UserTaskDao;
+        $this->_ChangeTaskDao = $ChangeTaskDao;
     }
 
     /**
@@ -101,9 +108,9 @@ class Application_Service_Task
      *
      * @return array
      */
-    public function getAllByFilters($project_id, $status_id)
+    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null)
     {
-    	return $this->_TaskDao->getAllByFilters($project_id, $status_id);
+    	return $this->_TaskDao->getAllByFilters($project_id, $status_id, $user_id);
     }
     
     /**
@@ -116,7 +123,36 @@ class Application_Service_Task
      */
     public function updateById($id, $data)
     {
-    	return $this->_TaskDao->updateById($id, $data);
+    	$task = $this->_TaskDao->getById($id);
+    	
+    	if ($task) {
+    		
+    		$changes = array();
+    		foreach ($data as $key => $value) {
+    			if ($data[$key] != $task->__get($key)) {
+    				if ($key == 'user_id') {
+    					$changes[$key] = $data[$key];
+    					continue;
+    				}
+    				
+    				$changes[$key] =  $task->__get($key);
+    			}
+    		}
+    		
+	    	$ret = $this->_TaskDao->updateById($id, $data);
+	    	
+	    	if (!empty($changes)) {
+	    		$changes['task_id'] = $id;
+	    		$session_user = Application_Service_Locator::getSessionService()->getUser();
+	    		
+	    		if ($session_user) {
+	    			$changes['user_id'] = $session_user->getId();
+	    		}
+	    		$this->_ChangeTaskDao->crear($changes);
+	    	}
+	    	
+	    	return $ret;
+    	}
     }
     
     /**
