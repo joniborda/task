@@ -156,7 +156,14 @@ class Application_Model_Task
 
     public function getLastModified()
     {
-    	return $this->_last_modified;
+    	try {
+    	
+    		$date = new DateTime($this->_last_modified);
+    		return $date->format('c');
+    	} catch (Exception $e) {
+    		return null;
+    	}
+    	
     }
     
     public function setLastModified($last_modified)
@@ -167,7 +174,14 @@ class Application_Model_Task
 
     public function getCreated()
     {
-    	return $this->_created;
+    	try {
+    		
+    		$date = new DateTime($this->_created);
+	    	return $date->format('c');
+    	} catch (Exception $e) {
+    		return null;
+    	}
+    	
     }
     
     public function setCreated($created)
