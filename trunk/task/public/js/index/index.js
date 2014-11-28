@@ -174,7 +174,7 @@ function task_in_list(id, title, users, status_id, created) {
 		ret += '<a href="#" class="right user">' + users[i] + '</a>';
 	}
 	
-	var date = new Date(Date(created));
+	var date = new Date(created);
 	var current_date = new Date(Date());
 	
 	var anio = '';
