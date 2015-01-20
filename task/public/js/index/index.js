@@ -138,6 +138,9 @@ $(document).on(
 								}
 							}
 							location.hash = title_project;
+							
+							$(".search_status").removeClass('active');
+							$(".search_status[id=" + ret.status_id + "]").addClass('active');
 						}
 						
 						$('.detail_task').html('');
@@ -632,7 +635,15 @@ $(document).on(
 								}
 							}
 							// agregar el estado
-							location.hash = location.hash + '/';
+							//location.hash = location.hash + '/';
+							
+							$(".search_status").removeClass('active');
+							if (ret.status_id == null) {
+							    // ver como dejar active el ALL 
+							} else {
+							    $(".search_status[id=" + ret.status_id + "]").addClass('active');
+							    
+							}
 						}
 						add_tooltip();
 			});

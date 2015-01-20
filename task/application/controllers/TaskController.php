@@ -60,10 +60,10 @@ class TaskController extends Zend_Controller_Action
 		$user_id = $this->getRequest()->getParam('user_id', null);
 		$project_id = $this->getRequest()->getParam('project_id', null);
 		
+		$ret = array();
 		if (
 			($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id))
 		) {
-			$ret = array();
 			foreach ($tasks as $task) {
 				$ret[] = array(
 					'id' => $task->getId(),
@@ -73,11 +73,13 @@ class TaskController extends Zend_Controller_Action
 					'created' => $task->getCreated()
 				);
 			}
-			$this->view->assign('response', array(
-					'response' => true,
-					'tasks' => $ret
-			));
 		}
+		
+		$this->view->assign('response', array(
+				'response' => true,
+				'tasks' => $ret,
+				'status_id' => $status_id
+		));
 	}
 
 	public function changestatusAction()
