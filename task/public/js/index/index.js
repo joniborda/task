@@ -115,7 +115,8 @@ $(document).on(
 
 			var project_id = $(this).attr('value');
 			$.post('task/list', {
-				'project_id' : project_id
+				'project_id' : project_id,
+				'status_id' : 1  // MOSTRAR LAS ABIERTAS
 			}).complete(
 					function(response, status) {
 					    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
