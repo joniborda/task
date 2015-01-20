@@ -206,3 +206,7 @@
 		width: 60%;
 	}
 }
+
+.search_status.active {	
+	font-weight: bold;
+}
