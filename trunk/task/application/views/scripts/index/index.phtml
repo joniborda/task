@@ -31,6 +31,12 @@
 			<?php foreach ($this->projects as $project):?>
 				<li>
 					<a href="#<?php echo $project->getName();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
+					<?php $count_openned = $project->getCountOpenned();?>
+					<?php if ($count_openned > 0) :?>
+						<span class="badge closed"><?php echo $project->getCountOpenned()?></span>
+					<?php else:?>
+						<span class="badge openned"><?php echo $project->getCountOpenned()?></span>
+					<?php endif;?>
 					<a href="#" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
 				</li>
 			<?php endforeach;?>
