@@ -184,5 +184,36 @@ class Application_Dao_Task
     	}
     	return false;
     }
+    
+    /**
+     * Consigue la cantidad de tareas abiertas
+     *
+     * @return Integer
+     */
+    public function getCountOpenned($project_id = null)
+    {
+    	$where = array();
+    
+    	if (isset($project_id)) {
+    		$where['projects_id = ?'] = (int)$project_id;
+    	}
+    	 
+    	if (isset($status_id)) {
+    		$where['status_id = ?'] = 1;
+    	}
+    	 
+    	$select = $this->getDbTable()->select()->from($this->getDbTable(),'count(*)');
+    	 
+    	foreach ($where as $key => $value) {
+    		$select = $select->where($key, $value);
+    	}
+    	 
+    	$resultSet = $this->getDbTable()->fetchRow($select);
+    	
+    	if ($resultSet) {
+    		return $resultSet->count;
+    	}
+		return 0;
+    }
 }
 ?>

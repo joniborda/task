@@ -58,7 +58,10 @@ class Application_Model_Project
     	$this->_name = $name;
     	return $this;
     }
-       
+      
+    public function getCountOpenned() {
+    	return Application_Service_Locator::getTaskService()->getCountOpenned($this->_id);
+    }
     public function __toString()
     {
     	return $this->_name;

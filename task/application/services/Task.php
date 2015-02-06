@@ -166,4 +166,14 @@ class Application_Service_Task
     {
     	return $this->_TaskDao->deleteById($id);
     }
+    
+    /**
+     * Consigue la cantidad de tareas abiertas
+     *
+     * @return Integer
+     */
+    public function getCountOpenned($project_id = null)
+    {
+    	return $this->_TaskDao->getCountOpenned($project_id);
+    }
 }

@@ -210,3 +210,10 @@
 .search_status.active {	
 	font-weight: bold;
 }
+
+.badge.closed {
+	background-color: #5ca77c;
+}
+.badge.openned {
+	background-color: #2EB6FA;
+}
