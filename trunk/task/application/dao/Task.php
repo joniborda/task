@@ -198,9 +198,7 @@ class Application_Dao_Task
     		$where['projects_id = ?'] = (int)$project_id;
     	}
     	 
-    	if (isset($status_id)) {
-    		$where['status_id = ?'] = 1;
-    	}
+   		$where['status_id = ?'] = 1;
     	 
     	$select = $this->getDbTable()->select()->from($this->getDbTable(),'count(*)');
     	 
