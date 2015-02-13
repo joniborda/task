@@ -18,8 +18,13 @@
 			<ul class="users_list">
 			<?php foreach ($this->users as $user):?>
 				<li>
-					<a href="#<?php echo $user->getName();?>" class="user" value="<?php echo $user->getId();?>"><?php echo $user->getName();?></a>
-					<a href="#" class="edit_user" value="<?php echo $user->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
+					<a href="#<?php echo $user->getName();?>" class="user" value="<?php echo $user->getId();?>">
+						<?php echo $user->getName();?>
+					</a>
+					<span class="badge openned"><?php echo $user->getLastModified();?></span>
+					<a href="#" class="edit_user" value="<?php echo $user->getId();?>">
+						<span class="right glyphicon glyphicon-edit"></span>
+					</a>
 				</li>
 			<?php endforeach;?>
 			</ul>

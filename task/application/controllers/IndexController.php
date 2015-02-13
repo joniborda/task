@@ -26,7 +26,6 @@ class IndexController extends Zend_Controller_Action
     			'users',
     			Application_Service_Locator::getUsuarioService()->fetchAll()
     	);
-    	
     	$this->view->headScript()
     		->appendFile($this->view->webApp . '/js/tooltipster/jquery.tooltipster.js')
     		->appendFile($this->view->webApp . '/js/index/index.js');

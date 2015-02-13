@@ -100,4 +100,35 @@ class Application_Service_ChangeTask
     {
     	return $this->_ChangeTaskDao->getAllByTask($task_id);
     }
+    
+    /**
+     * Get Last Modified by User
+     *
+     * @param string $user_id
+     *
+     * @return Date
+     */
+    public function getLastModifiedByUser($user_id = null) {
+    	
+    	$last = $this->_ChangeTaskDao->getLastModifiedByUser($user_id);
+
+    	if ($last) {
+    		
+    		$start = new DateTime($last);
+    		$now = new DateTime();
+    		
+    		$diff = $start->diff($now);
+    		
+			if ($year = $diff->format('%y')) {
+				return '+ ' . $year . ' años';
+			} elseif ($month = $diff->format('%m')) {
+					return '+ ' . $month . ' meses';
+			} elseif ($days = $diff->format('%d')) {
+					return '+ ' . $days . ' días';
+			}
+	    	return 'Hoy';
+    	} else {
+    		return 'Nunca';
+    	}
+    }
 }
