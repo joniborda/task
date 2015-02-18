@@ -28,6 +28,8 @@ class Application_Config_Application
     private static $_config;
 
     const APPLICATION_NAME = 'applicationName';
+    const EXT_IMAGE_PATH = 'extImagePath';
+    const URL_EXT_IMAGE = 'urlExtImage';
 
     /**
      * Sets the config.
@@ -50,4 +52,25 @@ class Application_Config_Application
     {
         return self::$_config[self::APPLICATION_NAME];
     }
+
+    /**
+     * Retriees the image path
+     *
+     * @return string
+     */
+    public static function getExtImagePath()
+    {
+        return self::$_config[self::EXT_IMAGE_PATH];
+    }
+    
+    /**
+    * Retriees the image url
+    *
+    * @return string
+    */
+    public static function getUrlExtImage()
+    {
+    	return self::$_config[self::URL_EXT_IMAGE];
+    }
+    
 }
