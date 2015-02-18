@@ -12,7 +12,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         Application_Config_Application::setConfig(
             array(
-                Application_Config_Application::APPLICATION_NAME => 'task'
+                Application_Config_Application::APPLICATION_NAME => 'task',
+                Application_Config_Application::EXT_IMAGE_PATH => realpath('..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'image_task'),
+                Application_Config_Application::URL_EXT_IMAGE => '/image_task'
             )
         );
     }

@@ -466,15 +466,16 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 });
 
 function show_task_detail(id, li) {
-$('.detail_task').html('');
+    $('.detail_task').html('<div class="cargando"><img src="public/img/cargando.gif"></div>');
 	
+    
 	$.post(
 			base_url + '/task/view', 
 			{
 				id : id
 			}
 	).done(function(response) {
-		$('.detail_task').html(response);
+        $('.detail_task').html(response);	        
 		if ($('.detail_task').is(':visible') && 
 			$('.detail_task').find('.remove').attr('value') == id) {
 			

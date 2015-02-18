@@ -52,18 +52,18 @@
 	height: 0px;
 }
 
-.projects_list, .users_list {
+.projects_list,.users_list {
 	padding: 0;
 }
 
-.projects_list li, .users_list li {
+.projects_list li,.users_list li {
 	padding: 5px 10px 5px 0;
 	border-bottom-left-radius: 10px;
 	border-top-left-radius: 10px;
 	list-style-type: none;
 }
 
-.project, .user {
+.project,.user {
 	margin-left: 10px;
 	width: auto;
 	display: inline-block;
@@ -71,7 +71,7 @@
 	padding-top: 7px;
 }
 
-.edit_project, .edit_user {
+.edit_project,.edit_user {
 	position: relative;
 	top: 0px;
 }
@@ -88,7 +88,7 @@
 
 .tasks_list .show_status {
 	text-decoration: none;
-	vertical-align: middle;	
+	vertical-align: middle;
 }
 
 .tasks_list .title {
@@ -100,6 +100,7 @@
 	vertical-align: middle;
 	cursor: pointer;
 }
+
 .tasks_list li {
 	line-height: 2.5;
 	padding: 0 5px;
@@ -109,7 +110,7 @@
 	font-size: 0.7em;
 }
 
-.create_task_form, .search_form {
+.create_task_form,.search_form {
 	padding: 10px;
 }
 
@@ -163,8 +164,9 @@
 }
 
 .tasks_list .selected {
-	background-color: #E9EAED;	
+	background-color: #E9EAED;
 }
+
 .menu_left h1 {
 	font-size: 12px;
 }
@@ -172,48 +174,55 @@
 .filters {
 	margin-left: 10px;
 }
+
 .user_logged {
-	padding-right: 10px;	
+	padding-right: 10px;
 }
 
-@media (max-width: 1300px) {
+@media ( max-width : 1300px) {
 	.menu_left {
 		width: 25%;
 	}
-	
 	.menu_right {
 		width: 75%;
 	}
 }
 
-
-@media (max-width: 800px) {
+@media ( max-width : 800px) {
 	.menu_left {
 		width: 30%;
 	}
-	
 	.menu_right {
 		width: 70%;
 	}
 }
 
-@media (max-width: 740px) {
+@media ( max-width : 740px) {
 	.menu_left {
 		width: 40%;
 	}
-	
 	.menu_right {
 		width: 60%;
 	}
 }
 
-.search_status.active {	
+.search_status.active {
 	font-weight: bold;
 }
 
 .badge.closed {
 	background-color: #5ca77c;
 }
+
 .badge.openned {
 	background-color: #2EB6FA;
+}
+
+.detail_task .cargando {
+	height: 100%;
+	display: flex;
+}
+
+.detail_task .cargando img {
+	margin: auto;
 }

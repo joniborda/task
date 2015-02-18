@@ -1,76 +1,169 @@
 <?php if (isset($this->task)) :?>
-<?php echo $this->headLink()
-              ->prependStylesheet($this->webApp . '/css/task/view.css?a=' . rand());?>
-	<div id="view_task">
-		<?php $status = $this->task->getStatus();
-		if ($status) {
-			switch($status->getDescripcion()) {
-				case 'Abierto':
-					$class = 'glyphicon-record';
-					break;
-				case 'Empezado':
-					$class = 'glyphicon-play-circle';
-					break;
-				case 'Terminado':
-					$class = 'glyphicon-ok-circle';
-					break;
-				default:
-					$class = 'glyphicon-record';
-					break;
-			}
-		} else {
-			$class = 'glyphicon-record';
-		}?>
+<!-- Pongo el css aca porque sino tarda en dar respuesta -->
+<style type="text/css">
+@CHARSET "ISO-8859-1";
+
+#view_task {
+	padding-right: 10px;
+	font-size: 1.2em;
+}
+
+#view_task .glyphicon,#view_task .glyphicon:hover {
+	text-decoration: none;
+}
+
+#view_task .remove {
+	float: right;
+	font-size: 18px;
+}
+
+#view_task form {
+	width: 80%;
+}
+
+#view_task textarea {
+	border: 0;
+	width: 100%;
+}
+
+#view_task .asign {
+	clear: both;
+}
+
+#view_task .asign_user {
+	display: initial;
+	width: auto;
+}
+
+.user_asigned {
+	margin-top: 10px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.user_asigned li {
+	list-style-type: none;
+	color: #000;
+	border: 1px solid #ccc;
+	display: inline;
+	padding: 2px 9px;
+	border-radius: 5px;
+}
+
+.user_asigned li:hover {
+	border-width: 2px;
+}
+
+.user_asigned li .glyphicon {
+	margin-right: 5px;
+	vertical-align: text-top;
+}
+
+#view_task .changes {
+	font-size: 0.8em;
+}
+</style>
+
+<div id="view_task">
+		<?php
+	
+$status = $this->task->getStatus ();
+	if ($status) {
+		switch ($status->getDescripcion ()) {
+			case 'Abierto' :
+				$class = 'glyphicon-record';
+				break;
+			case 'Empezado' :
+				$class = 'glyphicon-play-circle';
+				break;
+			case 'Terminado' :
+				$class = 'glyphicon-ok-circle';
+				break;
+			default :
+				$class = 'glyphicon-record';
+				break;
+		}
+	} else {
+		$class = 'glyphicon-record';
+	}
+	?>
 		<div>
-		<a href="#" class="left show_status glyphicon <?php echo $class?>" value="<?php echo $this->task->getStatusId()?>" ></a>
-		<form class="title_view_form left ">
-			<textarea name="title" class="autosize" ><?php echo $this->task->getTitle();?></textarea>
-		</form>
-		<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->task->getId()?>" ></a>
-		</div>
-		<div class="asign">
-			<span>
-				Asignados:
-			</span>
-			<input type="text" name="asign" placeholder="Ingrese usuario" class="asign_user form-control">
+        <a href="#" class="left show_status glyphicon <?php echo $class?>"
+            value="<?php echo $this->task->getStatusId()?>"
+        ></a>
+        <form class="title_view_form left ">
+            <textarea name="title" class="autosize"><?php echo $this->task->getTitle();?></textarea>
+        </form>
+        <a href="#" class="remove glyphicon glyphicon-trash"
+            value="<?php echo $this->task->getId()?>"
+        ></a>
+    </div>
+    <div class="asign">
+        <span> Asignados: </span> <input type="text" name="asign"
+            placeholder="Ingrese usuario" class="asign_user form-control"
+        >
 			<?php $users = $this->task->getUsers();?>
 			<ul class="user_asigned">
 			<?php foreach ($users as $user):?>
-				<li>
-					<a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>
-					<span class="user_name"><?php echo $user;?></span>
-				</li>
+				<li><a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>
+                <span class="user_name"><?php echo $user;?></span></li>
 			<?php endforeach;?>
 			</ul>
-		</div>
-		<div class="descripcion">
+    </div>
+    <div class="descripcion">
 			<?php echo $this->task->getDescripcion();?>
 		</div>
-		<div class="changes">
+    <div class="changes">
 			<?php if (!empty($this->changes)):?>
 			<?php foreach ($this->changes as $change):?>
-				<div >
+				<div>
 				<?php if ($change->getTitle() !== null):?>
-					<span>Cambio de título</span>
-					<span><?php echo $change->getTitle();?></span>
-					<span><?php echo $change->getCreated(true);?></span>
+					<span>Cambio de título</span> <span><?php echo $change->getTitle();?></span>
+            <span><?php echo $change->getCreated(true);?></span>
 				<?php endif;?>
 				<?php if ($change->getStatusId() !== null):?>
-					<span>Cambio de estado</span>
-					<span><?php echo $change->getStatus()->getDescripcion();?></span>
-					<span><?php echo $change->getCreated(true);?></span>
+					<span>Cambio de estado</span> <span><?php echo $change->getStatus()->getDescripcion();?></span>
+            <span><?php echo $change->getCreated(true);?></span>
 				<?php endif;?>
 					<span><?php echo ($change->getUser()? $change->getUser()->getName() : '');?></span>
-				</div>
+        </div>
 			<?php endforeach;?>
 			<?php endif;?>
 		</div>
-		<script type="text/javascript">
+    <div class="images">
+		<?php
+	$image = Application_Config_Application::getExtImagePath () . '/task/' . $this->task->getId (). '.jpg';
+	if (file_exists ( $image )) {
+		?>
+		<a href="#" class="image_link"> <img
+            src="<?php echo Application_Config_Application::getUrlExtImage()?>/task/<?php echo $this->task->getId();?>.jpg"
+            width="400px"
+        >
+        </a>
+<?php
+	} else {
+		// echo $this->Html->image('/img/no_image.jpg');
+	}
+	?>
+		</div>
+    <script type="text/javascript">
 $(document).ready(function() {
-	setTimeout(function() {
-			$('.autosize').autosize();
-	},1000);
 
+	$('#view_task .image_link').click(function(e) {
+		e.preventDefault();
+		$(
+			'<div>' +
+				'<img '+
+					'src="<?php echo Application_Config_Application::getUrlExtImage()?>/task/<?php echo $this->task->getId();?>.jpg" ' +
+					'width="100%" >' +
+			'</div>')
+			.dialog({
+				height: $('#view_task .image_link img').height()*1.7, 
+				width: $('#view_task .image_link img').width()*1.7
+			});
+		return false;
+	});
+	
 	// AUTOCOMPLETE ASIGN USERS IN DETAILS
 	$(".detail_task .asign_user").autocomplete({
 		source : function(request, response) {
@@ -175,5 +268,5 @@ $('.remove_user_asign').on('click', function(e) {
 		return false;
 });
 		</script>
-	</div>
+</div>
 <?php endif;?>
