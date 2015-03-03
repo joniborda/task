@@ -44,7 +44,7 @@ class UsuarioController extends Zend_Controller_Action
     }
 
     public function loguearAction()
-    {var_dump($_SESSION);die();
+    {
     	$request = $this->getRequest();
     	if ($request->isPost()) {
     		

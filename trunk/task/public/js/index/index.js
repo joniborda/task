@@ -196,7 +196,7 @@ function task_in_list(id, title, users, status_id, created) {
 	    mes = ' de ' + meses[date.getMonth()];
 	}
 	
-	ret +='<span class="right created">' + dia + mes + anio  +'</span>';
+	ret +='<span class="left created">' + dia + mes + anio  +'</span>';
 	
 	ret += '</div></li>';
 
@@ -576,13 +576,44 @@ $(document).on('blur', '.title_view_form', function(e) {
 	).done(function(response) {
 		if (response) {
 			$('.tasks_list li[value="'+ ultimo_selected_task + '"] .title').html(title);
-			// TODO: cambiar de color
+			input.css('background-color', '#A0E0BC');
+			input.animate({backgroundColor: "#fff"}, 1000);
 		} else {
-			// TODO: ERROR
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
 		}
 	}).fail(function() {
-		// TODO: ERROR
+		input.css('background-color', '#FF5E5E');
+		input.animate({backgroundColor: "#fff"}, 1000);
 	});
+});
+
+//SUBMIT EDIT TASK
+$(document).on('keypress', '.description_view_form', function(e) {
+	if (e.keyCode == 13 && e.shiftKey == false) {
+		e.preventDefault();
+		var input = $(this).find('[name="description"]');
+		var description = input.val();
+		$.post(
+			base_url + '/task/edit',
+			{
+				id : ultimo_selected_task,
+				description : description
+			},
+			'json'
+		).done(function(response) {
+			if (response) {
+				input.css('background-color', '#A0E0BC');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			} else {
+				input.css('background-color', '#FF5E5E');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			}
+		}).fail(function() {
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
+		});
+	}
 });
 
 $(document).keyup(function(e){

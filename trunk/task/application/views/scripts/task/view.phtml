@@ -17,7 +17,7 @@
 	font-size: 18px;
 }
 
-#view_task form {
+#view_task .title_view_form {
 	width: 80%;
 }
 
@@ -110,9 +110,14 @@ $status = $this->task->getStatus ();
 			<?php endforeach;?>
 			</ul>
     </div>
-    <div class="descripcion">
-			<?php echo $this->task->getDescripcion();?>
-		</div>
+    <div class="number">
+    	#<?php echo $this->task->getId();?>
+    </div>
+    <div class="description">
+    	<form class="description_view_form">
+	        <textarea name="description" class="autosize"><?php echo $this->task->getDescripcion();?></textarea>
+        </form>
+	</div>
     <div class="changes">
 			<?php if (!empty($this->changes)):?>
 			<?php foreach ($this->changes as $change):?>

@@ -64,11 +64,9 @@
 }
 
 .project,.user {
-	margin-left: 10px;
 	width: auto;
 	display: inline-block;
 	line-height: 1;
-	padding-top: 7px;
 }
 
 .edit_project,.edit_user {
@@ -102,12 +100,13 @@
 }
 
 .tasks_list li {
-	line-height: 2.5;
+	line-height: 2;
 	padding: 0 5px;
 }
 
 .tasks_list .created {
 	font-size: 0.7em;
+	width: 100%;
 }
 
 .create_task_form,.search_form {
