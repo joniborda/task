@@ -106,4 +106,14 @@ class Application_Service_Session
     {
         return self::_getNamespace('user')->rememberMe;
     }
+    
+    public static function set($key, $value)
+    {
+    	self::_getNamespace()->$key = $value;
+    }
+    
+    public static function get($key)
+    {
+    	return self::_getNamespace()->$key;
+    }
 }
