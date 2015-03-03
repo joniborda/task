@@ -44,7 +44,7 @@ class UsuarioController extends Zend_Controller_Action
     }
 
     public function loguearAction()
-    {
+    {var_dump($_SESSION);die();
     	$request = $this->getRequest();
     	if ($request->isPost()) {
     		
@@ -55,7 +55,15 @@ class UsuarioController extends Zend_Controller_Action
 		    	$user = Application_Service_Locator::getUsuarioService()
 		    		->login($user_name, $password, true);
 		    	if (null !== $user) {
-		    		$this->_redirect('/');
+		    		
+		    		if (Application_Service_Session::get('redirect')) {
+		    			$url = Application_Service_Session::get('redirect');
+		    			
+	    				Application_Service_Session::set('redirect', '');
+		    			$this->_redirect($url);		    			
+		    		} else {
+			    		$this->_redirect('/');
+		    		}
 		    	}
 	    	} catch (Zend_Validate_Exception $e) {
 	    		$this->view->error = $e->getMessage();
@@ -69,8 +77,9 @@ class UsuarioController extends Zend_Controller_Action
     
     public function salirAction()
     {
+    	$url = Application_Service_Session::get('redirect');
     	Application_Service_Session::logout();
-    	$this->_redirect('/');
+    	$this->_redirect('/?redirect=' . $url);
     }
     
     public function searchAction()

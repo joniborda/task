@@ -64,6 +64,15 @@ class TaskController extends Zend_Controller_Action
 		if (
 			($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id))
 		) {
+			$project = Application_Service_Locator::getProjectService()->getById($project_id);
+			
+			if ($project) {
+				Application_Service_Session::set(
+					'redirect',  
+					$this->view->baseUrl . '#' . $project->getName());
+			}
+			
+			$ret = array();
 			foreach ($tasks as $task) {
 				$ret[] = array(
 					'id' => $task->getId(),

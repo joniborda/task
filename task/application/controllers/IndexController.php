@@ -9,7 +9,8 @@ class IndexController extends Zend_Controller_Action
     }
 
     public function indexAction()
-    {
+    { 
+//    	var_dump($_SESSION);die();
     	$this->view
     		->headLink()
     		->appendStylesheet($this->view->pathCss . '/tooltipster/tooltipster.css' )
