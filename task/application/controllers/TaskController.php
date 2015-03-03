@@ -46,7 +46,8 @@ class TaskController extends Zend_Controller_Action
 					'response' => true,
 					'id' => $task->getId(),
 					'users' => $users,
-					'status' => $task->getStatusId()
+					'status' => $task->getStatusId(),
+					'created' => $task->getCreated()
 				));
 			}
 		}
@@ -159,13 +160,23 @@ class TaskController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('empty');
 		$id = $this->_request->getParam('id');
 		$title = $this->_request->getParam('title');
+		$descripcion = $this->_request->getParam('description');
 		
 		$this->view->assign('response', false);
 		
 		if ($id != null) {
 			$task_service = Application_Service_Locator::getTaskService();
 			
-			$ret = $task_service->updateById($id, array('title' => $title));
+			$data = array();
+			if ($title) {
+				$data['title'] = $title;
+			}
+			
+			if ($descripcion) {
+				$data['descripcion'] = $descripcion;
+			}
+			
+			$ret = $task_service->updateById($id, $data);
 			
 			if ($ret > 0) {
 				$this->view->assign('response', true);
