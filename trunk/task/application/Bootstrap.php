@@ -69,7 +69,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	// SETEO LA BASE-URL
     	$router     = new Zend_Controller_Router_Rewrite();
     	$controller = Zend_Controller_Front::getInstance();
-    	$controller->setBaseUrl('/task'); // set the base url!
+    	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    		$controller->setBaseUrl('/task'); // set the base url!
+    	} else {
+    		$controller->setBaseUrl('/'); // set the base url!    		
+    	}
     	
         // Initialize view
         $view = new Zend_View();
@@ -90,9 +94,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'paginator.phtml'
         );
 
-        $view->baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/task';
-        $view->webApp = $view->baseUrl . '/public';
-        $view->pathCss = $view->baseUrl . '/public/css';
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	        $view->baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/task';
+	        $view->webApp = $view->baseUrl . '/public';
+	        $view->pathCss = $view->baseUrl . '/public/css';
+        } else {
+        	$view->baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+	        $view->webApp = $view->baseUrl . '/';
+	        $view->pathCss = $view->baseUrl . '/css';
+        }
 
         
 //        	$view->user = Application_Service_Session::getUser();
