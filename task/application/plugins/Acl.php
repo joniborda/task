@@ -84,10 +84,9 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         $allowed = $this->_acl->isAllowed(
             $role, $path, $request->getActionName()
         );
-        
-        if (!$allowed) {
-            Zend_Controller_Action_HelperBroker::getStaticHelper('redirector')
-                ->gotoUrlAndExit('/usuario/loguear');
-        }
+ //       if (!$allowed) {
+//            Zend_Controller_Action_HelperBroker::getStaticHelper('redirector')
+//                ->gotoUrlAndExit('/usuario/loguear');
+   //     }
     }
 }
