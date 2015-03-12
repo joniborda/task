@@ -16,6 +16,7 @@ class Application_Model_ChangeTask
     protected $_time;
     protected $_created;
     protected $_user_id;
+    protected $_revisado;
     
     
     public function __construct($data = null)
@@ -37,6 +38,7 @@ class Application_Model_ChangeTask
                 $this->_time = (isset($data['time']) ? $data['time'] : null);
                 $this->_created = (isset($data['created']) ? $data['created'] : null);
                 $this->_user_id = (isset($data['user_id']) ? $data['user_id'] : null);
+                $this->_revisado = (isset($data['revisado']) ? $data['revisado'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_task_id = $data->task_id;
@@ -52,6 +54,7 @@ class Application_Model_ChangeTask
                 $this->_time = $data->time;
                 $this->_created = $data->created;
                 $this->_user_id = $data->user_id;
+                $this->_revisado = $data->revisado;
             }
         }
     }
@@ -251,6 +254,15 @@ class Application_Model_ChangeTask
 	    	return Application_Service_Locator::getUsuarioService()
 	    		->getById($this->_user_id);
     	}
+    }
+    
+    public function getRevisado() {
+    	return $this->_revisado;
+    }
+    
+    public function setRevisado($revisado) {
+    	$this->_revisado = $revisado;
+    	return $this;
     }
 }
 ?>

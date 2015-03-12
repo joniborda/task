@@ -47,12 +47,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initView()
     {
-    	
     	// SET DEFAULT MAIL TRANSPORT
     	$config = array(
 			'auth' => 'login',
-			'username' => 'serviciotecnicojborda@gmail.com',
-			'password' => 'nosenose'
+			'username' => 'appmailtransport@gmail.com',
+			'password' => 'nosenose',
+    			'port' => '587',
+    			'ssl' => 'tls'
 		);
     	$tr = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);    	
     	
@@ -61,10 +62,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	
     	// Reset to Base64 Encoding because Russian expressed in KOI8-R is
     	// different from Roman letters-based languages greatly.
-    	$mail->setHeaderEncoding(Zend_Mime::ENCODING_QUOTEDPRINTABLE);
+//     	$mail->setHeaderEncoding(Zend_Mime::ENCODING_QUOTEDPRINTABLE);
     	
     	$mail->setDefaultTransport($tr);
-    	$mail->setDefaultFrom('serviciotecnicojborda@gmail.com', utf8_decode('Servicio Técnico JB'));
+    	$mail->setDefaultFrom('appmailtransport@gmail.com', utf8_decode('Task'));
     	
     	// SETEO LA BASE-URL
     	$router     = new Zend_Controller_Router_Rewrite();

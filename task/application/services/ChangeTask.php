@@ -131,4 +131,34 @@ class Application_Service_ChangeTask
     		return 'Nunca';
     	}
     }
+    
+    /**
+     * Get unrevised
+     *
+     * @return Array
+     */
+    public function getUnrevised() {
+    	return $this->_ChangeTaskDao->getUnrevised();
+    }
+    
+    /**
+     * Set status
+     *
+     * @param Integer $id
+     * @param Array $data
+     *
+     * @return Integer The number of rows updated
+     */
+    public function updateById($id, $data) {
+    	return $this->_ChangeTaskDao->updateById($id, $data);
+    }
+    
+    /**
+     * Make to revised
+     * 
+     * @param Integer $id
+     */
+    public function make_revised($id) {
+    	return $this->updateById($id, array('revisado' => true));
+    }
 }
