@@ -179,5 +179,22 @@ class Application_Dao_ChangeTask {
 			}
 		}
 	}
+	
+	/**
+	 * Get unrevised
+	 *
+	 * @return Array
+	 */
+	public function getUnrevised() {
+		
+		$resultSet = $this->getDbTable ()->fetchAll ( array ('revisado = false'), array ('id desc'), null, null );
+		
+		$entries = array();
+			foreach ( $resultSet as $row ) {
+				$entry = new Application_Model_ChangeTask ( $row );
+				$entries [] = $entry;
+			}
+			return $entries;
+	}
 }
 ?>

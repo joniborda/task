@@ -466,7 +466,7 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 });
 
 function show_task_detail(id, li) {
-    $('.detail_task').html('<div class="cargando"><img src="public/img/cargando.gif"></div>');
+    $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/img/cargando.gif"></div>');
 	
     
 	$.post(

@@ -1002,3 +1002,5 @@ CREATE TABLE change_tasks
 );
 ALTER TABLE change_tasks ADD COLUMN user_id integer NOT NULL;
 ALTER TABLE tasks ADD COLUMN user_id integer;
+
+ALTER TABLE change_tasks ADD COLUMN revisado BOOLEAN DEFAULT FALSE NOT NULL;

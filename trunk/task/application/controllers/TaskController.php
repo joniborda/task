@@ -105,7 +105,6 @@ class TaskController extends Zend_Controller_Action
 		
 		$userSession = Application_Service_Locator::getSessionService()->getUser();
 		if ($userSession) {
-			
 			if ($status) {
 				$data = array(
 					'id' => $id,

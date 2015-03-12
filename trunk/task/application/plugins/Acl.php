@@ -30,11 +30,13 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
                    ->addResource(new Zend_Acl_Resource('/error'))
                    ->addResource(new Zend_Acl_Resource('/index'))
                    ->addResource(new Zend_Acl_Resource('/task'))
+                   ->addResource(new Zend_Acl_Resource('/monitortask'))
         		   ->addResource(new Zend_Acl_Resource('/project'));
 
         // tendría que denegar todos primero y despues permitir los necesarios
         $this->_acl->deny('guest')
         			->allow('guest', '/usuario')
+        			->allow('guest', '/monitortask')
         			->allow('guest', '/error')
                     ->allow('user');
 
@@ -84,9 +86,9 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         $allowed = $this->_acl->isAllowed(
             $role, $path, $request->getActionName()
         );
- //       if (!$allowed) {
-//            Zend_Controller_Action_HelperBroker::getStaticHelper('redirector')
-//                ->gotoUrlAndExit('/usuario/loguear');
-   //     }
+       if (!$allowed) {
+           Zend_Controller_Action_HelperBroker::getStaticHelper('redirector')
+               ->gotoUrlAndExit('/usuario/loguear');
+       }
     }
 }
