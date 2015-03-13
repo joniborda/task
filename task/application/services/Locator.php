@@ -113,4 +113,13 @@ class Application_Service_Locator
     			new Application_Dao_ChangeTask()
     	);
     }
+    
+    /**
+     * Get The revision service.
+     * 
+     * @return Application_Service_Revision
+     */
+    public static function getRevisionService() {
+    	return new Application_Service_Revision(new Application_Dao_Revision());
+    }
 }
