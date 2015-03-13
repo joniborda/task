@@ -12,35 +12,37 @@ class MonitortaskController extends Zend_Controller_Action
 			foreach ($change_tasks as $change_task) {
 				$task_new = Application_Service_Locator::getTaskService()->getById($change_task->getTaskId());
 				
-				$text = $this->getTableHtml($task_new);
-				
-				$user = $change_task->getUser();
-				
-				if ($user) {
-					$text .= '<br>La tarea fue modificada por: ' . $user->getName();
-				}
-				
-				if ($change_task->getStatus()) {
-					$text .= '<br>Se modificó el estado, antes estaba: "' . $change_task->getStatus() .'"';
-				}
-				if ($change_task->getTitle()) {
-					$text .= '<br>Se modificó el nombre, antes era: "' . $change_task->getTitle() .'"';
-				}
-
-				$users = Application_Service_Locator::getUsuarioService()->fetchAll();
-				
-				foreach ($users as $user) {
-					$validator = new Zend_Validate_EmailAddress();
-					if ($validator->isValid($user->getMail())) {
-						
-						$mail = new Zend_Mail();
-						$mail->addTo($user->getMail(), $user->getName());
-						$mail->setSubject('Tarea modificada');
-						$mail->setBodyHtml(utf8_decode($text));
-						try {
-							$mail->send();
-						} catch (Zend_Mail_Transport_Exception $e) {
-							// TODO: avisar que no se pudo enviar
+				if ($task_new) { 
+					$text = $this->getTableHtml($task_new);
+					
+					$user = $change_task->getUser();
+					
+					if ($user) {
+						$text .= '<br>La tarea fue modificada por: ' . $user->getName();
+					}
+					
+					if ($change_task->getStatus()) {
+						$text .= '<br>Se modificó el estado, antes estaba: "' . $change_task->getStatus() .'"';
+					}
+					if ($change_task->getTitle()) {
+						$text .= '<br>Se modificó el nombre, antes era: "' . $change_task->getTitle() .'"';
+					}
+	
+					$users = Application_Service_Locator::getUsuarioService()->fetchAll();
+					
+					foreach ($users as $user) {
+						$validator = new Zend_Validate_EmailAddress();
+						if ($validator->isValid($user->getMail())) {
+							
+							$mail = new Zend_Mail();
+							$mail->addTo($user->getMail(), $user->getName());
+							$mail->setSubject('Tarea modificada');
+							$mail->setBodyHtml(utf8_decode($text));
+							try {
+								$mail->send();
+							} catch (Zend_Mail_Transport_Exception $e) {
+								// TODO: avisar que no se pudo enviar
+							}
 						}
 					}
 				}
