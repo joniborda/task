@@ -4,6 +4,8 @@ class Application_Model_Usuario {
 	protected $_name;
 	protected $_password;
 	protected $_profile_id;
+	protected $_mail;
+	
 	public function __construct($data = null) {
 		if ($data != null) {
 			
@@ -12,11 +14,13 @@ class Application_Model_Usuario {
 				$this->_name = $data ['name'];
 				$this->_password = $data ['password'];
 				$this->_profile_id = $data ['profile_id'];
+				$this->_mail = $data ['mail'];
 			} else if ($data instanceof Zend_Db_Table_Row) {
 				$this->_id = $data->id;
 				$this->_name = $data->name;
 				$this->_password = $data->password;
 				$this->_profile_id = $data->profile_id;
+				$this->_mail = $data->mail;
 			}
 		}
 	}
@@ -66,6 +70,13 @@ class Application_Model_Usuario {
 	 */
 	public function getLastModified() {
 		return Application_Service_Locator::getChangeTaskService ()->getLastModifiedByUser ( $this->_id );
+	}
+	
+	public function getMail() {
+		return $this->_mail;
+	}
+	public function setMail($mail) {
+		$this->_mail = $mail;
 	}
 }
 ?>
