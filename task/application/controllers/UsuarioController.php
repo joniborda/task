@@ -102,4 +102,50 @@ class UsuarioController extends Zend_Controller_Action
     		}
     	}
     }
+    
+    public function createAction()
+    {
+    	$this->_helper->layout->setLayout('empty');
+    	$this->view->profiles = Application_Service_Locator::getProfileService()->listAll();
+    }
+    
+    public function addAction()
+    {
+    	$this->_helper->layout->setLayout('empty');
+    	if (
+    			($name = $this->getRequest()->getParam('name')) &&
+    			($password = $this->getRequest()->getParam('password')) &&
+    			($repeat_password = $this->getRequest()->getParam('repeat_password')) &&
+    			($profile_id = $this->getRequest()->getParam('profile_id'))
+    	) {
+    		$mail = $this->getRequest()->getParam('mail');
+    			
+    		try {
+	    		if (($usuario = Application_Service_Locator::getUsuarioService()
+	    				->registrar($mail, $name, $password, $repeat_password, $profile_id))) {
+	    			$this->view->assign('response', array(
+	    					'response' => true,
+	    					'id' => $usuario->getId()
+	    			));
+	    		}
+    		
+    		} catch (Zend_Exception $e) {
+    			if ($e instanceof Zend_Validate_Exception) {
+    				$error = $e->getMessage();
+    			}
+    			 
+    			if ($e instanceof Zend_Db_Statement_Exception) {
+    				$error = 'No se puedo registrar';
+    			}
+    			
+    			$this->view->assign('response', array(
+    					'response' => false,
+    					'error' => $error
+    			));
+    		}
+    	} else {
+    		
+	    	$this->view->assign('response', array('response'=>false, 'error' => 'Faltan campos obligatorios'));
+    	}
+    }
 }

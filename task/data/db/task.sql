@@ -1024,3 +1024,4 @@ ALTER TABLE tasks ADD COLUMN search_title tsvector;
 
 UPDATE tasks SET search_title = setweight(to_tsvector('spanish', coalesce(title, '')), 'A');
 	
+ALTER TABLE users ADD COLUMN created timestamp not null default now();

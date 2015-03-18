@@ -53,6 +53,18 @@ class Application_Service_Locator
     }
     
     /**
+     * Get the profile service.
+     *
+     * @return Application_Service_Profile
+     */
+    public static function getProfileService()
+    {
+    	return new Application_Service_Profile(
+    			new Application_Dao_Profile()
+    	);
+    }
+    
+    /**
      * Get the reply service.
      *
      * @return Application_Service_Respuesta

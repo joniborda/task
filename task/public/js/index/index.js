@@ -20,6 +20,7 @@ $(document).on('click', '#create_project', function(e) {
 		}
 	});
 });
+
 // SUBMIT NEW PROJECT
 $(document).on(
 		'submit',
@@ -710,7 +711,8 @@ $(document).on('click', '.users_list .user', function(e) {
 							task_in_list(ret.tasks[i].id,
 									ret.tasks[i].title,
 									ret.tasks[i].users,
-									ret.tasks[i].status));
+									ret.tasks[i].status,
+									ret.tasks[i].created));
 					}
 				}
 				location.hash = 'user:' + user;
@@ -741,7 +743,8 @@ $(document).on('submit', '.search_form', function(e) {
 							task_in_list(ret.tasks[i].id,
 									ret.tasks[i].title,
 									ret.tasks[i].users,
-									ret.tasks[i].status));
+									ret.tasks[i].status,
+									ret.tasks[i].created));
 					}
 				}
 			}
@@ -749,4 +752,63 @@ $(document).on('submit', '.search_form', function(e) {
 			$('.detail_task').html('');
 			add_tooltip();
 	});
+});
+
+//CREAR DIALOG OF NEW PROJECT
+$(document).on('click', '#create_user', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	
+	$.post('usuario/create').complete(function(response, status) {
+		cerrar_cargando();
+		if (status == 'success' && response.responseText) {
+			$(response.responseText).dialog({
+				modal : true,
+				close: function(e, ui) {
+					prevent_close_detail = true;
+				}
+			});
+		}
+	});
+});
+
+//SUBMIT NEW USER
+$(document).on(
+	'submit',
+	'#form_create_usuario',
+	function(e) {
+		e.preventDefault();
+		var name = $(this).find('[name="name"]').val();
+		$.post('usuario/add', {
+			'name' : name,
+			'password' : $(this).find('[name="password"]').val(),
+			'repeat_password' : $(this).find('[name="repeat_password"]').val(),
+			'profile_id' : $(this).find('[name="profile_id"]').val(),
+			'mail' : $(this).find('[name="mail"]').val()
+		}).complete(
+			function(response, status) {
+				if (status == 'success') {
+					var ret = $.parseJSON(response.responseText);
+
+					if (ret.response == true) {
+						$('#div_form_project').dialog('close');
+						$('#div_form_project').dialog('destroy');
+						$('.users_list').append(
+								'<li>' + 
+									'<a href="#' + name + '" class="user" value="' + ret.id + '">' + 
+										name +
+									'</a>&nbsp;' +
+									'<span class="badge openned">Nunca</span>' +
+									'<a href="#" class="edit_user" value="' + ret.id + '">' +
+										'<span class="right glyphicon glyphicon-edit"></span>' +
+									'</a>' +
+								'</li>');
+						project_selected_id = ret.id;
+						$('.project[value="' + ret.id + '"]').click();
+					} else {
+						alert(ret.error);
+					}
+				}
+			}
+		);
 });

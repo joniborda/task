@@ -58,10 +58,10 @@ class Application_Service_Usuario
      * 
      * @return Application_Model_Usuario
      */
-    public function registrar($email, $user_name, $password, $repeat_password, $is_admin = false)
+    public function registrar($email, $user_name, $password, $repeat_password, $profile_id)
     {
     	if ($password == $repeat_password) {
-    		return $this->_usuarioDao->registrar($email, $user_name, $password, $is_admin);
+    		return $this->_usuarioDao->registrar($email, $user_name, $password, $profile_id);
     	}
     	
     	throw new Zend_Validate_Exception('La contraseña no coincide');
