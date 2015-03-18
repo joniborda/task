@@ -233,11 +233,11 @@ class TaskController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('empty');
 		$this->view->assign('response', array('response' => false));
 		
-		$status_id = $this->getRequest()->getParam('status_id', null);
-		$user_id = $this->getRequest()->getParam('user_id', 8);
-		$project_id = $this->getRequest()->getParam('id', null);
+		$title = $this->getRequest()->getParam('title', null);
+		$user_id = $this->getRequest()->getParam('user_id', null);
+		$project_id = $this->getRequest()->getParam('project_id', null);
 		
-		$tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id);
+		$tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, null, $user_id, $title);
 		
 		if (!empty($tasks)) {
 			$ret = array();
@@ -254,5 +254,6 @@ class TaskController extends Zend_Controller_Action
 					'tasks' => $ret
 			));
 		}
+		$this->render('list');
 	}
 }

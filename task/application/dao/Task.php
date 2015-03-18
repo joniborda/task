@@ -88,9 +88,10 @@ class Application_Dao_Task
      *
      * @return array
      */
-    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null)
+    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null, $title = null)
     {
     	$where = array();
+    	$binds = array();
 
     	if (isset($project_id)) {
     		$where['projects_id = ?'] = (int)$project_id;
@@ -98,6 +99,12 @@ class Application_Dao_Task
     	
     	if (isset($status_id)) {
     		$where['status_id = ?'] = (int)$status_id;
+    	}
+    	
+    	if (isset($title)) {
+    		$where['title ilike :title_like OR search_title @@ plainto_tsquery(:title)'] = array();
+    		$binds['title_like'] = '%'.$title.'%';
+    		$binds['title'] = $title;
     	}
     	
     	$select = $this->getDbTable()->select();
@@ -113,6 +120,8 @@ class Application_Dao_Task
     	foreach ($where as $key => $value) {
     		$select = $select->where($key, $value);
     	}
+    	
+    	$select->bind($binds);
     	
     	$resultSet = $this->getDbTable()->fetchAll($select, 'id asc');
     	$entries = array();

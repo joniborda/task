@@ -108,9 +108,9 @@ class Application_Service_Task
      *
      * @return array
      */
-    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null)
+    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null, $title = null)
     {
-    	return $this->_TaskDao->getAllByFilters($project_id, $status_id, $user_id);
+    	return $this->_TaskDao->getAllByFilters($project_id, $status_id, $user_id, $title);
     }
     
     /**
