@@ -252,11 +252,20 @@ $(document).on('click', '.cancel_edit_project', function(e) {
 
 // AUTO CLICK SELECT PROJECT
 $(document).ready(function(e) {
-	if (location.hash) {
-		$('.projects_list').find('[href="' + location.hash + '"]').click();
-	} else {
-		$('.project:first').click();
+	if (typeof location.search == "undefined") {
+		alert('Tu navegador no es soportado');
 	}
+	
+	if (location.search == "") {
+		
+		if (location.hash) {
+			$('.projects_list').find('[href="' + location.hash + '"]').click();
+		} else {
+			$('.project:first').click();
+		}
+	}
+	
+	
 	$(".new_task").autocomplete({
 		source : function(request, response) {
 			// Si puso '+user_name' o '+'
@@ -705,6 +714,36 @@ $(document).on('click', '.users_list .user', function(e) {
 					}
 				}
 				location.hash = 'user:' + user;
+			}
+			
+			$('.detail_task').html('');
+			add_tooltip();
+	});
+});
+
+//SEARCH TASK
+$(document).on('submit', '.search_form', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	
+	var title = $(this).find('.search_task').val();
+	$.post('task/search', {
+		'title': title,
+		'project_id' : project_selected_id 
+	}).complete(function(response, status) {
+			cerrar_cargando();
+			$('.tasks_list').html('');
+			if (status == 'success') {
+				var ret = $.parseJSON(response.responseText);
+				if (ret.response == true) {
+					for ( var i = 0; i < ret.tasks.length; i++) {
+						$('.tasks_list').append(
+							task_in_list(ret.tasks[i].id,
+									ret.tasks[i].title,
+									ret.tasks[i].users,
+									ret.tasks[i].status));
+					}
+				}
 			}
 			
 			$('.detail_task').html('');

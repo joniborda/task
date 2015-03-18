@@ -1014,3 +1014,13 @@ CREATE TABLE revision
   created timestamp default now() not null,
   CONSTRAINT revision_pk PRIMARY KEY (id)
 );
+
+	
+CREATE OR REPLACE FUNCTION plainto_or_tsquery (TEXT) RETURNS tsquery AS $$
+SELECT to_tsquery( regexp_replace( trim($1), E'[\\s\'|:&()!]+','|','g') );
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+	
+ALTER TABLE tasks ADD COLUMN search_title tsvector;
+
+UPDATE tasks SET search_title = setweight(to_tsvector('spanish', coalesce(title, '')), 'A');
+	
