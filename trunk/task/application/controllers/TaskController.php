@@ -243,10 +243,11 @@ class TaskController extends Zend_Controller_Action
 			$ret = array();
 			foreach ($tasks as $task) {
 				$ret[] = array(
-						'id' => $task->getId(),
-						'title' => $task->getTitle(),
-						'users' => $task->getUsers(),
-						'status' => $task->getStatusId()
+					'id' => $task->getId(),
+					'title' => $task->getTitle(),
+					'users' => $task->getUsers(),
+					'status' => $task->getStatusId(),
+					'created' => $task->getCreated()
 				);
 			}
 			$this->view->assign('response', array(

@@ -91,12 +91,14 @@ class Application_Dao_Usuario
      * 
      * @return Application_Model_Usuario
      */
-    public function registrar($email, $user_name, $password, $is_admin = false)
+    public function registrar($email, $user_name, $password, $profile_id)
     {
-    	$validator = new Zend_Validate_EmailAddress();
-    	
-    	if (!$validator->isValid($email)) {
-    		throw new Zend_Validate_Exception('Ingrese un mail correcto');
+    	if ($email) {
+	    	$validator = new Zend_Validate_EmailAddress();
+	    	
+	    	if (!$validator->isValid($email)) {
+	    		throw new Zend_Validate_Exception('Ingrese un mail correcto');
+	    	}
     	}
     	
     	$validator = new Zend_Validate_StringLength();
@@ -107,11 +109,11 @@ class Application_Dao_Usuario
     	}
     	
     	$data = array(
-    		'email' => $email,
-    		'user_name' => $user_name,
+    		'mail' => $email,
+    		'name' => $user_name,
     		'password' => $password,
-    		'register_date' => 'NOW()',
-    		'is_admin' => $is_admin
+    		'created' => 'NOW()',
+    		'profile_id' => $profile_id
 		);
     	
     	$id = $this->getDbTable()->insert($data);

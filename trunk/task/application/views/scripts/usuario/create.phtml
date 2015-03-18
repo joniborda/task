@@ -1,0 +1,27 @@
+<div id="div_form_project">
+	<style>
+		#form_create_project .form-control {
+			margin-bottom: 10px;
+		}
+		#form_create_project h1 {
+			font-size: 18px;
+		}
+		#form_create_project .btn-primary {
+			float: right;
+		}
+	</style>
+	<form id="form_create_usuario">
+	<h1>Crear un Usuario:</h1>
+	<input name="name" class="form-control" type="text" placeholder="Nombre"/>
+	<input name="password" class="form-control" type="password" placeholder="Contrseña"/>
+	<input name="repeat_password" class="form-control" type="password" placeholder="Repetir"/>
+	<input name="mail" class="form-control" type="text" placeholder="Correo"/>
+	
+	<select name="profile_id" class="form-control">
+		<?php foreach ($this->profiles as $id => $profile):?>
+			<option value="<?php echo $id?>"><?php echo $profile?></option>
+		<?php endforeach;?>
+	</select>
+	<button class="btn btn-primary" >Listo</button>
+	</form>
+</div>
