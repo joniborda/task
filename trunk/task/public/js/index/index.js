@@ -572,6 +572,13 @@ $(document).on('keypress', '.title_view_form', function(e) {
 		$(this).blur();
 	}
 });
+
+var tmp_selected_task = ultimo_selected_task;
+
+$(document).on('focus', '.title_view_form', function(e) {
+	tmp_selected_task = ultimo_selected_task;
+});
+
 $(document).on('blur', '.title_view_form', function(e) {
 	
 	var input = $(this).find('[name="title"]');
@@ -585,7 +592,7 @@ $(document).on('blur', '.title_view_form', function(e) {
 		'json'
 	).done(function(response) {
 		if (response) {
-			$('.tasks_list li[value="'+ ultimo_selected_task + '"] .title').html(title);
+			$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
 			input.css('background-color', '#A0E0BC');
 			input.animate({backgroundColor: "#fff"}, 1000);
 		} else {
