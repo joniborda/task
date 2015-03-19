@@ -81,6 +81,10 @@
     cursor: inherit;
     display: block
 }
+
+.load_image {
+	cursor: pointer;
+}
 </style>
 
 <div id="view_task">
@@ -155,9 +159,9 @@ $status = $this->task->getStatus ();
 			<?php endif;?>
 		</div>
 	<div class="create_image">
-		<form id="create_image_form">
+		<form class="create_image_form">
 			<span class="btn btn-default btn-file" style="">
-			Cargar imagen<input type="file" name="file"/>
+			Elegir imagen<input type="file" name="file"/>
 			</span>
 		</form>
 	</div>
@@ -302,6 +306,10 @@ $('.remove_user_asign').on('click', function(e) {
 $(document).on('submit', '.create_image_form', function(e) {
 	e.preventDefault();
 });
-		</script>
+$(document).on('change', '.create_image_form input[name="file"]', function(e) {
+	
+	$(this).parent().after('<span class="glyphicon glyphicon-upload load_image"></span>');
+});
+</script>
 </div>
 <?php endif;?>
