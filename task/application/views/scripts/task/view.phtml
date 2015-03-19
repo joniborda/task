@@ -62,6 +62,25 @@
 #view_task .changes {
 	font-size: 0.8em;
 }
+.btn-file {
+	position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+	position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block
+}
 </style>
 
 <div id="view_task">
@@ -135,6 +154,13 @@ $status = $this->task->getStatus ();
 			<?php endforeach;?>
 			<?php endif;?>
 		</div>
+	<div class="create_image">
+		<form id="create_image_form">
+			<span class="btn btn-default btn-file" style="">
+			Cargar imagen<input type="file" name="file"/>
+			</span>
+		</form>
+	</div>
     <div class="images">
 		<?php
 	$image = Application_Config_Application::getExtImagePath () . '/task/' . $this->task->getId (). '.jpg';
@@ -271,6 +297,10 @@ $('.remove_user_asign').on('click', function(e) {
 			cerrar_cargando();
 		});;
 		return false;
+});
+
+$(document).on('submit', '.create_image_form', function(e) {
+	e.preventDefault();
 });
 		</script>
 </div>
