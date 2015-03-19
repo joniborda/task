@@ -368,26 +368,35 @@ $(document).on('click', '.change_status', function(e) {
 					case 'Abierto':
 						li.removeClass('background_done');
 						li.find('a.show_status').removeClass('glyphicon-ok-circle');
+						$('.detail_task .show_status').removeClass('glyphicon-ok-circle');
 						li.removeClass('background_started');
 						li.find('a.show_status').removeClass('glyphicon-play-circle');
+						$('.detail_task .show_status').removeClass('glyphicon-play-circle')
 						li.addClass('background_openned');
 						li.find('a.show_status').addClass('glyphicon-record');
+						$('.detail_task .show_status').addClass('glyphicon-record')
 						break;
 					case 'Terminado':
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
+						$('.detail_task .show_status').removeClass('glyphicon-record');
 						li.removeClass('background_started');
 						li.find('a.show_status').removeClass('glyphicon-play-circle');
+						$('.detail_task .show_status').removeClass('glyphicon-play-circle');
 						li.addClass('background_done');
 						li.find('a.show_status').addClass('glyphicon-ok-circle');
+						$('.detail_task .show_status').addClass('glyphicon-ok-circle');
 						break;
 					case 'Empezado':
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
+						$('.detail_task .show_status').removeClass('glyphicon-record');
 						li.removeClass('background_done');
 						li.find('a.show_status').removeClass('glyphicon-ok-circle');
+						$('.detail_task .show_status').removeClass('glyphicon-ok-circle');
 						li.addClass('background_started');
 						li.find('a.show_status').addClass('glyphicon-play-circle');
+						$('.detail_task .show_status').addClass('glyphicon-play-circle');
 						break;
 				}
 				
