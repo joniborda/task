@@ -73,7 +73,7 @@ $(document).on(
 			}
 			title = title.trim();
 			
-			$.post('task/add', {
+			$.post(base_url + '/task/add', {
 				'title' : title,
 				'users' : users,
 				'project_id' : project_selected_id
@@ -115,7 +115,7 @@ $(document).on(
 			$(this).closest('li').addClass('active');
 
 			var project_id = $(this).attr('value');
-			$.post('task/list', {
+			$.post(base_url + '/task/list', {
 				'project_id' : project_id,
 				'status_id' : 1  // MOSTRAR LAS ABIERTAS
 			}).complete(
@@ -354,7 +354,7 @@ $(document).on('click', '.change_status', function(e) {
 	var id = $(this).attr('value');
 	var descripcion = $(this).attr('id');
 	
-	$.post('task/changestatus', {
+	$.post(base_url + '/task/changestatus', {
 		id : id,
 		status: descripcion
 	}).complete(function(response, status) {
@@ -485,7 +485,7 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 });
 
 function show_task_detail(id, li) {
-    $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/img/cargando.gif"></div>');
+    $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/public/img/cargando.gif"></div>');
 	
     
 	$.post(
@@ -674,7 +674,7 @@ $(document).on(
 			});
 			var status_id = $(this).attr('id');
 			
-			$.post('task/list', {
+			$.post(base_url + '/task/list', {
 				'project_id' : project_selected_id,
 				'status_id' : status_id 
 			}).complete(function(response, status) {
@@ -714,7 +714,7 @@ $(document).on('click', '.users_list .user', function(e) {
 	
 	var user_id = $(this).attr('value');
 	var user = $(this).html();
-	$.post('task/list', {
+	$.post(base_url + '/task/list', {
 		'user_id' : user_id 
 	}).complete(function(response, status) {
 			cerrar_cargando();
@@ -745,7 +745,7 @@ $(document).on('submit', '.search_form', function(e) {
 	abrir_cargando();
 	
 	var title = $(this).find('.search_task').val();
-	$.post('task/search', {
+	$.post(base_url + '/task/search', {
 		'title': title,
 		'project_id' : project_selected_id 
 	}).complete(function(response, status) {
