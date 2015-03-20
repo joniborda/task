@@ -159,9 +159,10 @@ $status = $this->task->getStatus ();
 			<?php endif;?>
 		</div>
 	<div class="create_image">
-		<form class="create_image_form">
+		<form class="create_image_form" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="<?php echo $this->task->getId()?>" />
 			<span class="btn btn-default btn-file" style="">
-			Elegir imagen<input type="file" name="file"/>
+			Elegir imagen<input type="file" name="file" id="file_image"/>
 			</span>
 		</form>
 	</div>
@@ -303,13 +304,46 @@ $('.remove_user_asign').on('click', function(e) {
 		return false;
 });
 
+// IMAGEN
 $(document).on('submit', '.create_image_form', function(e) {
 	e.preventDefault();
 });
 $(document).on('change', '.create_image_form input[name="file"]', function(e) {
-	
+	$('.load_image').remove();
 	$(this).parent().after('<span class="glyphicon glyphicon-upload load_image"></span>');
 });
+$(document).on('click', '.load_image', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	var files = document.getElementById('file_image').files;
+	var formData = new FormData();
+
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		
+		  // Check the file type.
+		if (!file.type.match('image.*')) {
+			continue;
+		}
+		
+		// Add the file to the request.
+		formData.append('file[]', file, file.name);
+	}
+	formData.append('id', $('input[name="id"]').val());
+	jQuery.ajax({
+	    url: base_url + '/task/load_image', 
+	    data: formData,
+	    cache: false,
+	    contentType: false,
+	    processData: false,
+	    type: 'POST',
+	    success: function(data){
+		    
+			cerrar_cargando();
+	    }
+	});
+});
+
 </script>
 </div>
 <?php endif;?>

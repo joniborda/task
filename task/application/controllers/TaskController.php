@@ -257,4 +257,22 @@ class TaskController extends Zend_Controller_Action
 		}
 		$this->render('list');
 	}
+	
+	public function loadimageAction()
+	{
+		$this->_helper->layout->setLayout('empty');
+		$this->view->assign('response', array('response' => false, 'error' => 'Faltan parámetros'));
+		
+		$id = $this->getRequest()->getParam('id', null);
+		
+		try {
+			Application_Service_Locator::getTaskService()->uploadImage($id, $_FILES);
+			
+		} catch (Zend_File_Transfer_Exception $e) {
+			$this->view->assign('response', array('response' => false, 'error' => $e->getMessage()));
+			return;
+		}
+		
+		$this->view->assign('response', array('response' => true));
+	}
 }
