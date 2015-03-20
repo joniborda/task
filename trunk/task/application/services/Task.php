@@ -176,4 +176,41 @@ class Application_Service_Task
     {
     	return $this->_TaskDao->getCountOpenned($project_id);
     }
+    
+    /**
+     * Upload image to show in task view
+     * 
+     * @param unknown $id
+     * @param unknown $file
+     * @throws Zend_File_Transfer_Exception
+     * @return boolean
+     */
+    public function uploadImage($id, $file) {
+    	if ($id == null) {
+    		throw new Zend_File_Transfer_Exception('El id es nulo');
+    	}
+    	
+    	if (empty($file)) {
+    		throw new Zend_File_Transfer_Exception('Falta el archivo');
+    	}
+    	
+    	$extension = pathinfo($file['file']['name'][0],PATHINFO_EXTENSION);
+    	
+    	if($extension != "jpg" && $extension != "png" && $extension != "jpeg"
+    			&& $extension != "gif" ) {
+    		throw new Zend_File_Transfer_Exception('La extension ' . $extension . ' no es permitida');
+    	}
+    	
+    	$path = Application_Config_Application::getExtImagePath () . '/task/' . $id. '/';
+
+    	mkdir($path);
+    	
+    	$new_name = $id . '.'  . $extension;
+    	
+    	
+    	if (!move_uploaded_file($_FILES["file"]["tmp_name"][0], $path . $new_name)) {
+    		throw new Zend_File_Transfer_Exception('No se pudo copiar');
+    	}
+    	return true;
+    }
 }
