@@ -203,7 +203,9 @@ class Application_Service_Task
     	
     	$path = Application_Config_Application::getExtImagePath () . '/task/' . $id. '/';
 
-    	mkdir($path);
+    	if (!is_dir($path)) {
+		    	mkdir($path);
+    	}
     	
     	$new_name = $id . '.'  . $extension;
     	
@@ -212,5 +214,31 @@ class Application_Service_Task
     		throw new Zend_File_Transfer_Exception('No se pudo copiar');
     	}
     	return true;
+    }
+    
+    /**
+     * Return array with images
+     * 
+     * @param Application_Model_Task $task
+     * 
+     * @return Array
+     */
+    public function getImages(Application_Model_Task $task) {
+    	
+    	$dir = Application_Config_Application::getExtImagePath () . '/task/' . $task->getId () . '/';
+    	
+	    if (is_dir($dir)) {
+		    if ($dh = opendir($dir)) {
+		    	$images = array();
+		        while (($file = readdir($dh)) !== false) {
+		            if (filetype($dir . $file) == 'file') {
+		            	$images[] = Application_Config_Application::getUrlExtImage() . '/task/' . $task->getId() . '/' . $file;
+		            }
+		        }
+		        closedir($dh);
+		        return $images;
+		    }
+		}    	
+    	return array();
     }
 }
