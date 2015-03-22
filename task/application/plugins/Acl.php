@@ -31,12 +31,14 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
                    ->addResource(new Zend_Acl_Resource('/index'))
                    ->addResource(new Zend_Acl_Resource('/task'))
                    ->addResource(new Zend_Acl_Resource('/monitortask'))
+                   ->addResource(new Zend_Acl_Resource('/image_task'))
         		   ->addResource(new Zend_Acl_Resource('/project'));
 
         // tendría que denegar todos primero y despues permitir los necesarios
         $this->_acl->deny('guest')
         			->allow('guest', '/usuario')
         			->allow('guest', '/monitortask')
+        			->allow('guest', '/image_task')
         			->allow('guest', '/error')
                     ->allow('user');
 

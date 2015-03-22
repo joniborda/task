@@ -167,30 +167,33 @@ $status = $this->task->getStatus ();
 		</form>
 	</div>
     <div class="images">
-		<?php
-	$image = Application_Config_Application::getExtImagePath () . '/task/' . $this->task->getId (). '.jpg';
-	if (file_exists ( $image )) {
-		?>
+<?php
+	$images = $this->task->getImages();
+	if (!empty( $images )) {
+		foreach ($images as $image) :
+?>
 		<a href="#" class="image_link"> <img
-            src="<?php echo Application_Config_Application::getUrlExtImage()?>/task/<?php echo $this->task->getId();?>.jpg"
+            src="<?php echo $this->baseUrl . $image .'?'. rand(0,10);?>"
             width="400px"
         >
         </a>
 <?php
+ 		endforeach;
 	} else {
 		// echo $this->Html->image('/img/no_image.jpg');
 	}
-	?>
+?>
 		</div>
     <script type="text/javascript">
 $(document).ready(function() {
 
 	$('#view_task .image_link').click(function(e) {
 		e.preventDefault();
+		var src = $(this).find('img').attr('src');
 		$(
 			'<div>' +
 				'<img '+
-					'src="<?php echo Application_Config_Application::getUrlExtImage()?>/task/<?php echo $this->task->getId();?>.jpg" ' +
+					'src="' + src + '" ' +
 					'width="100%" >' +
 			'</div>')
 			.dialog({

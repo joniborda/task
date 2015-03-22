@@ -212,5 +212,9 @@ class Application_Model_Task
     	$this->_user_id = $user_id;
     	return $this;
     }
+    
+    public function getImages() {
+    	return Application_Service_Locator::getTaskService()->getImages($this);
+    }
 }
 ?>
