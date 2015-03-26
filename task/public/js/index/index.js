@@ -89,6 +89,14 @@ $(document).on(
 												task_in_list(ret.id, title,
 														ret.users, ret.status, ret.created));
 										$('.new_task').focus();
+										var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+										var count_task_openned = badge_project.html();
+										
+										badge_project.html(parseInt(count_task_openned)+1);
+										if (count_task_openned == "0") {
+											badge_project.removeClass('closed');
+											badge_project.addClass('openned');
+										}
 									}
 								}
 								add_tooltip();
@@ -364,6 +372,9 @@ $(document).on('click', '.change_status', function(e) {
 			if (ret.response) {
 				var li = $('.tasks_list').find('li[value="'+ id +'"]');
 				
+				var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+				var count_task_openned = badge_project.html();
+				
 				switch(descripcion) {
 					case 'Abierto':
 						li.removeClass('background_done');
@@ -374,7 +385,12 @@ $(document).on('click', '.change_status', function(e) {
 						$('.detail_task .show_status').removeClass('glyphicon-play-circle')
 						li.addClass('background_openned');
 						li.find('a.show_status').addClass('glyphicon-record');
-						$('.detail_task .show_status').addClass('glyphicon-record')
+						$('.detail_task .show_status').addClass('glyphicon-record');
+						badge_project.html(parseInt(count_task_openned)+1);
+						if (count_task_openned == "0") {
+							badge_project.removeClass('closed');
+							badge_project.addClass('openned');
+						}
 						break;
 					case 'Terminado':
 						li.removeClass('background_openned');
@@ -386,6 +402,15 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_done');
 						li.find('a.show_status').addClass('glyphicon-ok-circle');
 						$('.detail_task .show_status').addClass('glyphicon-ok-circle');
+						
+						if (count_task_openned != "0") {
+							badge_project.html(parseInt(count_task_openned)-1);
+							if (count_task_openned == "1") {
+								badge_project.removeClass('openned');
+								badge_project.addClass('closed');
+							}
+						}
+						
 						break;
 					case 'Empezado':
 						li.removeClass('background_openned');
@@ -397,6 +422,13 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_started');
 						li.find('a.show_status').addClass('glyphicon-play-circle');
 						$('.detail_task .show_status').addClass('glyphicon-play-circle');
+						if (count_task_openned != "0") {
+							badge_project.html(parseInt(count_task_openned)-1);
+							if (count_task_openned == "1") {
+								badge_project.removeClass('openned');
+								badge_project.addClass('closed');
+							}
+						}
 						break;
 				}
 				
@@ -451,6 +483,8 @@ function add_tooltip() {
 	});
 }
 var ultimo_selected_task = null;
+
+// SHOW DETAIL TASK
 $(document).on('click', '.tasks_list li .title', function(e) {
 	var li = $(this).closest('li');
 	var id = li.attr('value');
@@ -559,11 +593,29 @@ $(document).on('click', '#view_task .remove', function(e) {
 		).done(function(response) {
 			
 			if (response) {
+				var status = $('.tasks_list li[value="'+ id + '"]').find('.show_status').attr('value');
+				
+				switch (status) {
+				case 'Abierto':
+					var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+					var count_task_openned = badge_project.html();
+					
+					if (count_task_openned != '0') {
+						badge_project.html(parseInt(count_task_openned)-1);
+						
+						if (count_task_openned == '1') {
+							badge_project.removeClass('openned');
+							badge_project.addClass('closed');
+						}
+					}
+					break;
+				}
 				$('.tasks_list li[value="'+ id + '"]').remove();
 				$('.detail_task').animate({
 					left: "slide",
 				    width: "hide",
 				});
+				
 			} else {
 				alert( "No se puede borrar" );
 			}
