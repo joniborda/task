@@ -204,11 +204,10 @@ class Application_Service_Task
     	$path = Application_Config_Application::getExtImagePath () . '/task/' . $id. '/';
 
     	if (!is_dir($path)) {
-		    	mkdir($path);
+	    	mkdir($path);
     	}
     	
     	$new_name = $id . '.'  . $extension;
-    	
     	
     	if (!move_uploaded_file($_FILES["file"]["tmp_name"][0], $path . $new_name)) {
     		throw new Zend_File_Transfer_Exception('No se pudo copiar');
