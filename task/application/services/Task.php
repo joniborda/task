@@ -194,7 +194,7 @@ class Application_Service_Task
     		throw new Zend_File_Transfer_Exception('Falta el archivo');
     	}
     	
-    	$extension = pathinfo($file['file']['name'][0],PATHINFO_EXTENSION);
+    	$extension = strtolower(pathinfo($file['file']['name'][0],PATHINFO_EXTENSION));
     	
     	if($extension != "jpg" && $extension != "png" && $extension != "jpeg"
     			&& $extension != "gif" ) {
