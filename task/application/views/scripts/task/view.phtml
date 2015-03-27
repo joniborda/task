@@ -85,6 +85,11 @@
 .load_image {
 	cursor: pointer;
 }
+.image_link img {
+	max-height: 275px;
+	border: #9D9D9D 2px solid;
+	border-radius: 15px;
+}
 </style>
 
 <div id="view_task">
@@ -173,7 +178,7 @@ $status = $this->task->getStatus ();
 		foreach ($images as $image) :
 ?>
 		<a href="#" class="image_link"> <img
-            src="<?php echo $this->baseUrl . $image .'?'. rand(0,10);?>"
+            src="<?php echo $this->webApp . $image .'?'. rand(0,10);?>"
             width="400px"
         >
         </a>
