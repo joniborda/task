@@ -29,9 +29,8 @@ class IndexController extends Zend_Controller_Action
     	
     	$this->view->headScript()
     		->appendFile($this->view->webApp . '/js/tooltipster/jquery.tooltipster.js')
-    		->appendFile($this->view->webApp . '/js/index/index.js');
-    }
-
-
+    		->appendFile($this->view->webApp . '/js/index/index.js')
+    		->appendFile($this->view->webApp . '/js/index/socket.js');
+	}
 }
-
+?>

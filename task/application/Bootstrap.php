@@ -52,8 +52,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'auth' => 'login',
 			'username' => 'appmailtransport@gmail.com',
 			'password' => 'nosenose',
-    			'port' => '587',
-    			'ssl' => 'tls'
+    		'port' => '587',
+    		'ssl' => 'tls'
 		);
     	$tr = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);    	
     	
@@ -91,9 +91,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'paginator.phtml'
         );
 
-	        $view->baseUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/task';
-	        $view->webApp = $view->baseUrl . '/public';
-	        $view->pathCss = $view->baseUrl . '/public/css';
+        $protocol = 'http';
+        if(isset($_SERVER['HTTPS'])) {
+        	$protocol = 'https';
+        }
+        $view->baseUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/task';
+        $view->webApp = $view->baseUrl . '/public';
+        $view->pathCss = $view->baseUrl . '/public/css';
 
         
 //        	$view->user = Application_Service_Session::getUser();
