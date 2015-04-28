@@ -409,6 +409,17 @@ $(document).on('click', '.change_status', function(e) {
 								badge_project.removeClass('openned');
 								badge_project.addClass('closed');
 							}
+							
+							if (typeof websocket != "undefined") {
+								//prepare json data
+								var msg = {
+										type: "count_task_openned",
+										message: parseInt(count_task_openned)-1,
+										name: ""
+								};
+								//convert and send data to server
+								websocket.send(JSON.stringify(msg));
+							}
 						}
 						
 						break;
