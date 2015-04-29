@@ -4,34 +4,29 @@ const FILE_NAME = 'status.txt';
 
 $host = 'localhost' ;
 
-//Create TCP/IP sream socket
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-//Reuseable port
 socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
 
-//bind socket to specified host
 socket_bind($socket, $host, PORT);
 
-//listen to port
 socket_listen($socket);
 
-//create & add listning socket to the list
 $clients = array($socket);
 
 $content = read_file();
 
 //start endless loop, so that our script doesn't stop
 while ($content == 'run') {
-	//manage multipal connections
+	
 	$changed = $clients;
-	//returns the socket resources in $changed array
 	socket_select($changed, $null, $null, 0,2);
 	//check for new socket
 	if (in_array($socket, $changed)) {
-		$socket_new = socket_accept($socket); //accpet new socket
-		$clients[] = $socket_new; //add socket to client array
-		$header = socket_read($socket_new, 1024); //read data sent by the socket
-		perform_handshaking($header, $socket_new, $host, PORT); //perform websocket handshake
+		$socket_new = socket_accept($socket);
+		$clients[] = $socket_new;
+		
+		$header = socket_read($socket_new, 5000);
+		perform_handshaking($header, $socket_new, $host, PORT);
 // 		socket_getpeername($socket_new, $ip); //get ip address of connected socket
 		/**
 		$response = mask(json_encode(array('type'=>'system', 'message'=>$ip.' connected'))); //prepare json data
@@ -43,7 +38,6 @@ while ($content == 'run') {
 	}
 
 
-	//loop through all connected sockets
 	foreach ($changed as $changed_socket) {
 
 		//check for any incomming data
@@ -52,7 +46,7 @@ while ($content == 'run') {
 			$received_text = unmask($buf); //unmask data
 			$tst_msg = json_decode($received_text); //json decode
 			if (is_object($tst_msg)) {
-				//prepare data to be sent to client
+				
 				$response_text = mask(json_encode(
 						array(
 								'type'=>    $tst_msg->type,
@@ -62,7 +56,7 @@ while ($content == 'run') {
 				));
 
 				send_message($response_text); //send data
-				break 2; //exist this loop
+				break 2;
 			} else {
 				// Si envia un dato vacio asumimos que se cerró la conexion
 				if ($received_text == "") {
@@ -144,6 +138,7 @@ function mask($text)
 //handshake new client.
 function perform_handshaking($receved_header,$client_conn, $host, $port)
 {
+	var_dump($receved_header);
 	$headers = array();
 	$lines = preg_split("/\r\n/", $receved_header);
 	foreach($lines as $line)
@@ -155,16 +150,28 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
 		}
 	}
 	
-	$secKey = $headers['Sec-WebSocket-Key'];
+	$secKey = '';
+	if (isset($headers['Sec-WebSocket-Key'])) {
+		$secKey = $headers['Sec-WebSocket-Key'];
+	}
+	
 	$secAccept = base64_encode(pack('H*', sha1($secKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
+	
 	// Accept la coneccion del nuevo cliente, sino queda la coneccion a CONNECTING
-	//hand shaking header
 	$upgrade  = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
 			"Upgrade: websocket\r\n" .
 			"Connection: Upgrade\r\n" .
-			"WebSocket-Origin: $host\r\n" .
-			"WebSocket-Location: ws://$host:$port/demo/skhout.php\r\n".
-			"Sec-WebSocket-Accept:$secAccept\r\n\r\n";
+			"WebSocket-Origin: http://$host\r\n" .
+			"WebSocket-Location: ws://$host:$port\r\n".
+			"Sec-WebSocket-Accept:$secAccept\r\n";
+	
+	$ret = '';
+	if (isset($headers['Sec-WebSocket-Protocol']))
+	{
+	    $ret = "Sec-WebSocket-Protocol: " . substr($path, 1) . "\r\n";
+	}
+	
+	$upgrade .= $ret . "\r\n";
 	
 	socket_write($client_conn,$upgrade,strlen($upgrade));
 }
