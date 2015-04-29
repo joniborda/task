@@ -55,3 +55,32 @@ Date.prototype.getWeek = function(start)
 
 var meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct','Nov', 'Dic'];
 var dias = ['Dom', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Lun'];
+
+function notificar(objeto) {
+    
+    if (Notification.permission = "granted") {
+        
+        if (typeof objeto.title == "undefined") {
+            objeto.title = '';
+        }
+        
+        if (typeof objeto.message == "undefined") {
+            objeto.message = '';
+        }
+        
+        var notification = new Notification(objeto.title, {
+            icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+            body: objeto.message
+        });
+        
+        if (typeof objeto.link != "undefined") { 
+            notification.onclick = function () {
+                window.open(objeto.link);
+            };
+        }
+        
+        setTimeout(function() {
+            notification.close();
+        }, 4000);
+    }
+}
