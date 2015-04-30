@@ -34,13 +34,14 @@ websocket.onmessage = function(ev) {
 	    case "connected":
 	        var not = {title: 'task', message: 'Usuario conectado'};
 	        notificar(not);
-	        
 	        break;
-	case "count_task_openned":
-		console.log(msg);
-		var not = {title: 'Tarea abierta', message: 'Usuario conectado'};
-        notificar(not);
-		break;
+	    case "change_status":
+	        var not = {title: 'Cambio de estado', message: umsg};
+	        
+	        count_task_in_project(msg.count_task_openned, msg.project_id);
+	        
+            notificar(not);
+	        break;
 
 	default:
 		break;

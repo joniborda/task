@@ -52,6 +52,8 @@ while ($content == 'run') {
 								'type'=>    $tst_msg->type,
 								'name'=>    $tst_msg->name,
 								'message'=> $tst_msg->message,
+								'count_task_openned'=> $tst_msg->count_task_openned,
+								'project_id'=> $tst_msg->project_id,
 						)
 				));
 
