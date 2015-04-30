@@ -84,3 +84,17 @@ function notificar(objeto) {
         }, 4000);
     }
 }
+
+function count_task_in_project(count_task_openned, project_selected_id) {
+    
+    var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+    
+    badge_project.html(parseInt(count_task_openned));
+    if (count_task_openned != "0") {
+        badge_project.removeClass('closed');
+        badge_project.addClass('openned');
+    } else {
+        badge_project.removeClass('openned');
+        badge_project.addClass('closed');
+    }
+}

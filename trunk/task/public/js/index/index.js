@@ -386,13 +386,14 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_openned');
 						li.find('a.show_status').addClass('glyphicon-record');
 						$('.detail_task .show_status').addClass('glyphicon-record');
-						badge_project.html(parseInt(count_task_openned)+1);
-						if (count_task_openned == "0") {
-							badge_project.removeClass('closed');
-							badge_project.addClass('openned');
-						}
+						
+						count_task_in_project(parseInt(count_task_openned)+1, project_selected_id);
 						break;
 					case 'Terminado':
+					    if (li.hasClass('background_openned')) {
+					        count_task_in_project(parseInt(count_task_openned)-1, project_selected_id);
+					    }
+					    
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
 						$('.detail_task .show_status').removeClass('glyphicon-record');
@@ -402,28 +403,12 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_done');
 						li.find('a.show_status').addClass('glyphicon-ok-circle');
 						$('.detail_task .show_status').addClass('glyphicon-ok-circle');
-						
-						if (count_task_openned != "0") {
-							badge_project.html(parseInt(count_task_openned)-1);
-							if (count_task_openned == "1") {
-								badge_project.removeClass('openned');
-								badge_project.addClass('closed');
-							}
-							
-							if (typeof websocket != "undefined") {
-								//prepare json data
-								var msg = {
-										type: "count_task_openned",
-										message: parseInt(count_task_openned)-1,
-										name: ""
-								};
-								//convert and send data to server
-								websocket.send(JSON.stringify(msg));
-							}
-						}
-						
 						break;
 					case 'Empezado':
+					    if (li.hasClass('background_openned')) {
+                            count_task_in_project(parseInt(count_task_openned)-1, project_selected_id);
+                        }
+					    
 						li.removeClass('background_openned');
 						li.find('a.show_status').removeClass('glyphicon-record');
 						$('.detail_task .show_status').removeClass('glyphicon-record');
@@ -433,17 +418,23 @@ $(document).on('click', '.change_status', function(e) {
 						li.addClass('background_started');
 						li.find('a.show_status').addClass('glyphicon-play-circle');
 						$('.detail_task .show_status').addClass('glyphicon-play-circle');
-						if (count_task_openned != "0") {
-							badge_project.html(parseInt(count_task_openned)-1);
-							if (count_task_openned == "1") {
-								badge_project.removeClass('openned');
-								badge_project.addClass('closed');
-							}
-						}
+						
 						break;
 				}
 				
 				li.find('a.show_status').attr('value', descripcion);
+				
+				if (typeof websocket !== 'undefined') {
+				    
+				    var msg = {
+				        type: 'change_status',
+				        message: li.find('.title').html() + ' ' + descripcion + ' ' + current_user_name,
+				        name: current_user_id
+				    };
+				    
+				    //convert and send data to server
+				    websocket.send(JSON.stringify(msg));
+				}
 				
 			} else {
 				alert('No se pudo cambiar el estado');
