@@ -387,11 +387,15 @@ $(document).on('click', '.change_status', function(e) {
 						li.find('a.show_status').addClass('glyphicon-record');
 						$('.detail_task .show_status').addClass('glyphicon-record');
 						
-						count_task_in_project(parseInt(count_task_openned)+1, project_selected_id);
+						count_task_openned = parseInt(count_task_openned)+1;
+						
+						count_task_in_project(count_task_openned, project_selected_id);
 						break;
 					case 'Terminado':
 					    if (li.hasClass('background_openned')) {
-					        count_task_in_project(parseInt(count_task_openned)-1, project_selected_id);
+					    	count_task_openned = parseInt(count_task_openned)-1;
+					    	
+					        count_task_in_project(count_task_openned, project_selected_id);
 					    }
 					    
 						li.removeClass('background_openned');
@@ -406,7 +410,9 @@ $(document).on('click', '.change_status', function(e) {
 						break;
 					case 'Empezado':
 					    if (li.hasClass('background_openned')) {
-                            count_task_in_project(parseInt(count_task_openned)-1, project_selected_id);
+					    	count_task_openned = parseInt(count_task_openned)-1;
+					    	
+                            count_task_in_project(count_task_openned, project_selected_id);
                         }
 					    
 						li.removeClass('background_openned');
@@ -424,12 +430,16 @@ $(document).on('click', '.change_status', function(e) {
 				
 				li.find('a.show_status').attr('value', descripcion);
 				
-				if (typeof websocket !== 'undefined') {
+				if (typeof websocket !== 'undefined' && websocket.readyState == websocket.OPEN) {
 				    
 				    var msg = {
 				        type: 'change_status',
-				        message: li.find('.title').html() + ' ' + descripcion + ' ' + current_user_name,
-				        name: current_user_id
+				        message: 			li.find('.title').html(),
+				        name: 				current_user_id,
+				        count_task_openned: count_task_openned,
+				        project_id: 		project_selected_id,
+				        status:				descripcion,
+				        user_name:			current_user_name
 				    };
 				    
 				    //convert and send data to server
