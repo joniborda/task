@@ -47,15 +47,7 @@ while ($content == 'run') {
 			$tst_msg = json_decode($received_text); //json decode
 			if (is_object($tst_msg)) {
 				
-				$response_text = mask(json_encode(
-						array(
-								'type'=>    $tst_msg->type,
-								'name'=>    $tst_msg->name,
-								'message'=> $tst_msg->message,
-								'count_task_openned'=> $tst_msg->count_task_openned,
-								'project_id'=> $tst_msg->project_id,
-						)
-				));
+				$response_text = mask(json_encode((array)$tst_msg));
 
 				send_message($response_text); //send data
 				break 2;
@@ -140,7 +132,6 @@ function mask($text)
 //handshake new client.
 function perform_handshaking($receved_header,$client_conn, $host, $port)
 {
-	var_dump($receved_header);
 	$headers = array();
 	$lines = preg_split("/\r\n/", $receved_header);
 	foreach($lines as $line)

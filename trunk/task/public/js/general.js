@@ -68,6 +68,14 @@ function notificar(objeto) {
             objeto.message = '';
         }
         
+        if (typeof objeto.status != "undefined") {
+            objeto.message += '[' + objeto.status + ']';
+        }
+        
+        if (typeof objeto.user_name != "undefined") {
+            objeto.message += ' - [' + objeto.user_name + ']';
+        }
+        
         var notification = new Notification(objeto.title, {
             icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
             body: objeto.message

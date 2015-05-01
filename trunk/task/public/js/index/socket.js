@@ -1,7 +1,7 @@
 Notification.requestPermission();
 
 //create a new WebSocket object.
-var wsUri = "ws://localhost:8000/demo/server.php"; 	
+var wsUri = "ws://localhost:8000/demo/server.php";
 websocket = new WebSocket(wsUri); 
 
 if (typeof current_user_id == 'undefined' ) {
@@ -23,38 +23,26 @@ websocket.onopen = function(ev) { // connection is open
 //#### Message received from server?
 websocket.onmessage = function(ev) {
 	var msg = JSON.parse(ev.data); //PHP sends Json data
-	var type = msg.type; //message type
-	var umsg = msg.message; //message text
-	var uname = msg.name; //user name
+console.log(msg);
 
-	console.log("recibio un mensaje");
+	if (msg.name == current_user_id) {
+		return;
+	}
 	
-	
-	switch (type) {
+	switch (msg.type) {
 	    case "connected":
 	        var not = {title: 'task', message: 'Usuario conectado'};
-	        notificar(not);
+//	        notificar(not);
 	        break;
 	    case "change_status":
-	        var not = {title: 'Cambio de estado', message: umsg};
+	        var not = {title: 'Cambio de estado', message: msg.message, status: msg.status, user_name: msg.user_name};
 	        
 	        count_task_in_project(msg.count_task_openned, msg.project_id);
-	        
             notificar(not);
 	        break;
 
 	default:
 		break;
-	}
-	
-	if(type == 'usermsg') 
-	{
-    	// SEGUIR ACA
-    	$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
-	}
-	if(type == 'system')
-	{
-		$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
 	}
 };
 
