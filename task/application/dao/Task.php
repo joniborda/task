@@ -34,7 +34,7 @@ class Application_Dao_Task
      */
     public function fetchAll()
     {
-        $resultSet = $this->getDbTable()->fetchAll(null,array('id desc'),null,null);
+        $resultSet = $this->getDbTable()->fetchAll(null,array('id asc'),null,null);
         $entries = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Task($row);
@@ -121,9 +121,9 @@ class Application_Dao_Task
     		$select = $select->where($key, $value);
     	}
     	
-    	$select->bind($binds);
+    	$select->bind($binds)->order('tasks.id asc');
     	
-    	$resultSet = $this->getDbTable()->fetchAll($select, 'id asc');
+    	$resultSet = $this->getDbTable()->fetchAll($select);
     	$entries = array();
 
     	foreach ($resultSet as $row) {
