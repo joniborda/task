@@ -25,7 +25,13 @@ while ($content == 'run') {
 		$socket_new = socket_accept($socket);
 		$clients[] = $socket_new;
 		
-		$header = socket_read($socket_new, 5000);
+		$header = '';
+		do {
+
+			$header .= socket_read($socket_new, 5000);
+			
+		} while ( strpos($header, 'Sec-WebSocket-Key') == false);
+		
 		perform_handshaking($header, $socket_new, $host, PORT);
 // 		socket_getpeername($socket_new, $ip); //get ip address of connected socket
 		/**
