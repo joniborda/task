@@ -35,9 +35,17 @@ console.log(msg);
 //	        notificar(not);
 	        break;
 	    case "change_status":
-	        var not = {title: 'Cambio de estado', message: msg.message, status: msg.status, user_name: msg.user_name};
+	        var not = {
+	    		title: 'Cambio de estado', 
+	    		message: msg.message, 
+	    		status: msg.status, 
+	    		user_name: msg.user_name,
+	    		task_id: msg.task_id
+    		};
 	        
 	        count_task_in_project(msg.count_task_openned, msg.project_id);
+	        change_status_task(msg.task_id, msg.status);
+	        
             notificar(not);
 	        break;
 
