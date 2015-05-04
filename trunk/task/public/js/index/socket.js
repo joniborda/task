@@ -43,8 +43,8 @@ console.log(msg);
 	    		task_id: msg.task_id
     		};
 	        
-	        count_task_in_project(msg.count_task_openned, msg.project_id);
 	        change_status_task(msg.task_id, msg.status);
+	        count_task_in_project(msg.count_task_openned, msg.project_id);
 	        
             notificar(not);
 	        break;

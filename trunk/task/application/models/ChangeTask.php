@@ -188,7 +188,8 @@ class Application_Model_ChangeTask
    			'mie',
    			'jue',
    			'vie',
-   			'sab'
+   			'sab',
+    		'dom'
     	);
     	
     	$meses = array(
@@ -219,7 +220,6 @@ class Application_Model_ChangeTask
 	    	// Es el mismo año y la misma semana
 	    	if ($created->get('yyyy') == $now->get('yyyy') &&
 	    		$now->get('w') == $created->get('w')) {
-	    		
 	    		$dia = $dias[$created->get('eee')];
 	    	} else {
 	    		$dia = $created->get('d');
