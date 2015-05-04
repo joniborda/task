@@ -106,3 +106,75 @@ function count_task_in_project(count_task_openned, project_selected_id) {
         badge_project.addClass('closed');
     }
 }
+
+/**
+ * change_status_task
+ * 
+ * @param task_id
+ * @param status_name
+ * 
+ * @return li The li's input tag
+ */
+function change_status_task(task_id, status_name) {
+	var li = $('.tasks_list').find('li[value="'+ task_id +'"]');
+	
+	var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+	var count_task_openned = badge_project.html();
+	
+	switch(status_name) {
+		case 'Abierto':
+			li.removeClass('background_done');
+			li.find('a.show_status').removeClass('glyphicon-ok-circle');
+			$('.detail_task .show_status').removeClass('glyphicon-ok-circle');
+			li.removeClass('background_started');
+			li.find('a.show_status').removeClass('glyphicon-play-circle');
+			$('.detail_task .show_status').removeClass('glyphicon-play-circle')
+			li.addClass('background_openned');
+			li.find('a.show_status').addClass('glyphicon-record');
+			$('.detail_task .show_status').addClass('glyphicon-record');
+			
+			count_task_openned = parseInt(count_task_openned)+1;
+			
+			count_task_in_project(count_task_openned, project_selected_id);
+			break;
+		case 'Terminado':
+		    if (li.hasClass('background_openned')) {
+		    	count_task_openned = parseInt(count_task_openned)-1;
+		    	
+		        count_task_in_project(count_task_openned, project_selected_id);
+		    }
+		    
+			li.removeClass('background_openned');
+			li.find('a.show_status').removeClass('glyphicon-record');
+			$('.detail_task .show_status').removeClass('glyphicon-record');
+			li.removeClass('background_started');
+			li.find('a.show_status').removeClass('glyphicon-play-circle');
+			$('.detail_task .show_status').removeClass('glyphicon-play-circle');
+			li.addClass('background_done');
+			li.find('a.show_status').addClass('glyphicon-ok-circle');
+			$('.detail_task .show_status').addClass('glyphicon-ok-circle');
+			break;
+		case 'Empezado':
+		    if (li.hasClass('background_openned')) {
+		    	count_task_openned = parseInt(count_task_openned)-1;
+		    	
+                count_task_in_project(count_task_openned, project_selected_id);
+            }
+		    
+			li.removeClass('background_openned');
+			li.find('a.show_status').removeClass('glyphicon-record');
+			$('.detail_task .show_status').removeClass('glyphicon-record');
+			li.removeClass('background_done');
+			li.find('a.show_status').removeClass('glyphicon-ok-circle');
+			$('.detail_task .show_status').removeClass('glyphicon-ok-circle');
+			li.addClass('background_started');
+			li.find('a.show_status').addClass('glyphicon-play-circle');
+			$('.detail_task .show_status').addClass('glyphicon-play-circle');
+			
+			break;
+	}
+	
+	li.find('a.show_status').attr('value', status_name);
+	
+	return li;
+}
