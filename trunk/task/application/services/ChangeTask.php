@@ -31,10 +31,17 @@ class Application_Service_ChangeTask
      * @var Application_Dao_ChangeTask
      */
     private $_ChangeTaskDao;
+    
+    /**
+     * @var Application_Dao_Task
+     */
+    private $_TaskDao;
 
-    public function __construct(Application_Dao_ChangeTask $ChangeTaskDao)
+    public function __construct(Application_Dao_ChangeTask $ChangeTaskDao,
+    		Application_Dao_Task $taskDao)
     {
         $this->_ChangeTaskDao = $ChangeTaskDao;
+        $this->_TaskDao = $taskDao;
     }
 
     /**
@@ -111,7 +118,12 @@ class Application_Service_ChangeTask
     public function getLastModifiedByUser($user_id = null) {
     	
     	$last = $this->_ChangeTaskDao->getLastModifiedByUser($user_id);
-
+    	$last_task = $this->_TaskDao->getLastByUser($user_id);
+    	
+    	if ($last_task > $last) {
+    		$last = $last_task;
+    	}
+    	
     	if ($last) {
     		
     		$start = new DateTime($last);
