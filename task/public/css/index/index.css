@@ -160,6 +160,10 @@
 	padding-left: 10px;
 }
 
+.detail_task:hover {
+	overflow-y: scroll;
+}
+
 .tasks_list .selected {
 	background-color: #E9EAED;
 }

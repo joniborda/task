@@ -42,7 +42,8 @@ $(document).on(
 										'<li>' + 
 											'<a href="#' + name + '" class="project" value="' + ret.id + '">' + 
 												name +
-											'</a>' +
+											'</a>&nbsp;' +
+											'<span class="badge closed">0</span>' +
 											'<a href="#" class="edit_project" value="' + ret.id + '">' +
 												'<span class="right glyphicon glyphicon-edit"></span>' +
 											'</a>' +
@@ -182,31 +183,30 @@ function task_in_list(id, title, users, status_id, created) {
 	var ret = '<li value="'+ id +'" class="' + class_status + '">'
 			+ '<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> '
 			+ '<span class="title">' + title + '</span><div class="task_users">';
-
-	for ( var i = 0; i < users.length; i++) {
-		ret += '<a href="#" class="right user">' + users[i] + '</a>';
-	}
 	
 	var date = new Date(created);
 	var current_date = new Date(Date());
 	
 	var anio = '';
 	if (date.getFullYear() != current_date.getFullYear()) {
-	    anio = ' del ' + date.getFullYear(); 
+		anio = ' del ' + date.getFullYear(); 
 	}
 	
 	var mes = '';
 	var dia = '';
 	// entre la semana actual
 	if (date > current_date.getWeek()[0] && current_date < date.getWeek()[1]) {	    
-	    dia = dias[date.getDay()];
+		dia = dias[date.getDay()];
 	} else {
-	    dia = date.getDate();
-	    mes = ' de ' + meses[date.getMonth()];
+		dia = date.getDate();
+		mes = ' de ' + meses[date.getMonth()];
 	}
 	
 	ret +='<span class="left created">' + dia + mes + anio  +'</span>';
-	
+
+	for ( var i = 0; i < users.length; i++) {
+		ret += '<a href="#" class="right user">' + users[i] + '</a>';
+	}
 	ret += '</div></li>';
 
 	return ret;
@@ -484,10 +484,10 @@ function show_task_detail(id, li) {
 	
     
 	$.post(
-			base_url + '/task/view', 
-			{
-				id : id
-			}
+		base_url + '/task/view', 
+		{
+			id : id
+		}
 	).done(function(response) {
         $('.detail_task').html(response);	        
 		if ($('.detail_task').is(':visible') && 
@@ -495,7 +495,14 @@ function show_task_detail(id, li) {
 			
 			$('.tasks_list li').removeClass('selected');
 			li.addClass('selected');
+			
 		}
+		
+		$('.autosize').autosize({ 
+			callback: function() {
+				$(this).height($(this).height());
+			}
+		});
 	}).fail(function() {
 	    alert( "No se puede cargar" );
 	});
@@ -586,15 +593,6 @@ $(document).on('click', '#view_task .remove', function(e) {
 	}
 });
 
-//SUBMIT EDIT TASK
-$(document).on('keypress', '.title_view_form', function(e) {
-	
-	if (e.keyCode == 13) {
-		e.preventDefault();
-		$(this).blur();
-	}
-});
-
 var tmp_selected_task = ultimo_selected_task;
 
 $(document).on('focus', '.title_view_form', function(e) {
@@ -625,6 +623,16 @@ $(document).on('blur', '.title_view_form', function(e) {
 		input.css('background-color', '#FF5E5E');
 		input.animate({backgroundColor: "#fff"}, 1000);
 	});
+});
+
+
+//SUBMIT EDIT TITLE'S TASK
+$(document).on('keypress', '.title_view_form', function(e) {
+	
+	if (e.keyCode == 13) {
+		e.preventDefault();
+		$(this).blur();
+	}
 });
 
 //SUBMIT EDIT TASK
