@@ -88,12 +88,13 @@ class Application_Service_Task
      * @param String $title
      * @param String $project_id
      * @param Array $users
-     * 
+     * @param Integer $user_id
+     *  
      * @return Application_Model_Task
      */
-    public function crear($title,$project_id, $users)
+    public function crear($title,$project_id, $users, $user_id)
     {
-    	$task = $this->_TaskDao->crear($title,$project_id);
+    	$task = $this->_TaskDao->crear($title,$project_id, $user_id);
     	
     	if ($task) {
     		foreach ($users as $user_id) {

@@ -122,7 +122,8 @@ class Application_Service_Locator
     public static function getChangeTaskService()
     {
     	return new Application_Service_ChangeTask(
-    			new Application_Dao_ChangeTask()
+    			new Application_Dao_ChangeTask(),
+    			new Application_Dao_Task()
     	);
     }
     

@@ -70,11 +70,12 @@ class Application_Dao_Task
      * 
      * @return Application_Model_Task
      */
-    public function crear($title, $project_id)
+    public function crear($title, $project_id, $user_id)
     {
     	$data = array(
     		'title' => $title,
     		'projects_id' => $project_id,
+    		'user_id' => $user_id,
     		'status_id' => 1 // Status default
     	);
     	
@@ -221,6 +222,35 @@ class Application_Dao_Task
     		return $resultSet->count;
     	}
 		return 0;
+    }
+    
+    /**
+     * Get Last Created by User
+     *
+     * @param string $user_id
+     *
+     * @return Date
+     */
+    public function getLastByUser($user_id = null) {
+    	$where = array ();
+    	if ($user_id) {
+    		$where = array (
+    			'user_id = ?' => $user_id
+    		);
+    	}
+    
+    	$select = $this->getDbTable ()->select ()->from ( $this->getDbTable (), 'max(created)' );
+    
+    	foreach ( $where as $key => $value ) {
+    		$select = $select->where ( $key, $value );
+    	}
+    
+    	if ($data = $this->getDbTable ()->fetchRow ( $select )) {
+    			
+    		if (isset($data->max)) {
+    			return $data->max;
+    		}
+    	}
     }
 }
 ?>

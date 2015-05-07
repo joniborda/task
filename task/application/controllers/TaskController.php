@@ -10,19 +10,19 @@ class TaskController extends Zend_Controller_Action
 		$user_ids = array();
 		$usuario_service = Application_Service_Locator::getUsuarioService();
 		
+		$session_user = Application_Service_Locator::getSessionService()->getUser();
+		if (!$session_user) {
+			$this->view->assign('response', 
+				array(
+					'response' => false,
+					'message' => 'No se logueó'
+				)
+			);
+		}
+		
 		if (empty($users)) {
-			$session_user = Application_Service_Locator::getSessionService()->getUser();
-			if ($session_user) {
 				$users = array($session_user->getName());
 				$user_ids = array($session_user->getId());
-			} else {
-				$this->view->assign('response', 
-					array(
-						'response' => false,
-						'message' => 'No se logueó'
-					)
-				);
-			}
 		} else {
 			foreach ($users as $name) {
 				
@@ -34,12 +34,13 @@ class TaskController extends Zend_Controller_Action
 		}
 		
 		if (
-				($title = $this->getRequest()->getParam('title')) &&
-				($project_id = $this->getRequest()->getParam('project_id'))
+			($title = $this->getRequest()->getParam('title')) &&
+			($project_id = $this->getRequest()->getParam('project_id'))
 		) {
 			
 			if (
-					($task = Application_Service_Locator::getTaskService()->crear($title,$project_id, $user_ids))
+				($task = Application_Service_Locator::getTaskService()
+					->crear($title,$project_id, $user_ids, $session_user->getId()))
 			) {
 				
 				$this->view->assign('response', array(
