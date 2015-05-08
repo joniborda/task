@@ -273,7 +273,15 @@ $(document).ready(function(e) {
 			$('.project:first').click();
 		}
 	}
-	$('.tasks_list').sortable();
+	$('.tasks_list').sortable({
+		axis: 'y',
+		over: function( event, ui ) {
+			$(ui.item).addClass('drag');
+		},
+		out: function( event, ui ) {
+			$(ui.item).removeClass('drag');
+		}
+	});
 	
 	$(".new_task").autocomplete({
 		source : function(request, response) {
