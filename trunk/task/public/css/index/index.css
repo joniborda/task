@@ -104,6 +104,11 @@
 	height: 30px;
 }
 
+.tasks_list li.drag  {
+	background-color: #E9EAED;
+	opacity: 0.6;
+}
+
 .tasks_list .created {
 	font-size: 0.7em;
 }
