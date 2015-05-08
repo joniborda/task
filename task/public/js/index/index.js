@@ -273,7 +273,7 @@ $(document).ready(function(e) {
 			$('.project:first').click();
 		}
 	}
-	
+	$('.tasks_list').sortable();
 	
 	$(".new_task").autocomplete({
 		source : function(request, response) {

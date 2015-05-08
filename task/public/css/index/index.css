@@ -101,6 +101,7 @@
 .tasks_list li {
 	line-height: 2;
 	padding: 0 5px;
+	height: 30px;
 }
 
 .tasks_list .created {
@@ -173,7 +174,9 @@
 }
 
 .filters {
-	margin-left: 10px;
+	clear: both;
+	width: 100%;
+	display: inline-block;
 }
 
 .user_logged {
@@ -206,9 +209,26 @@
 		width: 60%;
 	}
 }
+.search_status {
+	cursor: pointer;
+	border: solid 1px white;
+	padding: 5px;
+	display: inline;
+	border-bottom: 0;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	width: 25%;
+	display: inline-block;
+	padding: 0 5px;
+	float: left;
+	background-color: #D5D3D8;
+}
 
 .search_status.active {
-	font-weight: bold;
+	background-color: #FFF;
+}
+.search_status:hover {
+	font-weight: bolder;
 }
 
 .badge.closed {
