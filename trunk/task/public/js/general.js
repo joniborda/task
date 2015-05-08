@@ -26,13 +26,6 @@ function resize() {
 	$('.container').css('height', height);
 }
 
-$(document).ready(function() {
-	$('#sidebar a').tooltip({
-		tooltipClass : 'container-tooltip'
-	});
-	resize();
-});
-
 Date.prototype.getWeek = function(start)
 {
         //Calcing the starting point
@@ -176,3 +169,15 @@ function change_status_task(task_id, status_name) {
 	
 	return li;
 }
+
+$(document).ready(function() {
+	$('#sidebar a').tooltip({
+		tooltipClass : 'container-tooltip'
+	});
+	resize();
+	
+	$('.title_my_projects').click(function(e) {
+		e.preventDefault();
+		$('.projects_list').toggle(300);
+	});
+});
