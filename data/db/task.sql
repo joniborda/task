@@ -1031,3 +1031,33 @@ ALTER TABLE tasks ALTER COLUMN status_id set default 1;
 UPDATE tasks set status_id = 1 where status_id = null;
 UPDATE tasks set status_id = 1 where status_id is null;
 ALTER TABLE tasks ALTER COLUMN status_id set not null;
+
+
+
+
+ALTER TABLE tasks ADD COLUMN order integer;
+CREATE TABLE tmp_sort AS 
+SELECT tasks.id, row_number() over (order by id) as rownum 
+    FROM tasks 
+    WHERE tasks.status_id = 1 
+    ORDER BY id;
+
+UPDATE tasks SET sort = rownum FROM tmp_sort WHERE tmp_sort.id = tasks.id;
+
+DROP TABLE tmp_sort;
+CREATE TABLE tmp_sort AS 
+SELECT tasks.id, row_number() over (order by id) as rownum 
+    FROM tasks 
+    WHERE tasks.status_id = 2
+    ORDER BY id;
+
+UPDATE tasks SET sort = rownum FROM tmp_sort WHERE tmp_sort.id = tasks.id;
+DROP TABLE tmp_sort;
+CREATE TABLE tmp_sort AS 
+SELECT tasks.id, row_number() over (order by id) as rownum 
+    FROM tasks 
+    WHERE tasks.status_id = 3
+    ORDER BY id;
+
+UPDATE tasks SET sort = rownum FROM tmp_sort WHERE tmp_sort.id = tasks.id;
+DROP TABLE tmp_sort;
