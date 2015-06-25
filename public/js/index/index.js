@@ -1,18 +1,23 @@
+var ultimo_selected_task = null;
 var asign_user = '+';
 var prevent_close_detail = false;
 var project_selected_id = null;
 
+(function($) {
+	'use strict';
+
 // CREAR DIALOG OF NEW PROJECT
 $(document).on('click', '#create_project', function(e) {
+	
 	e.preventDefault();
 	abrir_cargando();
 	
 	$.post('project/create').complete(function(response, status) {
 		cerrar_cargando();
-		if (status == 'success' && response.responseText) {
+		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
 				modal : true,
-				close: function(e, ui) {
+				close: function() {
 					prevent_close_detail = true;
 					console.log('cerrando dialog');
 				}
@@ -26,16 +31,17 @@ $(document).on(
 		'submit',
 		'#form_create_project',
 		function(e) {
+			
 			e.preventDefault();
 			var name = $(this).find('[name="name"]').val();
 			$.post('project/add', {
 				'name' : name
 			}).complete(
 					function(response, status) {
-						if (status == 'success') {
+						if (status === 'success') {
 							var ret = $.parseJSON(response.responseText);
 
-							if (ret.response == true) {
+							if (ret.response === true) {
 								$('#div_form_project').dialog('close');
 								$('#div_form_project').dialog('destroy');
 								$('.projects_list').append(
@@ -59,6 +65,7 @@ $(document).on(
 		'submit',
 		'.create_task_form',
 		function(e) {
+			
 			e.preventDefault();
 			abrir_cargando();
 			var input_name = $(this).find('[name="title"]');
@@ -82,9 +89,9 @@ $(document).on(
 					.complete(
 							function(response, status) {
 								cerrar_cargando();
-								if (status == 'success') {
+								if (status === 'success') {
 									var ret = $.parseJSON(response.responseText);
-									if (ret.response == true) {
+									if (ret.response === true) {
 										$(input_name).val('');
 										$('.tasks_list').append(
 												task_in_list(ret.id, title,
@@ -94,7 +101,7 @@ $(document).on(
 										var count_task_openned = badge_project.html();
 										
 										badge_project.html(parseInt(count_task_openned)+1);
-										if (count_task_openned == "0") {
+										if (count_task_openned === '0') {
 											badge_project.removeClass('closed');
 											badge_project.addClass('openned');
 										}
@@ -108,6 +115,7 @@ $(document).on(
 		'click',
 		'.project',
 		function(e) {
+			
 			e.preventDefault();
 			abrir_cargando();
 			project_selected_id = $(this).attr('value');
@@ -116,8 +124,8 @@ $(document).on(
 			$('.tasks_list').html('');
 			// cerrar el detalle de la tarea
 			$('.detail_task').animate({
-				left: "slide",
-			    width: "hide",
+				left: 'slide',
+			    width: 'hide',
 			});
 			
 			$('.project').closest('li').removeClass('active');
@@ -135,9 +143,9 @@ $(document).on(
 					    }
 					    
 						cerrar_cargando();
-						if (status == 'success') {
+						if (status === 'success') {
 							var ret = $.parseJSON(response.responseText);
-							if (ret.response == true) {
+							if (ret.response === true) {
 
 								for ( var i = 0; i < ret.tasks.length; i++) {
 									$('.tasks_list').append(
@@ -149,8 +157,8 @@ $(document).on(
 							}
 							location.hash = title_project;
 							
-							$(".search_status").removeClass('active');
-							$(".search_status[id=" + ret.status_id + "]").addClass('active');
+							$('.search_status').removeClass('active');
+							$('.search_status[id=' + ret.status_id + ']').addClass('active');
 						}
 						
 						$('.detail_task').html('');
@@ -161,9 +169,14 @@ $(document).on(
 function task_in_list(id, title, users, status_id, created) {
 	
 	var class_status = '';
+	var status;
 	var icon = '';
 	switch(status_id) {
 	case 1:
+		status = 'Abierto';
+		class_status = 'background_openned';
+		icon = 'glyphicon-record';
+		break;
 	default:
 		status = 'Abierto';
 		class_status = 'background_openned';
@@ -180,15 +193,15 @@ function task_in_list(id, title, users, status_id, created) {
 		icon = 'glyphicon-ok-circle';
 		break;
 	}
-	var ret = '<li value="'+ id +'" class="' + class_status + '">'
-			+ '<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> '
-			+ '<span class="title">' + title + '</span><div class="task_users">';
+	var ret = '<li value="'+ id +'" class="' + class_status + '">' +
+			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' + 
+			'<span class="title">' + title + '</span><div class="task_users">';
 	
 	var date = new Date(created);
 	var current_date = new Date(Date());
 	
 	var anio = '';
-	if (date.getFullYear() != current_date.getFullYear()) {
+	if (date.getFullYear() !== current_date.getFullYear()) {
 		anio = ' del ' + date.getFullYear(); 
 	}
 	
@@ -213,6 +226,7 @@ function task_in_list(id, title, users, status_id, created) {
 }
 // CLICK EDIT PROJECT
 $(document).on('click', '.edit_project', function(e) {
+	
 	e.preventDefault();
 	abrir_cargando();
 	var id = $(this).attr('value');
@@ -221,7 +235,7 @@ $(document).on('click', '.edit_project', function(e) {
 		id : id
 	}).complete(function(response, status) {
 		cerrar_cargando();
-		if (status == 'success' && response.responseText) {
+		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
 				modal : true
 			});
@@ -232,6 +246,7 @@ $(document).on('click', '.edit_project', function(e) {
 
 // SUBMIT EDIT PROJECT
 $(document).on('submit', '#form_edit_project', function(e) {
+	
 	e.preventDefault();
 	abrir_cargando();
 	var name = $(this).find('input[name="name"]').val();
@@ -242,7 +257,7 @@ $(document).on('submit', '#form_edit_project', function(e) {
 		name : name
 	}).complete(function(response, status) {
 		cerrar_cargando();
-		if (status == 'success') {
+		if (status === 'success') {
 			var ret = $.parseJSON(response.responseText);
 			if (ret) {
 				$('#div_form_project').dialog('destroy');
@@ -254,18 +269,20 @@ $(document).on('submit', '#form_edit_project', function(e) {
 
 // CLICK CANCEL EDIT PROJECT
 $(document).on('click', '.cancel_edit_project', function(e) {
+	
 	e.preventDefault();
 	$('#div_form_project').dialog('destroy');
 	return false;
 });
 
 // AUTO CLICK SELECT PROJECT
-$(document).ready(function(e) {
-	if (typeof location.search == "undefined") {
+$(document).ready(function() {
+	
+	if (typeof location.search === 'undefined') {
 		alert('Tu navegador no es soportado');
 	}
 	
-	if (location.search == "") {
+	if (location.search === '') {
 		
 		if (location.hash) {
 			$('.projects_list').find('[href="' + location.hash + '"]').click();
@@ -283,12 +300,12 @@ $(document).ready(function(e) {
 		}
 	});
 	
-	$(".new_task").autocomplete({
+	$('.new_task').autocomplete({
 		source : function(request, response) {
 			// Si puso '+user_name' o '+'
 			if (
 				request.term.match(/\+\w*[^\+]/mg) ||
-				$(".new_task").val()[$(".new_task").val().length-1] == asign_user
+				$('.new_task').val()[$('.new_task').val().length-1] === asign_user
 			) {
 								
 				var matches = request.term.match(/\+\w*[^\+]/mg);
@@ -296,9 +313,9 @@ $(document).ready(function(e) {
 				var discard = [];
 				if (matches) {
 					for ( var i = 0; i < matches.length; i++) {
-						if (i == (matches.length-1)) {
+						if (i === (matches.length-1)) {
 							// Si es '+' es porque el ultimo match es discard
-							if ($(".new_task").val()[$(".new_task").val().length-1] == asign_user) {
+							if ($('.new_task').val()[$('.new_task').val().length-1] === asign_user) {
 								discard[i] = matches[i].replace(asign_user,'').trim();
 							}
 							request.term = matches[i].replace(asign_user,'');						
@@ -309,7 +326,7 @@ $(document).ready(function(e) {
 				}
 					
 				//Si puso '+'
-				if ($(".new_task").val()[$(".new_task").val().length-1] == asign_user) {
+				if ($('.new_task').val()[$('.new_task').val().length-1] === asign_user) {
 					request.term = '';
 				}
 				
@@ -323,7 +340,6 @@ $(document).ready(function(e) {
 					dataType : 'json',
 					type : 'GET',
 					success : function(data) {
-						ultimos_buscados = data;
 						response($.map(data, function(item) {
 							return {
 								label : item.name,
@@ -336,35 +352,36 @@ $(document).ready(function(e) {
 					}
 				});
 			} else {
-				$(".new_task").autocomplete('close');
+				$('.new_task').autocomplete('close');
 			}
 			
 		},
 		minLength : 1,
 		select : function(event, ui) {
 			console.log('select');
-			var value = $(".new_task").val();
+			var value = $('.new_task').val();
 			var regex = new RegExp('\\+[\\w]*$');
 			
-			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));
+			$('.new_task').val(value.replace(regex, asign_user + ui.item.label));
 			return false;
 		},
 		focus : function(event, ui) {
 			console.log('focus');
-			var value = $(".new_task").val();
+			var value = $('.new_task').val();
 			var regex = new RegExp('\\+[\\w]*$');
 			
-			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));					
+			$('.new_task').val(value.replace(regex, asign_user + ui.item.label));					
 			
 			return false;
 		},
-		response : function(event, ui) {
-		}
+		//response : function(event, ui) {
+		//}
 	});
 });
 
 //CLICK CHANGE STATUS
 $(document).on('click', '.change_status', function(e) {
+	
 	e.preventDefault();
 	abrir_cargando();
 	var task_id = $(this).attr('value');
@@ -375,13 +392,13 @@ $(document).on('click', '.change_status', function(e) {
 		status: descripcion
 	}).complete(function(response, status) {
 		cerrar_cargando();
-		if (status == 'success') {
+		if (status === 'success') {
 			var ret = $.parseJSON(response.responseText);
 			if (ret.response) {
 				
 				var li = change_status_task(task_id, descripcion);
 				
-				if (typeof websocket !== 'undefined' && websocket.readyState == websocket.OPEN) {
+				if (typeof websocket !== 'undefined' && websocket.readyState === websocket.OPEN) {
 				    
 					var count_task_openned = $('.project[value="' + project_selected_id + '"]')
 												.parent()
@@ -451,24 +468,25 @@ function add_tooltip() {
 		content: ''
 	});
 }
-var ultimo_selected_task = null;
+
 
 // SHOW DETAIL TASK
 $(document).on('click', '.tasks_list li .title', function(e) {
+	
 	var li = $(this).closest('li');
 	var id = li.attr('value');
 	
 	$('.tasks_list li').removeClass('selected');
 	li.addClass('selected');
 	
-	if (ultimo_selected_task != null && ultimo_selected_task != id) {
+	if (ultimo_selected_task !== null && ultimo_selected_task !== id) {
 		ultimo_selected_task = id;
 		
 		show_task_detail(id, li);
 		
 		$('.detail_task').animate({
-			left: "slide",
-		    width: "show",
+			left: 'slide',
+		    width: 'show',
 		}, function() {
 		});
 		return false;
@@ -478,8 +496,8 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 	show_task_detail(id,li);
 	
 	$('.detail_task').animate({
-		left: "slide",
-	    width: "toggle"
+		left: 'slide',
+	    width: 'toggle'
 	}, function() {
 		if (!$('.detail_task').is(':visible')) {
 			$('.tasks_list li').removeClass('selected');
@@ -488,6 +506,7 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 });
 
 function show_task_detail(id, li) {
+	
     $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/public/img/cargando.gif"></div>');
 	
     
@@ -499,7 +518,7 @@ function show_task_detail(id, li) {
 	).done(function(response) {
         $('.detail_task').html(response);	        
 		if ($('.detail_task').is(':visible') && 
-			$('.detail_task').find('.remove').attr('value') == id) {
+			$('.detail_task').find('.remove').attr('value') === id) {
 			
 			$('.tasks_list li').removeClass('selected');
 			li.addClass('selected');
@@ -512,21 +531,23 @@ function show_task_detail(id, li) {
 			}
 		});
 	}).fail(function() {
-	    alert( "No se puede cargar" );
+	    alert('No se puede cargar');
 	});
 }
 
 $(document).on('focus', '.search_task', function() {
+	
 	console.log('focus');
 	
-	$(this).animate({width: "320px"});
-	$('.search_form .glyphicon').animate({left: "298px"});
+	$(this).animate({width: '320px'});
+	$('.search_form .glyphicon').animate({left: '298px'});
 });
 $(document).on('blur', '.search_task', function() {
+	
 	console.log('blur');
 	
-	$(this).animate({width: "200px"});
-	$('.search_form .glyphicon').animate({left: "178px"});
+	$(this).animate({width: '200px'});
+	$('.search_form .glyphicon').animate({left: '178px'});
 });
 // Remove / delete project
 $(document).on('click', '#form_edit_project .remove',function(e){
@@ -547,10 +568,10 @@ $(document).on('click', '#form_edit_project .remove',function(e){
 				$('.project:first').click();
 				$('#div_form_project').dialog('destroy');
 			} else {
-				alert( "No se puede borrar" );
+				alert( 'No se puede borrar' );
 			}
 		}).fail(function() {
-			alert( "No se puede borrar" );
+			alert( 'No se puede borrar' );
 		});
 	}
 });
@@ -576,10 +597,10 @@ $(document).on('click', '#view_task .remove', function(e) {
 					var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
 					var count_task_openned = badge_project.html();
 					
-					if (count_task_openned != '0') {
+					if (count_task_openned !== '0') {
 						badge_project.html(parseInt(count_task_openned)-1);
 						
-						if (count_task_openned == '1') {
+						if (count_task_openned === '1') {
 							badge_project.removeClass('openned');
 							badge_project.addClass('closed');
 						}
@@ -588,15 +609,15 @@ $(document).on('click', '#view_task .remove', function(e) {
 				}
 				$('.tasks_list li[value="'+ id + '"]').remove();
 				$('.detail_task').animate({
-					left: "slide",
-				    width: "hide",
+					left: 'slide',
+				    width: 'hide',
 				});
 				
 			} else {
-				alert( "No se puede borrar" );
+				alert( 'No se puede borrar' );
 			}
 		}).fail(function() {
-			alert( "No se puede borrar" );
+			alert( 'No se puede borrar' );
 		});
 	}
 });
@@ -622,14 +643,14 @@ $(document).on('blur', '.title_view_form', function(e) {
 		if (response) {
 			$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
 			input.css('background-color', '#A0E0BC');
-			input.animate({backgroundColor: "#fff"}, 1000);
+			input.animate({backgroundColor: '#fff'}, 1000);
 		} else {
 			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
+			input.animate({backgroundColor: '#fff'}, 1000);
 		}
 	}).fail(function() {
 		input.css('background-color', '#FF5E5E');
-		input.animate({backgroundColor: "#fff"}, 1000);
+		input.animate({backgroundColor: '#fff'}, 1000);
 	});
 });
 
@@ -637,7 +658,7 @@ $(document).on('blur', '.title_view_form', function(e) {
 //SUBMIT EDIT TITLE'S TASK
 $(document).on('keypress', '.title_view_form', function(e) {
 	
-	if (e.keyCode == 13) {
+	if (e.keyCode === 13) {
 		e.preventDefault();
 		$(this).blur();
 	}
@@ -659,14 +680,14 @@ $(document).on('keypress', '.description_view_form', function(e) {
 		).done(function(response) {
 			if (response) {
 				input.css('background-color', '#A0E0BC');
-				input.animate({backgroundColor: "#fff"}, 1000);
+				input.animate({backgroundColor: '#fff'}, 1000);
 			} else {
 				input.css('background-color', '#FF5E5E');
-				input.animate({backgroundColor: "#fff"}, 1000);
+				input.animate({backgroundColor: '#fff'}, 1000);
 			}
 		}).fail(function() {
 			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
+			input.animate({backgroundColor: '#fff'}, 1000);
 		});
 	}
 });
@@ -677,11 +698,11 @@ $(document).keyup(function(e){
 		return;
 	}
 	// SCAPE CODE
-	if(e.keyCode == 27) {
-		if ($('.detail_task #view_task').length != 0) {
+	if(e.keyCode === 27) {
+		if ($('.detail_task #view_task').length !== 0) {
 			$('.detail_task').animate({
-				left: "slide",
-			    width: "toggle",
+				left: 'slide',
+			    width: 'toggle',
 			});
 		}
 	}
@@ -698,8 +719,8 @@ $(document).on(
 			$('.tasks_list').html('');
 			// cerrar el detalle de la tarea
 			$('.detail_task').animate({
-				left: "slide",
-			    width: "hide",
+				left: 'slide',
+			    width: 'hide',
 			});
 			var status_id = $(this).attr('id');
 			
@@ -708,9 +729,9 @@ $(document).on(
 				'status_id' : status_id 
 			}).complete(function(response, status) {
 						cerrar_cargando();
-						if (status == 'success') {
+						if (status === 'success') {
 							var ret = $.parseJSON(response.responseText);
-							if (ret.response == true) {
+							if (ret.response === true) {
 
 								for ( var i = 0; i < ret.tasks.length; i++) {
 									$('.tasks_list').append(
@@ -724,11 +745,11 @@ $(document).on(
 							// agregar el estado
 							//location.hash = location.hash + '/';
 							
-							$(".search_status").removeClass('active');
-							if (ret.status_id == null) {
+							$('.search_status').removeClass('active');
+							if (ret.status_id === null) {
 							    // ver como dejar active el ALL 
 							} else {
-							    $(".search_status[id=" + ret.status_id + "]").addClass('active');
+							    $('.search_status[id=' + ret.status_id + ']').addClass('active');
 							    
 							}
 						}
@@ -748,9 +769,9 @@ $(document).on('click', '.users_list .user', function(e) {
 	}).complete(function(response, status) {
 			cerrar_cargando();
 			$('.tasks_list').html('');
-			if (status == 'success') {
+			if (status === 'success') {
 				var ret = $.parseJSON(response.responseText);
-				if (ret.response == true) {
+				if (ret.response === true) {
 					for ( var i = 0; i < ret.tasks.length; i++) {
 						$('.tasks_list').append(
 							task_in_list(ret.tasks[i].id,
@@ -780,9 +801,9 @@ $(document).on('submit', '.search_form', function(e) {
 	}).complete(function(response, status) {
 			cerrar_cargando();
 			$('.tasks_list').html('');
-			if (status == 'success') {
+			if (status === 'success') {
 				var ret = $.parseJSON(response.responseText);
-				if (ret.response == true) {
+				if (ret.response === true) {
 					for ( var i = 0; i < ret.tasks.length; i++) {
 						$('.tasks_list').append(
 							task_in_list(ret.tasks[i].id,
@@ -806,7 +827,7 @@ $(document).on('click', '#create_user', function(e) {
 	
 	$.post('usuario/create').complete(function(response, status) {
 		cerrar_cargando();
-		if (status == 'success' && response.responseText) {
+		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
 				modal : true,
 				close: function(e, ui) {
@@ -832,10 +853,10 @@ $(document).on(
 			'mail' : $(this).find('[name="mail"]').val()
 		}).complete(
 			function(response, status) {
-				if (status == 'success') {
+				if (status === 'success') {
 					var ret = $.parseJSON(response.responseText);
 
-					if (ret.response == true) {
+					if (ret.response === true) {
 						$('#div_form_project').dialog('close');
 						$('#div_form_project').dialog('destroy');
 						$('.users_list').append(
@@ -857,3 +878,4 @@ $(document).on(
 			}
 		);
 });
+})(jQuery);
