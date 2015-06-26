@@ -122,7 +122,7 @@ class Application_Dao_Task
     		$select = $select->where($key, $value);
     	}
     	
-    	$select->bind($binds)->order('tasks.id asc');
+    	$select->bind($binds)->order('tasks.sort asc')->order('tasks.id asc');
     	
     	$resultSet = $this->getDbTable()->fetchAll($select);
     	$entries = array();

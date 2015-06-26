@@ -1031,3 +1031,22 @@ ALTER TABLE tasks ALTER COLUMN status_id set default 1;
 UPDATE tasks set status_id = 1 where status_id = null;
 UPDATE tasks set status_id = 1 where status_id is null;
 ALTER TABLE tasks ALTER COLUMN status_id set not null;
+
+
+
+
+ALTER TABLE tasks ADD COLUMN sort integer;
+DO $do$
+DECLARE p integer;
+BEGIN
+FOR p IN SELECT id FROM projects order by id LOOP
+        CREATE TABLE tmp_sort AS 
+        SELECT tasks.id, row_number() over (order by id) as rownum 
+            FROM tasks 
+            WHERE tasks.status_id = 1 AND projects_id = p 
+            ORDER BY id;
+        UPDATE tasks SET sort = rownum FROM tmp_sort WHERE tmp_sort.id = tasks.id;
+        DROP TABLE tmp_sort;
+    END LOOP;
+END 
+$do$;

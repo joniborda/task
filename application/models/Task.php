@@ -15,7 +15,8 @@ class Application_Model_Task
     protected $_time;
     protected $_last_modified;
     protected $_created;
-    protected $_user_id;    
+    protected $_user_id;
+    protected $_sort;    
     
     public function __construct($data = null)
     {
@@ -36,6 +37,7 @@ class Application_Model_Task
                 $this->_last_modified = (isset($data['last_modified']) ? $data['last_modified'] : null);
                 $this->_created = (isset($data['created']) ? $data['created'] : null);
                 $this->_user_id = (isset($data['user_id']) ? $data['user_id'] : null);
+                $this->_sort = (isset($data['sort']) ? $data['sort'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_title = $data->title;
@@ -51,6 +53,7 @@ class Application_Model_Task
                 $this->_last_modified = $data->last_modified;
                 $this->_created = $data->created;
                 $this->_user_id = $data->user_id;
+                $this->_sort = $data->sort;
             }
         }
     }
@@ -215,6 +218,17 @@ class Application_Model_Task
     
     public function getImages() {
     	return Application_Service_Locator::getTaskService()->getImages($this);
+    }
+
+    public function getSort()
+    {
+        return $this->_sort;
+    }
+    
+    public function setSort($sort)
+    {
+        $this->_sort = $sort;
+        return $this;
     }
 }
 ?>

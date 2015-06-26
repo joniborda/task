@@ -81,7 +81,8 @@ class TaskController extends Zend_Controller_Action
 					'title' => $task->getTitle(),
 					'users' => $task->getUsers(),
 					'status' => $task->getStatusId(),
-					'created' => $task->getCreated()
+					'created' => $task->getCreated(),
+					'sort' => $task->getSort()
 				);
 			}
 		}

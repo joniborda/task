@@ -6,9 +6,119 @@ var project_selected_id = null;
 (function($) {
 	'use strict';
 
+
+$(document).ready(function(e) {
+	if (typeof location.search === 'undefined') {
+		alert('Tu navegador no es soportado');
+	}
+	
+	// AUTO CLICK SELECT PROJECT
+	if (location.search === '') {
+		
+		if (location.hash) {
+			$('.projects_list').find('[href="' + location.hash + '"]').click();
+		} else {
+			$('.project:first').click();
+		}
+	}
+
+	$('.tasks_list').sortable({
+		axis: 'y',
+		over: function( event, ui ) {
+			$(ui.item).addClass('drag');
+		},
+		out: function( event, ui ) {
+			$(ui.item).removeClass('drag');
+		},
+		update: function( event, ui ) {
+			var sort;
+
+			sort = $(ui.item).index() + 1;
+		}
+	});
+	
+	$(".new_task").autocomplete({
+		source : function(request, response) {
+			// Si puso '+user_name' o '+'
+			if (
+				request.term.match(/\+\w*[^\+]/mg) ||
+				$(".new_task").val()[$(".new_task").val().length-1] === asign_user
+			) {
+								
+				var matches = request.term.match(/\+\w*[^\+]/mg);
+				
+				var discard = [];
+				if (matches) {
+					for ( var i = 0; i < matches.length; i++) {
+						if (i === (matches.length-1)) {
+							// Si es '+' es porque el ultimo match es discard
+							if ($(".new_task").val()[$(".new_task").val().length-1] === asign_user) {
+								discard[i] = matches[i].replace(asign_user,'').trim();
+							}
+							request.term = matches[i].replace(asign_user,'');						
+						} else {
+							discard[i] = matches[i].replace(asign_user,'').trim();						
+						}
+					}
+				}
+					
+				//Si puso '+'
+				if ($(".new_task").val()[$(".new_task").val().length-1] === asign_user) {
+					request.term = '';
+				}
+				
+				
+				$.ajax({
+					url : base_url + '/usuario/search',
+					data : {
+						name : request.term,
+						discard: discard
+					},
+					dataType : 'json',
+					type : 'GET',
+					success : function(data) {
+						ultimos_buscados = data;
+						response($.map(data, function(item) {
+							return {
+								label : item.name,
+								value : item.id
+							};
+						}));
+					},
+					error : function(request, status, error) {
+						alert(error);
+					}
+				});
+			} else {
+				$(".new_task").autocomplete('close');
+			}
+			
+		},
+		minLength : 1,
+		select : function(event, ui) {
+			console.log('select');
+			var value = $(".new_task").val();
+			var regex = new RegExp('\\+[\\w]*$');
+			
+			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));
+			return false;
+		},
+		focus : function(event, ui) {
+			console.log('focus');
+			var value = $(".new_task").val();
+			var regex = new RegExp('\\+[\\w]*$');
+			
+			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));					
+			
+			return false;
+		},
+		response : function(event, ui) {
+		}
+	});
+});
+
 // CREAR DIALOG OF NEW PROJECT
 $(document).on('click', '#create_project', function(e) {
-	
 	e.preventDefault();
 	abrir_cargando();
 	
@@ -17,7 +127,7 @@ $(document).on('click', '#create_project', function(e) {
 		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
 				modal : true,
-				close: function() {
+				close: function(e, ui) {
 					prevent_close_detail = true;
 					console.log('cerrando dialog');
 				}
@@ -31,7 +141,6 @@ $(document).on(
 		'submit',
 		'#form_create_project',
 		function(e) {
-			
 			e.preventDefault();
 			var name = $(this).find('[name="name"]').val();
 			$.post('project/add', {
@@ -65,7 +174,6 @@ $(document).on(
 		'submit',
 		'.create_task_form',
 		function(e) {
-			
 			e.preventDefault();
 			abrir_cargando();
 			var input_name = $(this).find('[name="title"]');
@@ -85,37 +193,47 @@ $(document).on(
 				'title' : title,
 				'users' : users,
 				'project_id' : project_selected_id
-			})
-					.complete(
-							function(response, status) {
-								cerrar_cargando();
-								if (status === 'success') {
-									var ret = $.parseJSON(response.responseText);
-									if (ret.response === true) {
-										$(input_name).val('');
-										$('.tasks_list').append(
-												task_in_list(ret.id, title,
-														ret.users, ret.status, ret.created));
-										$('.new_task').focus();
-										var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
-										var count_task_openned = badge_project.html();
-										
-										badge_project.html(parseInt(count_task_openned)+1);
-										if (count_task_openned === '0') {
-											badge_project.removeClass('closed');
-											badge_project.addClass('openned');
-										}
-									}
-								}
-								add_tooltip();
-							});
+			}).complete(
+				function(response, status) {
+					var ret,
+						badge_project,
+						count_task_openned;
+
+					cerrar_cargando();
+					if (status === 'success') {
+						ret = $.parseJSON(response.responseText);
+						if (ret.response === true) {
+							$(input_name).val('');
+							$('.tasks_list').append(
+								task_in_list(
+									ret.id, 
+									title,
+									ret.users, 
+									ret.status,
+									ret.created,
+									ret.sort
+								)
+							);
+							$('.new_task').focus();
+							badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+							count_task_openned = badge_project.html();
+							
+							badge_project.html(parseInt(count_task_openned)+1);
+							if (count_task_openned === "0") {
+								badge_project.removeClass('closed');
+								badge_project.addClass('openned');
+							}
+						}
+					}
+					add_tooltip();
+				}
+			);
 		});
 // CLICK SELECT PROJECT
 $(document).on(
 		'click',
 		'.project',
 		function(e) {
-			
 			e.preventDefault();
 			abrir_cargando();
 			project_selected_id = $(this).attr('value');
@@ -124,8 +242,8 @@ $(document).on(
 			$('.tasks_list').html('');
 			// cerrar el detalle de la tarea
 			$('.detail_task').animate({
-				left: 'slide',
-			    width: 'hide',
+				left: "slide",
+			    width: "hide",
 			});
 			
 			$('.project').closest('li').removeClass('active');
@@ -149,16 +267,38 @@ $(document).on(
 
 								for ( var i = 0; i < ret.tasks.length; i++) {
 									$('.tasks_list').append(
-											task_in_list(ret.tasks[i].id,
-													ret.tasks[i].title,
-													ret.tasks[i].users,
-													ret.tasks[i].status, ret.tasks[i].created));
+										task_in_list(
+											ret.tasks[i].id,
+											ret.tasks[i].title,
+											ret.tasks[i].users,
+											ret.tasks[i].status, 
+											ret.tasks[i].created,
+											ret.tasks[i].sort
+										)
+									);
 								}
+
+								task_to_sort = $('.tasks_list').children('li');
+								task_to_sort.sort(
+									function(a,b) {
+										var an = parseInt(a.getAttribute('sort')),
+											bn = parseInt(b.getAttribute('sort'));
+										if (an > bn) {
+											return 1;
+										}
+										if (an < bn) {
+											return -1;
+										}
+										return 0;
+									}
+								);
+								task_to_sort.detach().appendTo($('.tasks_list'));
+
 							}
 							location.hash = title_project;
 							
-							$('.search_status').removeClass('active');
-							$('.search_status[id=' + ret.status_id + ']').addClass('active');
+							$(".search_status").removeClass('active');
+							$(".search_status[id=" + ret.status_id + "]").addClass('active');
 						}
 						
 						$('.detail_task').html('');
@@ -166,18 +306,13 @@ $(document).on(
 					});
 });
 
-function task_in_list(id, title, users, status_id, created) {
+function task_in_list(id, title, users, status_id, created, sort) {
 	
 	var class_status = '';
-	var status;
 	var icon = '';
 	switch(status_id) {
-	case 1:
-		status = 'Abierto';
-		class_status = 'background_openned';
-		icon = 'glyphicon-record';
-		break;
 	default:
+	case 1:
 		status = 'Abierto';
 		class_status = 'background_openned';
 		icon = 'glyphicon-record';
@@ -193,15 +328,15 @@ function task_in_list(id, title, users, status_id, created) {
 		icon = 'glyphicon-ok-circle';
 		break;
 	}
-	var ret = '<li value="'+ id +'" class="' + class_status + '">' +
-			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' + 
+	var ret = '<li value="'+ id +'" class="' + class_status + '" sort="' + sort + '">' +
+			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' +
 			'<span class="title">' + title + '</span><div class="task_users">';
 	
 	var date = new Date(created);
 	var current_date = new Date(Date());
 	
 	var anio = '';
-	if (date.getFullYear() !== current_date.getFullYear()) {
+	if (date.getFullYear() != current_date.getFullYear()) {
 		anio = ' del ' + date.getFullYear(); 
 	}
 	
@@ -226,7 +361,6 @@ function task_in_list(id, title, users, status_id, created) {
 }
 // CLICK EDIT PROJECT
 $(document).on('click', '.edit_project', function(e) {
-	
 	e.preventDefault();
 	abrir_cargando();
 	var id = $(this).attr('value');
@@ -246,7 +380,6 @@ $(document).on('click', '.edit_project', function(e) {
 
 // SUBMIT EDIT PROJECT
 $(document).on('submit', '#form_edit_project', function(e) {
-	
 	e.preventDefault();
 	abrir_cargando();
 	var name = $(this).find('input[name="name"]').val();
@@ -269,119 +402,13 @@ $(document).on('submit', '#form_edit_project', function(e) {
 
 // CLICK CANCEL EDIT PROJECT
 $(document).on('click', '.cancel_edit_project', function(e) {
-	
 	e.preventDefault();
 	$('#div_form_project').dialog('destroy');
 	return false;
 });
 
-// AUTO CLICK SELECT PROJECT
-$(document).ready(function() {
-	
-	if (typeof location.search === 'undefined') {
-		alert('Tu navegador no es soportado');
-	}
-	
-	if (location.search === '') {
-		
-		if (location.hash) {
-			$('.projects_list').find('[href="' + location.hash + '"]').click();
-		} else {
-			$('.project:first').click();
-		}
-	}
-	$('.tasks_list').sortable({
-		axis: 'y',
-		over: function( event, ui ) {
-			$(ui.item).addClass('drag');
-		},
-		out: function( event, ui ) {
-			$(ui.item).removeClass('drag');
-		}
-	});
-	
-	$('.new_task').autocomplete({
-		source : function(request, response) {
-			// Si puso '+user_name' o '+'
-			if (
-				request.term.match(/\+\w*[^\+]/mg) ||
-				$('.new_task').val()[$('.new_task').val().length-1] === asign_user
-			) {
-								
-				var matches = request.term.match(/\+\w*[^\+]/mg);
-				
-				var discard = [];
-				if (matches) {
-					for ( var i = 0; i < matches.length; i++) {
-						if (i === (matches.length-1)) {
-							// Si es '+' es porque el ultimo match es discard
-							if ($('.new_task').val()[$('.new_task').val().length-1] === asign_user) {
-								discard[i] = matches[i].replace(asign_user,'').trim();
-							}
-							request.term = matches[i].replace(asign_user,'');						
-						} else {
-							discard[i] = matches[i].replace(asign_user,'').trim();						
-						}
-					}
-				}
-					
-				//Si puso '+'
-				if ($('.new_task').val()[$('.new_task').val().length-1] === asign_user) {
-					request.term = '';
-				}
-				
-				
-				$.ajax({
-					url : base_url + '/usuario/search',
-					data : {
-						name : request.term,
-						discard: discard
-					},
-					dataType : 'json',
-					type : 'GET',
-					success : function(data) {
-						response($.map(data, function(item) {
-							return {
-								label : item.name,
-								value : item.id
-							};
-						}));
-					},
-					error : function(request, status, error) {
-						alert(error);
-					}
-				});
-			} else {
-				$('.new_task').autocomplete('close');
-			}
-			
-		},
-		minLength : 1,
-		select : function(event, ui) {
-			console.log('select');
-			var value = $('.new_task').val();
-			var regex = new RegExp('\\+[\\w]*$');
-			
-			$('.new_task').val(value.replace(regex, asign_user + ui.item.label));
-			return false;
-		},
-		focus : function(event, ui) {
-			console.log('focus');
-			var value = $('.new_task').val();
-			var regex = new RegExp('\\+[\\w]*$');
-			
-			$('.new_task').val(value.replace(regex, asign_user + ui.item.label));					
-			
-			return false;
-		},
-		//response : function(event, ui) {
-		//}
-	});
-});
-
 //CLICK CHANGE STATUS
 $(document).on('click', '.change_status', function(e) {
-	
 	e.preventDefault();
 	abrir_cargando();
 	var task_id = $(this).attr('value');
@@ -469,24 +496,22 @@ function add_tooltip() {
 	});
 }
 
-
 // SHOW DETAIL TASK
 $(document).on('click', '.tasks_list li .title', function(e) {
-	
 	var li = $(this).closest('li');
 	var id = li.attr('value');
 	
 	$('.tasks_list li').removeClass('selected');
 	li.addClass('selected');
 	
-	if (ultimo_selected_task !== null && ultimo_selected_task !== id) {
+	if (ultimo_selected_task != null && ultimo_selected_task != id) {
 		ultimo_selected_task = id;
 		
 		show_task_detail(id, li);
 		
 		$('.detail_task').animate({
-			left: 'slide',
-		    width: 'show',
+			left: "slide",
+		    width: "show",
 		}, function() {
 		});
 		return false;
@@ -496,8 +521,8 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 	show_task_detail(id,li);
 	
 	$('.detail_task').animate({
-		left: 'slide',
-	    width: 'toggle'
+		left: "slide",
+	    width: "toggle"
 	}, function() {
 		if (!$('.detail_task').is(':visible')) {
 			$('.tasks_list li').removeClass('selected');
@@ -506,7 +531,6 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 });
 
 function show_task_detail(id, li) {
-	
     $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/public/img/cargando.gif"></div>');
 	
     
@@ -531,23 +555,21 @@ function show_task_detail(id, li) {
 			}
 		});
 	}).fail(function() {
-	    alert('No se puede cargar');
+	    alert( "No se puede cargar" );
 	});
 }
 
 $(document).on('focus', '.search_task', function() {
-	
 	console.log('focus');
 	
-	$(this).animate({width: '320px'});
-	$('.search_form .glyphicon').animate({left: '298px'});
+	$(this).animate({width: "320px"});
+	$('.search_form .glyphicon').animate({left: "298px"});
 });
 $(document).on('blur', '.search_task', function() {
-	
 	console.log('blur');
 	
-	$(this).animate({width: '200px'});
-	$('.search_form .glyphicon').animate({left: '178px'});
+	$(this).animate({width: "200px"});
+	$('.search_form .glyphicon').animate({left: "178px"});
 });
 // Remove / delete project
 $(document).on('click', '#form_edit_project .remove',function(e){
@@ -568,10 +590,10 @@ $(document).on('click', '#form_edit_project .remove',function(e){
 				$('.project:first').click();
 				$('#div_form_project').dialog('destroy');
 			} else {
-				alert( 'No se puede borrar' );
+				alert( "No se puede borrar" );
 			}
 		}).fail(function() {
-			alert( 'No se puede borrar' );
+			alert( "No se puede borrar" );
 		});
 	}
 });
@@ -597,7 +619,7 @@ $(document).on('click', '#view_task .remove', function(e) {
 					var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
 					var count_task_openned = badge_project.html();
 					
-					if (count_task_openned !== '0') {
+					if (count_task_openned != '0') {
 						badge_project.html(parseInt(count_task_openned)-1);
 						
 						if (count_task_openned === '1') {
@@ -609,15 +631,15 @@ $(document).on('click', '#view_task .remove', function(e) {
 				}
 				$('.tasks_list li[value="'+ id + '"]').remove();
 				$('.detail_task').animate({
-					left: 'slide',
-				    width: 'hide',
+					left: "slide",
+				    width: "hide",
 				});
 				
 			} else {
-				alert( 'No se puede borrar' );
+				alert( "No se puede borrar" );
 			}
 		}).fail(function() {
-			alert( 'No se puede borrar' );
+			alert( "No se puede borrar" );
 		});
 	}
 });
@@ -643,14 +665,14 @@ $(document).on('blur', '.title_view_form', function(e) {
 		if (response) {
 			$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
 			input.css('background-color', '#A0E0BC');
-			input.animate({backgroundColor: '#fff'}, 1000);
+			input.animate({backgroundColor: "#fff"}, 1000);
 		} else {
 			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: '#fff'}, 1000);
+			input.animate({backgroundColor: "#fff"}, 1000);
 		}
 	}).fail(function() {
 		input.css('background-color', '#FF5E5E');
-		input.animate({backgroundColor: '#fff'}, 1000);
+		input.animate({backgroundColor: "#fff"}, 1000);
 	});
 });
 
@@ -666,7 +688,7 @@ $(document).on('keypress', '.title_view_form', function(e) {
 
 //SUBMIT EDIT TASK
 $(document).on('keypress', '.description_view_form', function(e) {
-	if (e.keyCode == 13 && e.shiftKey == false) {
+	if (e.keyCode === 13 && e.shiftKey === false) {
 		e.preventDefault();
 		var input = $(this).find('[name="description"]');
 		var description = input.val();
@@ -680,14 +702,14 @@ $(document).on('keypress', '.description_view_form', function(e) {
 		).done(function(response) {
 			if (response) {
 				input.css('background-color', '#A0E0BC');
-				input.animate({backgroundColor: '#fff'}, 1000);
+				input.animate({backgroundColor: "#fff"}, 1000);
 			} else {
 				input.css('background-color', '#FF5E5E');
-				input.animate({backgroundColor: '#fff'}, 1000);
+				input.animate({backgroundColor: "#fff"}, 1000);
 			}
 		}).fail(function() {
 			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: '#fff'}, 1000);
+			input.animate({backgroundColor: "#fff"}, 1000);
 		});
 	}
 });
@@ -701,8 +723,8 @@ $(document).keyup(function(e){
 	if(e.keyCode === 27) {
 		if ($('.detail_task #view_task').length !== 0) {
 			$('.detail_task').animate({
-				left: 'slide',
-			    width: 'toggle',
+				left: "slide",
+			    width: "toggle",
 			});
 		}
 	}
@@ -713,6 +735,7 @@ $(document).on(
 		'click',
 		'.search_status',
 		function(e) {
+			var status_id;
 			e.preventDefault();
 			abrir_cargando();
 
@@ -720,40 +743,46 @@ $(document).on(
 			// cerrar el detalle de la tarea
 			$('.detail_task').animate({
 				left: 'slide',
-			    width: 'hide',
+			    width: 'hide'
 			});
-			var status_id = $(this).attr('id');
+			status_id = $(this).attr('id');
 			
 			$.post(base_url + '/task/list', {
 				'project_id' : project_selected_id,
 				'status_id' : status_id 
 			}).complete(function(response, status) {
-						cerrar_cargando();
-						if (status === 'success') {
-							var ret = $.parseJSON(response.responseText);
-							if (ret.response === true) {
+				var ret,
+					i;
+				cerrar_cargando();
+				if (status === 'success') {
+					ret = $.parseJSON(response.responseText);
+					if (ret.response === true) {
 
-								for ( var i = 0; i < ret.tasks.length; i++) {
-									$('.tasks_list').append(
-											task_in_list(ret.tasks[i].id,
-													ret.tasks[i].title,
-													ret.tasks[i].users,
-													ret.tasks[i].status,
-													ret.tasks[i].created));
-								}
-							}
-							// agregar el estado
-							//location.hash = location.hash + '/';
-							
-							$('.search_status').removeClass('active');
-							if (ret.status_id === null) {
-							    // ver como dejar active el ALL 
-							} else {
-							    $('.search_status[id=' + ret.status_id + ']').addClass('active');
-							    
-							}
+						for (i = 0; i < ret.tasks.length; i++) {
+							$('.tasks_list').append(
+								task_in_list(
+									ret.tasks[i].id,
+									ret.tasks[i].title,
+									ret.tasks[i].users,
+									ret.tasks[i].status,
+									ret.tasks[i].created,
+									ret.tasks[i].sort
+								));
 						}
-						add_tooltip();
+					}
+					// agregar el estado
+					//location.hash = location.hash + '/';
+					
+					$(".search_status").removeClass('active');
+					if (ret.status_id === null) {
+					    // ver como dejar active el ALL 
+					    console.log('no puede ser');
+					} else {
+					    $('.search_status[id=' + ret.status_id + ']').addClass('active');
+					    
+					}
+				}
+				add_tooltip();
 			});
 });
 
@@ -767,18 +796,23 @@ $(document).on('click', '.users_list .user', function(e) {
 	$.post(base_url + '/task/list', {
 		'user_id' : user_id 
 	}).complete(function(response, status) {
+		var ret,
+			i;
 			cerrar_cargando();
 			$('.tasks_list').html('');
 			if (status === 'success') {
-				var ret = $.parseJSON(response.responseText);
+				ret = $.parseJSON(response.responseText);
 				if (ret.response === true) {
-					for ( var i = 0; i < ret.tasks.length; i++) {
+					for (i = 0; i < ret.tasks.length; i++) {
 						$('.tasks_list').append(
 							task_in_list(ret.tasks[i].id,
-									ret.tasks[i].title,
-									ret.tasks[i].users,
-									ret.tasks[i].status,
-									ret.tasks[i].created));
+								ret.tasks[i].title,
+								ret.tasks[i].users,
+								ret.tasks[i].status,
+								ret.tasks[i].created,
+								ret.tasks[i].sort
+							)
+						);
 					}
 				}
 				location.hash = 'user:' + user;
@@ -791,32 +825,38 @@ $(document).on('click', '.users_list .user', function(e) {
 
 //SEARCH TASK
 $(document).on('submit', '.search_form', function(e) {
+	var title;
 	e.preventDefault();
 	abrir_cargando();
 	
-	var title = $(this).find('.search_task').val();
+	title = $(this).find('.search_task').val();
 	$.post(base_url + '/task/search', {
 		'title': title,
 		'project_id' : project_selected_id 
 	}).complete(function(response, status) {
-			cerrar_cargando();
-			$('.tasks_list').html('');
-			if (status === 'success') {
-				var ret = $.parseJSON(response.responseText);
-				if (ret.response === true) {
-					for ( var i = 0; i < ret.tasks.length; i++) {
-						$('.tasks_list').append(
-							task_in_list(ret.tasks[i].id,
-									ret.tasks[i].title,
-									ret.tasks[i].users,
-									ret.tasks[i].status,
-									ret.tasks[i].created));
-					}
+		var ret,
+			i;
+		cerrar_cargando();
+		$('.tasks_list').html('');
+		if (status === 'success') {
+			ret = $.parseJSON(response.responseText);
+			if (ret.response === true) {
+				for (i = 0; i < ret.tasks.length; i++) {
+					$('.tasks_list').append(
+						task_in_list(ret.tasks[i].id,
+							ret.tasks[i].title,
+							ret.tasks[i].users,
+							ret.tasks[i].status,
+							ret.tasks[i].created,
+							ret.tasks[i].sort
+						)
+					);
 				}
 			}
-			
-			$('.detail_task').html('');
-			add_tooltip();
+		}
+		
+		$('.detail_task').html('');
+		add_tooltip();
 	});
 });
 
