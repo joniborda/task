@@ -48,7 +48,8 @@ class TaskController extends Zend_Controller_Action
 					'id' => $task->getId(),
 					'users' => $users,
 					'status' => $task->getStatusId(),
-					'created' => $task->getCreated()
+					'created' => $task->getCreated(),
+					'sort' => $task->getSort()
 				));
 			}
 		}
@@ -177,11 +178,28 @@ class TaskController extends Zend_Controller_Action
 				$data['descripcion'] = $descripcion;
 			}
 			
+			if ($sort) {
+				$data['sort'] = $sort;
+			}
+
 			$ret = $task_service->updateById($id, $data);
 			
 			if ($ret > 0) {
 				$this->view->assign('response', true);
 			}
+		}
+	}
+
+	public function resortAction()
+	{
+		$this->_helper->layout->setLayout('empty');
+		$tasks = $this->_request->getParam('tasks', array());
+		$this->view->assign('response', false);
+
+		$ret = Application_Service_Locator::getTaskService()->sortByTasks($tasks);
+
+		if ($ret > 0) {
+			$this->view->assign('response', true);
 		}
 	}
 	

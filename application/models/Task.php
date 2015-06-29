@@ -222,6 +222,9 @@ class Application_Model_Task
 
     public function getSort()
     {
+        if (!$this->_sort) {
+            return $this->_sort = Application_Service_Locator::getTaskService()->getSort($this);
+        }
         return $this->_sort;
     }
     

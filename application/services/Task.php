@@ -142,6 +142,10 @@ class Application_Service_Task
     		
 	    	$ret = $this->_TaskDao->updateById($id, $data);
 	    	
+            if (isset($data['sort'])) {
+                return $ret;
+            }
+
 	    	if (!empty($changes)) {
 	    		$changes['task_id'] = $id;
 	    		$session_user = Application_Service_Locator::getSessionService()->getUser();
@@ -240,5 +244,23 @@ class Application_Service_Task
 		    }
 		}    	
     	return array();
+    }
+
+    public function sortByTasks($tasks) {
+
+        if (!empty($tasks)) {
+
+            foreach ($tasks as $task) {
+                if (!isset($task['id'])) {
+                    return null;
+                }
+                $this->updateById($task['id'], $task);
+            }
+            return true;
+        }
+    }
+
+    public function getSort(Application_Model_Task $task) {
+        return $this->_TaskDao->getSortById($task->getId());
     }
 }

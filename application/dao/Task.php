@@ -80,7 +80,7 @@ class Application_Dao_Task
     	);
     	
     	$data['id'] = $this->getDbTable()->insert($data);
-    	
+
     	return new Application_Model_Task($data);
     }
     
@@ -252,5 +252,19 @@ class Application_Dao_Task
     		}
     	}
     }
+
+    public function getSortById($id)
+    {
+        $select = $this->getDbTable()->select()->from($this->getDbTable(),'sort');
+        $select = $select->where('id = ?', $id);
+
+        $resultSet = $this->getDbTable ()->fetchRow ( $select );
+        if (isset($resultSet->sort)) {
+            return $resultSet->sort;
+        }
+        
+        return null;
+    }
+    
 }
 ?>

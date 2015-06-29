@@ -1050,3 +1050,18 @@ FOR p IN SELECT id FROM projects order by id LOOP
     END LOOP;
 END 
 $do$;
+
+CREATE OR REPLACE FUNCTION task_sort_row()
+RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE tasks SET sort = (
+        SELECT max(t.sort)+1 FROM tasks AS t
+        WHERE t.projects_id = tasks.projects_id 
+        AND t.status_id = tasks.status_id
+    ) WHERE id = NEW.id;
+  RETURN NEW;
+END; $$ LANGUAGE 'plpgsql';
+CREATE TRIGGER task_sort AFTER INSERT
+ON tasks
+FOR EACH ROW
+EXECUTE PROCEDURE task_sort_row();

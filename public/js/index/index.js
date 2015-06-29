@@ -8,6 +8,7 @@ var project_selected_id = null;
 
 
 $(document).ready(function(e) {
+	var initial_sort;
 	if (typeof location.search === 'undefined') {
 		alert('Tu navegador no es soportado');
 	}
@@ -25,15 +26,86 @@ $(document).ready(function(e) {
 	$('.tasks_list').sortable({
 		axis: 'y',
 		over: function( event, ui ) {
+			initial_sort = $(ui.item).index()+1;
 			$(ui.item).addClass('drag');
 		},
 		out: function( event, ui ) {
 			$(ui.item).removeClass('drag');
 		},
 		update: function( event, ui ) {
-			var sort;
+			abrir_cargando();
+			var new_sort = $(ui.item).index() + 1;
+			var first_element,
+				last_element,
+				elements,
+				i,
+				current,
+				change_element = new Array;
 
-			sort = $(ui.item).index() + 1;
+			if (new_sort < initial_sort) {
+
+				first_element = $(ui.item);
+
+				first_element.attr('sort', '');
+				current = first_element;
+				for (i = 0; i < (initial_sort - new_sort); i++) {
+					current = $(current).next();
+
+					change_element.push({
+						id : current.attr('value'),
+						sort : new_sort + 1 + i
+					});
+
+					$(current).attr('sort', new_sort + 1 + i);
+
+				}
+
+				change_element.push({
+					id : first_element.attr('value'),
+					sort : new_sort
+				});
+
+				first_element.attr('sort', new_sort);
+			} else {
+
+				first_element = $(ui.item);
+
+				first_element.attr('sort', '');
+				current = first_element;
+				for (i = 0; i < (new_sort - initial_sort); i++) {
+
+					current = $(current).prev();
+					change_element.push({
+						id : current.attr('value'),
+						sort : new_sort - 1 - i
+					});
+
+					$(current).attr('sort', new_sort - 1 - i);
+
+				}
+
+				change_element.push({
+					id : first_element.attr('value'),
+					sort : new_sort
+				});
+				first_element.attr('sort', new_sort);
+
+			}
+			
+			$.post(
+				base_url + '/task/resort', 
+				{
+					tasks : change_element,
+				}
+			).complete(function(response, status) {
+				cerrar_cargando();
+				if (status === 'success' && response.responseText) {
+					$(response.responseText).dialog({
+						modal : true
+					});
+					$('#div_form_project .name_project').focus();
+				}
+			});
 		}
 	});
 	
@@ -230,80 +302,80 @@ $(document).on(
 			);
 		});
 // CLICK SELECT PROJECT
-$(document).on(
-		'click',
-		'.project',
-		function(e) {
-			e.preventDefault();
-			abrir_cargando();
-			project_selected_id = $(this).attr('value');
-			var title_project = $(this).html();
+$(document).on('click', '.project', function(e) {
+	var task_to_sort;
+	var title_project;
 
-			$('.tasks_list').html('');
-			// cerrar el detalle de la tarea
-			$('.detail_task').animate({
-				left: "slide",
-			    width: "hide",
-			});
-			
-			$('.project').closest('li').removeClass('active');
-			$(this).closest('li').addClass('active');
+	e.preventDefault();
+	abrir_cargando();
+	project_selected_id = $(this).attr('value');
+	title_project = $(this).html();
 
-			var project_id = $(this).attr('value');
-			$.post(base_url + '/task/list', {
-				'project_id' : project_id,
-				'status_id' : 1  // MOSTRAR LAS ABIERTAS
-			}).complete(
-					function(response, status) {
-					    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
-					        window.location = 'usuario/loguear';
-					        return false;
-					    }
-					    
-						cerrar_cargando();
-						if (status === 'success') {
-							var ret = $.parseJSON(response.responseText);
-							if (ret.response === true) {
+	$('.tasks_list').html('');
+	// cerrar el detalle de la tarea
+	$('.detail_task').animate({
+		left: "slide",
+		width: "hide",
+	});
 
-								for ( var i = 0; i < ret.tasks.length; i++) {
-									$('.tasks_list').append(
-										task_in_list(
-											ret.tasks[i].id,
-											ret.tasks[i].title,
-											ret.tasks[i].users,
-											ret.tasks[i].status, 
-											ret.tasks[i].created,
-											ret.tasks[i].sort
-										)
-									);
-								}
+	$('.project').closest('li').removeClass('active');
+	$(this).closest('li').addClass('active');
 
-								task_to_sort = $('.tasks_list').children('li');
-								task_to_sort.sort(
-									function(a,b) {
-										var an = parseInt(a.getAttribute('sort')),
-											bn = parseInt(b.getAttribute('sort'));
-										if (an > bn) {
-											return 1;
-										}
-										if (an < bn) {
-											return -1;
-										}
-										return 0;
-									}
-								);
-								task_to_sort.detach().appendTo($('.tasks_list'));
+	var project_id = $(this).attr('value');
+	$.post(base_url + '/task/list', {
+		'project_id' : project_id,
+		'status_id' : 1  // MOSTRAR LAS ABIERTAS
+	}).complete(
+		function(response, status) {
+	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
+	        window.location = 'usuario/loguear';
+	        return false;
+	    }
+	    
+		cerrar_cargando();
+		if (status === 'success') {
+			var ret = $.parseJSON(response.responseText);
+			if (ret.response === true) {
 
-							}
-							location.hash = title_project;
-							
-							$(".search_status").removeClass('active');
-							$(".search_status[id=" + ret.status_id + "]").addClass('active');
+				for ( var i = 0; i < ret.tasks.length; i++) {
+					$('.tasks_list').append(
+						task_in_list(
+							ret.tasks[i].id,
+							ret.tasks[i].title,
+							ret.tasks[i].users,
+							ret.tasks[i].status, 
+							ret.tasks[i].created,
+							ret.tasks[i].sort
+						)
+					);
+				}
+
+				task_to_sort = $('.tasks_list').children('li');
+				task_to_sort.sort(
+					function(a,b) {
+						var an = parseInt(a.getAttribute('sort')),
+							bn = parseInt(b.getAttribute('sort'));
+						if (an > bn) {
+							return 1;
 						}
-						
-						$('.detail_task').html('');
-						add_tooltip();
-					});
+						if (an < bn) {
+							return -1;
+						}
+						return 0;
+					}
+				);
+				task_to_sort.detach().appendTo($('.tasks_list'));
+
+			}
+			location.hash = title_project;
+			
+			$(".search_status").removeClass('active');
+			$(".search_status[id=" + ret.status_id + "]").addClass('active');
+		}
+		
+		$('.detail_task').html('');
+		add_tooltip();
+	});
 });
 
 function task_in_list(id, title, users, status_id, created, sort) {
