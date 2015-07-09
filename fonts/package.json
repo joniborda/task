@@ -1,0 +1,30 @@
+{
+  "name": "task",
+  "version": "0.0.0",
+  "description": "",
+  "main": "public/js/general.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joniborda/task.git"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-concat": "*"
+  },
+  "author": "presentes",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/presentes/visualizador/issues"
+  },
+  "homepage": "https://github.com/presentes/visualizador"
+}
