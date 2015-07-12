@@ -497,6 +497,10 @@ $(document).on('click', '.change_status', function(e) {
 				
 				var li = change_status_task(task_id, descripcion);
 				
+				if (status_selected_id) { 
+					li.hide(500);
+				}
+
 				if (typeof websocket !== 'undefined' && websocket.readyState === websocket.OPEN) {
 				    
 					var count_task_openned = $('.project[value="' + project_selected_id + '"]')
