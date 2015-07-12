@@ -21,10 +21,9 @@ module.exports = function (grunt) {
             },
             lib: {
                 src: [
-                    './public/js/jquery.js',
-                    './public/js/jquery.ui-1-10.js',
-                    './public/js/jquery.boxy.js',
-                    './public/js/jquery.qtip-1.0.0-rc3.min.js',
+                    './bower_components/jquery/dist/jquery.js',
+                    './bower_components/jquery-ui/jquery-ui.js',
+                    //'./public/js/jquery.qtip-1.0.0-rc3.min.js',
                     './public/js/tagit/tag-it.min.js',
                     './public/js/autosize/jquery.autosize.js',
                     './public/js/jquery.hotkeys.js',
@@ -66,14 +65,34 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['concat']
             }
-        }
+        },
+        concat_css: {
+            options: {
+              // Task-specific options go here. 
+            },
+            all: {
+                src: [
+                    './public/css/bootstrap/bootstrap-theme.min.css',
+                    './public/css/bootstrap/bootstrap.min.css',
+                    './public/css/jquery-ui-1.8.9.custom.css',
+                    './public/css/tagit/jquery.tagit.css',
+                    './public/css/tagit/tagit.ui-zendesk.css',
+                    './public/css/boxy.css',
+                    './public/css/estilo.css',
+                    './public/css/estilo_celular.css',
+                ],
+                dest: './public/css/style.css'
+            },
+        },
     });
     // Plugin loading
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
+
     // Task definition
-    grunt.registerTask('build', ['uglify', 'concat', 'copy']);
+    grunt.registerTask('build', ['uglify', 'concat', 'concat_css', 'copy']);
     grunt.registerTask('default', ['build', 'watch']);
 };

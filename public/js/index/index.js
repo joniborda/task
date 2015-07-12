@@ -210,37 +210,37 @@ $(document).on('click', '#create_project', function(e) {
 
 // SUBMIT NEW PROJECT
 $(document).on(
-		'submit',
-		'#form_create_project',
-		function(e) {
-			e.preventDefault();
-			var name = $(this).find('[name="name"]').val();
-			$.post('project/add', {
-				'name' : name
-			}).complete(
-					function(response, status) {
-						if (status === 'success') {
-							var ret = $.parseJSON(response.responseText);
+	'submit',
+	'#form_create_project',
+	function(e) {
+		e.preventDefault();
+		var name = $(this).find('[name="name"]').val();
+		$.post('project/add', {
+			'name' : name
+		}).complete(function(response, status) {
+			if (status === 'success') {
+				var ret = $.parseJSON(response.responseText);
 
-							if (ret.response === true) {
-								$('#div_form_project').dialog('close');
-								$('#div_form_project').dialog('destroy');
-								$('.projects_list').append(
-										'<li>' + 
-											'<a href="#' + name + '" class="project" value="' + ret.id + '">' + 
-												name +
-											'</a>&nbsp;' +
-											'<span class="badge closed">0</span>' +
-											'<a href="#" class="edit_project" value="' + ret.id + '">' +
-												'<span class="right glyphicon glyphicon-edit"></span>' +
-											'</a>' +
-										'</li>');
-								project_selected_id = ret.id;
-								$('.project[value="' + ret.id + '"]').click();
-							}
-						}
-					});
+				if (ret.response === true) {
+					$('#div_form_project').dialog('close');
+					$('#div_form_project').dialog('destroy');
+					$('.projects_list').append(
+						'<li>' + 
+							'<a href="#' + name + '" class="project" value="' + ret.id + '">' + 
+								name +
+							'</a>&nbsp;' +
+							'<span class="badge closed">0</span>' +
+							'<a href="#" class="edit_project" value="' + ret.id + '">' +
+								'<span class="right glyphicon glyphicon-edit"></span>' +
+							'</a>' +
+						'</li>'
+					);
+					project_selected_id = ret.id;
+					$('.project[value="' + ret.id + '"]').click();
+				}
+			}
 		});
+});
 // SUBMIT NEW TASK
 $(document).on(
 		'submit',

@@ -5,14 +5,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title>Task</title>
       <?php echo $this->headLink()
-              ->prependStylesheet($this->webApp . '/css/boxy.css')
-              ->prependStylesheet($this->webApp . '/css/tagit/tagit.ui-zendesk.css')
-              ->prependStylesheet($this->webApp . '/css/tagit/jquery.tagit.css')
-              ->prependStylesheet($this->webApp . '/css/jquery-ui-1.8.9.custom.css')
-              ->prependStylesheet($this->webApp . '/css/bootstrap/bootstrap.min.css')
-              ->prependStylesheet($this->webApp . '/css/bootstrap/bootstrap-theme.min.css')
-              ->appendStylesheet($this->webApp . '/css/estilo.css')
-              ->appendStylesheet($this->webApp . '/css/estilo_celular.css')
+              ->prependStylesheet($this->webApp . '/css/style.css')
               ->headLink(
                   array(
 					'rel' => 'shortcut icon',
@@ -22,7 +15,7 @@
               );
               echo $this->headScript()
               	  ->prependFile($this->webApp . '/js/main.js')
-                  ->prependFile($this->webApp . '/js/libs.min.js');
+                  ->prependFile($this->webApp . '/js/libs.js');
               
       ?>
       <script type="text/javascript">

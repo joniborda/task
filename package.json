@@ -10,21 +10,20 @@
     "type": "git",
     "url": "https://github.com/joniborda/task.git"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
-    "grunt-contrib-concat": "*"
+    "grunt-contrib-concat": "*",
+    "grunt-concat-css": "~0.3.1"
   },
-  "author": "presentes",
+  "author": "joniborda",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/presentes/visualizador/issues"
+    "url": "https://github.com/joniborda/task/issues"
   },
-  "homepage": "https://github.com/presentes/visualizador"
+  "homepage": "https://github.com/joniborda/task"
 }
