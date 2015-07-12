@@ -95,7 +95,7 @@
 	overflow: hidden;
 	display: inline-block;
 	vertical-align: middle;
-	cursor: pointer;
+	cursor: move;
 }
 
 .tasks_list li {
