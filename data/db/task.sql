@@ -1065,3 +1065,9 @@ CREATE TRIGGER task_sort AFTER INSERT
 ON tasks
 FOR EACH ROW
 EXECUTE PROCEDURE task_sort_row();
+
+-- ejecutar desde aca
+ALTER TABLE tasks
+   ADD COLUMN parent_id integer;
+COMMENT ON COLUMN tasks.parent_id
+  IS 'Define el padre, si es no nulo entonces es una subtarea';

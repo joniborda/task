@@ -89,7 +89,8 @@ class Application_Dao_Task
      *
      * @return array
      */
-    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null, $title = null)
+    public function getAllByFilters($project_id = null, $status_id = null, $user_id = null, $title = null,
+        $parent_id = null)
     {
     	$where = array();
     	$binds = array();
@@ -102,6 +103,14 @@ class Application_Dao_Task
     		$where['status_id = ?'] = (int)$status_id;
     	}
     	
+        if ($parent_id !== null) {
+            if ($parent_id === false) {
+                $where['parent_id = ?'] = null;
+            } else {
+                $where['parent_id = ?'] = (int)$parent_id;
+            }
+        }
+
     	if (isset($title)) {
     		$where['title ilike :title_like OR search_title @@ plainto_tsquery(:title)'] = array();
     		$binds['title_like'] = '%'.$title.'%';

@@ -16,7 +16,8 @@ class Application_Model_Task
     protected $_last_modified;
     protected $_created;
     protected $_user_id;
-    protected $_sort;    
+    protected $_sort;
+    protected $_parent_id;
     
     public function __construct($data = null)
     {
@@ -38,6 +39,7 @@ class Application_Model_Task
                 $this->_created = (isset($data['created']) ? $data['created'] : null);
                 $this->_user_id = (isset($data['user_id']) ? $data['user_id'] : null);
                 $this->_sort = (isset($data['sort']) ? $data['sort'] : null);
+                $this->_parent_id = (isset($data['parent_id']) ? $data['parent_id'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_title = $data->title;
@@ -54,6 +56,7 @@ class Application_Model_Task
                 $this->_created = $data->created;
                 $this->_user_id = $data->user_id;
                 $this->_sort = $data->sort;
+                $this->_parent_id = $data->parent_id;
             }
         }
     }
@@ -231,6 +234,17 @@ class Application_Model_Task
     public function setSort($sort)
     {
         $this->_sort = $sort;
+        return $this;
+    }
+
+    public function getParentId()
+    {
+        return $this->_parent_id;
+    }
+    
+    public function setParentId($parent_id)
+    {
+        $this->_parent_id = $parent_id;
         return $this;
     }
 }

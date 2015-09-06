@@ -65,7 +65,8 @@ class TaskController extends Zend_Controller_Action
 		
 		$ret = array();
 		if (
-			($tasks = Application_Service_Locator::getTaskService()->getAllByFilters($project_id, $status_id, $user_id))
+			($tasks = Application_Service_Locator::getTaskService()
+				->getAllByFilters($project_id, $status_id, $user_id, false))
 		) {
 			$project = Application_Service_Locator::getProjectService()->getById($project_id);
 			
@@ -83,7 +84,8 @@ class TaskController extends Zend_Controller_Action
 					'users' => $task->getUsers(),
 					'status' => $task->getStatusId(),
 					'created' => $task->getCreated(),
-					'sort' => $task->getSort()
+					'sort' => $task->getSort(),
+					'parent_id' => $task->getParentId()
 				);
 			}
 		}
@@ -91,7 +93,8 @@ class TaskController extends Zend_Controller_Action
 		$this->view->assign('response', array(
 				'response' => true,
 				'tasks' => $ret,
-				'status_id' => $status_id
+				'status_id' => $status_id,
+				'user_id' => $user_id
 		));
 	}
 

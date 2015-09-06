@@ -303,15 +303,11 @@ $(document).on(
 		});
 // CLICK SELECT PROJECT
 $(document).on('click', '.project', function(e) {
-	var task_to_sort;
-	var title_project;
 
 	e.preventDefault();
 	abrir_cargando();
 	project_selected_id = $(this).attr('value');
-	title_project = $(this).html();
 
-	$('.tasks_list').html('');
 	// cerrar el detalle de la tarea
 	$('.detail_task').animate({
 		left: "slide",
@@ -321,61 +317,7 @@ $(document).on('click', '.project', function(e) {
 	$('.project').closest('li').removeClass('active');
 	$(this).closest('li').addClass('active');
 
-	var project_id = $(this).attr('value');
-	$.post(base_url + '/task/list', {
-		'project_id' : project_id,
-		'status_id' : status_selected_id
-	}).complete(
-		function(response, status) {
-	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
-	        window.location = 'usuario/loguear';
-	        return false;
-	    }
-	    
-		cerrar_cargando();
-		if (status === 'success') {
-			var ret = $.parseJSON(response.responseText);
-			if (ret.response === true) {
-
-				for ( var i = 0; i < ret.tasks.length; i++) {
-					$('.tasks_list').append(
-						task_in_list(
-							ret.tasks[i].id,
-							ret.tasks[i].title,
-							ret.tasks[i].users,
-							ret.tasks[i].status, 
-							ret.tasks[i].created,
-							ret.tasks[i].sort
-						)
-					);
-				}
-
-				task_to_sort = $('.tasks_list').children('li');
-				task_to_sort.sort(
-					function(a,b) {
-						var an = parseInt(a.getAttribute('sort')),
-							bn = parseInt(b.getAttribute('sort'));
-						if (an > bn) {
-							return 1;
-						}
-						if (an < bn) {
-							return -1;
-						}
-						return 0;
-					}
-				);
-				task_to_sort.detach().appendTo($('.tasks_list'));
-
-			}
-			location.hash = title_project;
-			
-			$(".search_status").removeClass('active');
-			$(".search_status[id=" + ret.status_id + "]").addClass('active');
-		}
-		
-		$('.detail_task').html('');
-		add_tooltip();
-	});
+	get_task_list($(this).html());
 });
 
 function task_in_list(id, title, users, status_id, created, sort) {
@@ -838,43 +780,7 @@ $(document).on('click', '.search_status', function(e) {
 	});
 	status_selected_id = $(this).attr('id');
 	
-	$.post(base_url + '/task/list', {
-		'project_id' : project_selected_id,
-		'status_id' : status_selected_id
-	}).complete(function(response, status) {
-		var ret,
-			i;
-		cerrar_cargando();
-		if (status === 'success') {
-			ret = $.parseJSON(response.responseText);
-			if (ret.response === true) {
-
-				for (i = 0; i < ret.tasks.length; i++) {
-					$('.tasks_list').append(
-						task_in_list(
-							ret.tasks[i].id,
-							ret.tasks[i].title,
-							ret.tasks[i].users,
-							ret.tasks[i].status,
-							ret.tasks[i].created,
-							ret.tasks[i].sort
-						));
-				}
-			}
-			// agregar el estado
-			//location.hash = location.hash + '/';
-			
-			$('.search_status').removeClass('active');
-			if (ret.status_id === null) {
-			    // ver como dejar active el ALL 
-			    console.log('no puede ser');
-			} else {
-			    $('.search_status[id=' + ret.status_id + ']').addClass('active');
-			    
-			}
-		}
-		add_tooltip();
-	});
+	get_task_list();
 });
 
 // CLICK USER
@@ -884,34 +790,7 @@ $(document).on('click', '.users_list .user', function(e) {
 	
 	var user_id = $(this).attr('value');
 	var user = $(this).html();
-	$.post(base_url + '/task/list', {
-		'user_id' : user_id 
-	}).complete(function(response, status) {
-		var ret,
-			i;
-			cerrar_cargando();
-			$('.tasks_list').html('');
-			if (status === 'success') {
-				ret = $.parseJSON(response.responseText);
-				if (ret.response === true) {
-					for (i = 0; i < ret.tasks.length; i++) {
-						$('.tasks_list').append(
-							task_in_list(ret.tasks[i].id,
-								ret.tasks[i].title,
-								ret.tasks[i].users,
-								ret.tasks[i].status,
-								ret.tasks[i].created,
-								ret.tasks[i].sort
-							)
-						);
-					}
-				}
-				location.hash = 'user:' + user;
-			}
-			
-			$('.detail_task').html('');
-			add_tooltip();
-	});
+	get_task_list('', user_id);
 });
 
 //SEARCH TASK
@@ -1009,4 +888,79 @@ $(document).on(
 			}
 		);
 });
+
+function get_task_list(title_project, user_id) {
+	var task_to_sort;
+
+	$.post(base_url + '/task/list', {
+		'project_id' : project_selected_id,
+		'status_id' : status_selected_id,
+		'user_id': user_id
+	}).complete(
+		function(response, status) {
+	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
+	        window.location = 'usuario/loguear';
+	        return false;
+	    }
+	    
+		cerrar_cargando();
+		$('.tasks_list').html('');
+		if (status === 'success') {
+			var ret = $.parseJSON(response.responseText);
+			if (ret.response === true) {
+
+				for ( var i = 0; i < ret.tasks.length; i++) {
+					$('.tasks_list').append(
+						task_in_list(
+							ret.tasks[i].id,
+							ret.tasks[i].title,
+							ret.tasks[i].users,
+							ret.tasks[i].status, 
+							ret.tasks[i].created,
+							ret.tasks[i].sort
+						)
+					);
+				}
+
+				task_to_sort = $('.tasks_list').children('li');
+				task_to_sort.sort(
+					function(a,b) {
+						var an = parseInt(a.getAttribute('sort')),
+							bn = parseInt(b.getAttribute('sort'));
+						if (an > bn) {
+							return 1;
+						}
+						if (an < bn) {
+							return -1;
+						}
+						return 0;
+					}
+				);
+				task_to_sort.detach().appendTo($('.tasks_list'));
+
+				$('.search_status').removeClass('active');
+				if (ret.status_id === null) {
+				    // ver como dejar active el ALL 
+				    console.log('busco por todos');
+				} else {
+				    $('.search_status[id=' + ret.status_id + ']').addClass('active');
+				    
+				}
+
+				$('.users_list .user').removeClass('active');
+				if (ret.user_id) {
+				    $('.users_list [value=' + ret.user_id + ']').addClass('active');
+				}
+
+			}
+			location.hash = title_project;
+			
+			$(".search_status").removeClass('active');
+			$(".search_status[id=" + ret.status_id + "]").addClass('active');
+		}
+		
+		$('.detail_task').html('');
+		add_tooltip();
+	});
+}
 })(jQuery);
