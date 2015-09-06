@@ -376,10 +376,25 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 	}
 	ret += '</div>';
 
-	if (parent_id === undefined) {
+	if (typeof parent_id == "undefined") {
+
+		var input_new_task = $('<input>', {
+			'type': 		'text',
+			'name': 		'subtask_title',
+			'placeholder': 	'Agregar nueva subtarea',
+			'class': 		'new_task form-control ui-autocomplete-input'
+		});
+
+		var span_plus = $('<span>', {
+			'class': 'glyphicon glyphicon-plus'
+		});
+
 		ret += 
 		'<div class="subtask" id=' + id + '>' +
-			'<a href="#">Agregar subtarea</a>' +
+			'<div class="new_subtask_div">' +
+			$(input_new_task[0]).prop('outerHTML') +
+			$(span_plus[0]).prop('outerHTML') +
+			'</div>'
 		'</div>';
 	}
 
@@ -997,7 +1012,7 @@ function get_subtasks(parent_id) {
 
 		var selector_li_parent = '.tasks_list [value=' + parent_id + ']';
 	    cerrar_cargando();
-	    $(selector_li_parent + ' div.subtask').html('');
+	    $(selector_li_parent + ' li.subtask').remove();
 		if (status === 'success') {
 			var ret = $.parseJSON(response.responseText);
 			if (ret.response === true) {
