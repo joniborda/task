@@ -320,7 +320,7 @@ $(document).on('click', '.project', function(e) {
 	get_task_list($(this).html());
 });
 
-function task_in_list(id, title, users, status_id, created, sort) {
+function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 	
 	var class_status = '';
 	var icon = '';
@@ -342,6 +342,11 @@ function task_in_list(id, title, users, status_id, created, sort) {
 		icon = 'glyphicon-ok-circle';
 		break;
 	}
+
+	if (parent_id) {
+		class_status += ' subtask';
+	}
+
 	var ret = '<li value="'+ id +'" class="' + class_status + '" sort="' + sort + '">' +
 			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' +
 			'<span class="title">' + title + '</span><div class="task_users">';
@@ -369,8 +374,16 @@ function task_in_list(id, title, users, status_id, created, sort) {
 	for ( var i = 0; i < users.length; i++) {
 		ret += '<a href="#" class="right user">' + users[i] + '</a>';
 	}
-	ret += '</div></li>';
+	ret += '</div>';
 
+	if (parent_id === undefined) {
+		ret += 
+		'<div class="subtask" id=' + id + '>' +
+			'<a href="#">Agregar subtarea</a>' +
+		'</div>';
+	}
+
+	ret += '</li>';
 	return ret;
 }
 // CLICK EDIT PROJECT
@@ -534,7 +547,7 @@ function add_tooltip() {
 }
 
 // SHOW DETAIL TASK
-$(document).on('click', '.tasks_list li .title', function(e) {
+$(document).on('click', '.subtasks_list li .title', function(e) {
 	var li = $(this).closest('li');
 	var id = li.attr('value');
 	
@@ -567,6 +580,15 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 	});
 });
 
+$(document).on('click', '.tasks_list li .title', function(e) {
+	var li = $(this).closest('li');
+	var id = li.attr('value');
+	
+	$('.tasks_list li').removeClass('selected');
+	li.addClass('selected');
+	
+	get_subtasks(id);
+});
 function show_task_detail(id, li) {
     $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/public/img/cargando.gif"></div>');
 	
@@ -896,8 +918,8 @@ function get_task_list(title_project, user_id) {
 		'project_id' : project_selected_id,
 		'status_id' : status_selected_id,
 		'user_id': user_id
-	}).complete(
-		function(response, status) {
+	}).complete(function(response, status) {
+
 	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
 	        window.location = 'usuario/loguear';
 	        return false;
@@ -961,6 +983,61 @@ function get_task_list(title_project, user_id) {
 		
 		$('.detail_task').html('');
 		add_tooltip();
+	});
+}
+
+function get_subtasks(parent_id) {
+	$.post(base_url + '/task/list', {
+		'parent_id' : parent_id
+	}).complete(function(response, status) {
+	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
+	        window.location = 'usuario/loguear';
+	        return false;
+	    }
+
+		var selector_li_parent = '.tasks_list [value=' + parent_id + ']';
+	    cerrar_cargando();
+	    $(selector_li_parent + ' div.subtask').html('');
+		if (status === 'success') {
+			var ret = $.parseJSON(response.responseText);
+			if (ret.response === true) {
+
+				for ( var i = 0; i < ret.tasks.length; i++) {
+					$(selector_li_parent  + ' div.subtask').append(
+						task_in_list(
+							ret.tasks[i].id,
+							ret.tasks[i].title,
+							ret.tasks[i].users,
+							ret.tasks[i].status, 
+							ret.tasks[i].created,
+							ret.tasks[i].sort,
+							parent_id
+						)
+					);
+				}
+			}
+			if ($(selector_li_parent).height() <= 30) {
+
+				var curHeight = $(selector_li_parent).height();
+				$(selector_li_parent + ' .subtask').show();
+
+				$(selector_li_parent).css('height', 'auto');
+				var autoHeight = $(selector_li_parent).height();
+
+				$(selector_li_parent).height(curHeight).animate({
+					left: "slide",
+				    height: autoHeight
+				});
+			} else {
+
+				$(selector_li_parent).animate({
+					left: "slide",
+				    height: "30px"
+				}, function() {
+					$(selector_li_parent + ' .subtask').hide();
+				});
+			}
+		}
 	});
 }
 })(jQuery);

@@ -76,6 +76,8 @@
 .tasks_list {
 	color: #5D5A5A;
 	font-weight: normal;
+	background-color: #8CFC8C;
+	padding: 1px 0;
 }
 
 .tasks_list .user {
@@ -86,6 +88,8 @@
 .tasks_list .show_status {
 	text-decoration: none;
 	vertical-align: middle;
+	width: 4%;
+	text-align: center;
 }
 
 .tasks_list .title {
@@ -100,8 +104,11 @@
 
 .tasks_list li {
 	line-height: 2;
-	padding: 0 5px;
 	height: 30px;
+	margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
 }
 
 .tasks_list li.drag  {
@@ -171,7 +178,7 @@
 }
 
 .tasks_list .selected {
-	background-color: #E9EAED;
+//	background-color: #E9EAED;
 }
 
 .menu_left h1 {
@@ -255,4 +262,22 @@
 
 .ui-dialog {
 	z-index: 100;
+}
+
+.subtask {
+	display: none;
+}
+
+li.subtask {
+	display: list-item;
+    background-color: #FFF;
+    margin: 10px;
+    border: none;
+}
+
+div.subtask {
+	padding: 1px 0;	
+    background-color: #FFFF0A;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }

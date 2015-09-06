@@ -62,11 +62,12 @@ class TaskController extends Zend_Controller_Action
 		$status_id = $this->getRequest()->getParam('status_id', null);
 		$user_id = $this->getRequest()->getParam('user_id', null);
 		$project_id = $this->getRequest()->getParam('project_id', null);
+		$parent_id = $this->getRequest()->getParam('parent_id', false);
 		
 		$ret = array();
 		if (
 			($tasks = Application_Service_Locator::getTaskService()
-				->getAllByFilters($project_id, $status_id, $user_id, false))
+				->getAllByFilters($project_id, $status_id, $user_id, '', $parent_id))
 		) {
 			$project = Application_Service_Locator::getProjectService()->getById($project_id);
 			
