@@ -242,65 +242,85 @@ $(document).on(
 		});
 });
 // SUBMIT NEW TASK
-$(document).on(
-		'submit',
-		'.create_task_form',
-		function(e) {
-			e.preventDefault();
-			abrir_cargando();
-			var input_name = $(this).find('[name="title"]');
-			var title = $(input_name).val();
-			
-			var matches = title.match(/\+\w*[^\+]/mg);
-			var users = [];
-			if (matches) {
-				for ( var i = 0; i < matches.length; i++) {
-					users[i] = matches[i].replace(asign_user, '').trim();
-					title = title.replace(matches[i],'');
+$(document).on('submit', '.create_task_form', function(e) {
+	var parent_id,
+		input_name = $(this).find('[name="title"]'),
+		title = $(input_name).val();
+
+	e.preventDefault();
+	create_new_task(input_name, title, parent_id);
+});
+
+// SUBMIT NEW TASK
+$(document).on('submit', '.create_subtask_form', function(e) {
+	var parent_id = $(this).closest('div.subtask').attr('id'),
+		input_name = $(this).find('[name="subtask_title"]'),
+		title = $(input_name).val();
+
+	e.preventDefault();
+	create_new_task(input_name, title, parent_id);
+});
+
+// TODO: tengo que usar este codigo para poder crear subtareas
+function create_new_task(input_name, title, parent_id) {
+	var	matches = title.match(/\+\w*[^\+]/mg),
+		users = [];
+		
+	abrir_cargando();
+	if (matches) {
+		for ( var i = 0; i < matches.length; i++) {
+			users[i] = matches[i].replace(asign_user, '').trim();
+			title = title.replace(matches[i],'');
+		}
+	}
+	title = title.trim();
+	
+	$.post(base_url + '/task/add', {
+		'title' : title,
+		'users' : users,
+		'project_id' : project_selected_id,
+		'parent_id' : parent_id
+	}).complete(function(response, status) {
+		var ret,
+			badge_project,
+			count_task_openned;
+
+		cerrar_cargando();
+		if (status === 'success') {
+			ret = $.parseJSON(response.responseText);
+			if (ret.response === true) {
+				$(input_name).val('');
+
+				var selector_to_append = '.tasks_list';
+				if (parent_id) {
+					selector_to_append = '.tasks_list [value=' + parent_id + '] div.subtask';
+				}
+
+				$(selector_to_append).append(
+					task_in_list(
+						ret.id, 
+						title,
+						ret.users, 
+						ret.status,
+						ret.created,
+						ret.sort,
+						parent_id
+					)
+				);
+				$('.new_task').focus();
+				badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+				count_task_openned = badge_project.html();
+				
+				badge_project.html(parseInt(count_task_openned)+1);
+				if (count_task_openned === "0") {
+					badge_project.removeClass('closed');
+					badge_project.addClass('openned');
 				}
 			}
-			title = title.trim();
-			
-			$.post(base_url + '/task/add', {
-				'title' : title,
-				'users' : users,
-				'project_id' : project_selected_id
-			}).complete(
-				function(response, status) {
-					var ret,
-						badge_project,
-						count_task_openned;
-
-					cerrar_cargando();
-					if (status === 'success') {
-						ret = $.parseJSON(response.responseText);
-						if (ret.response === true) {
-							$(input_name).val('');
-							$('.tasks_list').append(
-								task_in_list(
-									ret.id, 
-									title,
-									ret.users, 
-									ret.status,
-									ret.created,
-									ret.sort
-								)
-							);
-							$('.new_task').focus();
-							badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
-							count_task_openned = badge_project.html();
-							
-							badge_project.html(parseInt(count_task_openned)+1);
-							if (count_task_openned === "0") {
-								badge_project.removeClass('closed');
-								badge_project.addClass('openned');
-							}
-						}
-					}
-					add_tooltip();
-				}
-			);
-		});
+		}
+		add_tooltip();
+	});
+}
 // CLICK SELECT PROJECT
 $(document).on('click', '.project', function(e) {
 
@@ -382,7 +402,7 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 			'type': 		'text',
 			'name': 		'subtask_title',
 			'placeholder': 	'Agregar nueva subtarea',
-			'class': 		'new_task form-control ui-autocomplete-input'
+			'class': 		'new_subtask form-control ui-autocomplete-input'
 		});
 
 		var span_plus = $('<span>', {
@@ -392,9 +412,11 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 		ret += 
 		'<div class="subtask" id=' + id + '>' +
 			'<div class="new_subtask_div">' +
-			$(input_new_task[0]).prop('outerHTML') +
-			$(span_plus[0]).prop('outerHTML') +
-			'</div>'
+				'<form class="create_subtask_form">' +
+					$(input_new_task[0]).prop('outerHTML') +
+					$(span_plus[0]).prop('outerHTML') +
+				'</form>' +
+			'</div>' +
 		'</div>';
 	}
 

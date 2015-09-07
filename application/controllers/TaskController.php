@@ -6,6 +6,7 @@ class TaskController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('empty');
 		$this->view->assign('response', array('response' => false));
 		
+		$parent_id = $this->getRequest()->getParam('parent_id');
 		$users = $this->getRequest()->getParam('users');
 		$user_ids = array();
 		$usuario_service = Application_Service_Locator::getUsuarioService();
@@ -40,7 +41,7 @@ class TaskController extends Zend_Controller_Action
 			
 			if (
 				($task = Application_Service_Locator::getTaskService()
-					->crear($title,$project_id, $user_ids, $session_user->getId()))
+					->crear($title,$project_id, $user_ids, $session_user->getId(), $parent_id))
 			) {
 				
 				$this->view->assign('response', array(
@@ -49,7 +50,8 @@ class TaskController extends Zend_Controller_Action
 					'users' => $users,
 					'status' => $task->getStatusId(),
 					'created' => $task->getCreated(),
-					'sort' => $task->getSort()
+					'sort' => $task->getSort(),
+					'parent_id' => $task->getParentId()
 				));
 			}
 		}

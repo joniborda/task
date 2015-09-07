@@ -70,13 +70,14 @@ class Application_Dao_Task
      * 
      * @return Application_Model_Task
      */
-    public function crear($title, $project_id, $user_id)
+    public function crear($title, $project_id, $user_id, $parent_id)
     {
     	$data = array(
     		'title' => $title,
     		'projects_id' => $project_id,
     		'user_id' => $user_id,
-    		'status_id' => 1 // Status default
+    		'status_id' => 1,
+            'parent_id' => $parent_id // Status default
     	);
     	
     	$data['id'] = $this->getDbTable()->insert($data);
