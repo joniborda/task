@@ -293,7 +293,8 @@ function create_new_task(input_name, title, parent_id) {
 
 				var selector_to_append = '.tasks_list';
 				if (parent_id) {
-					selector_to_append = '.tasks_list [value=' + parent_id + '] div.subtask';
+					var selector_to_append_parent = '.tasks_list [value=' + parent_id + ']';
+					selector_to_append = selector_to_append_parent + ' div.subtask';
 				}
 
 				$(selector_to_append).append(
@@ -307,7 +308,25 @@ function create_new_task(input_name, title, parent_id) {
 						parent_id
 					)
 				);
-				$('.new_task').focus();
+
+				if (parent_id) {
+					$(selector_to_append_parent).height()
+					var curHeight = $(selector_to_append_parent).height();
+
+					$(selector_to_append_parent).css('height', 'auto');
+					var autoHeight = $(selector_to_append_parent).height();
+
+					$(selector_to_append_parent).height(curHeight).animate({
+						left: "slide",
+					    height: autoHeight,
+					    duration: 2000
+					});
+
+					$(input_name).focus();
+				} else {
+					$('.new_task').focus();
+				}
+
 				badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
 				count_task_openned = badge_project.html();
 				
@@ -584,7 +603,7 @@ function add_tooltip() {
 }
 
 // SHOW DETAIL TASK
-$(document).on('click', '.subtasks_list li .title', function(e) {
+$(document).on('click', 'li.subtask .title', function(e) {
 	var li = $(this).closest('li');
 	var id = li.attr('value');
 	

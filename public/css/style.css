@@ -818,7 +818,6 @@ img {
 }
 
 .contenedor {
-	min-height: 350px;
 	width: 100%;
 	color: #616161;
 	background-color: #E9EAED;
@@ -1027,6 +1026,10 @@ textarea {
 
 .row {
 	margin: 0;
+}
+
+.container {
+	padding-right: 0;
 }
 @media (max-width: 800px) {
 	body {

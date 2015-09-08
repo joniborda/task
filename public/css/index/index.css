@@ -26,6 +26,7 @@
 	float: left;
 	width: 80%;
 	height: 100%;
+	overflow-y: scroll;
 	background-color: #FFF;
 	border-radius: 4px;
 }
@@ -33,6 +34,8 @@
 .menu_left {
 	float: left;
 	width: 20%;
+	height: 100%;
+	overflow-y: scroll;
 	color: #000;
 }
 
