@@ -108,85 +108,8 @@ $(document).ready(function(e) {
 			});
 		}
 	});
-	
-	$(".new_task").autocomplete({
-		source : function(request, response) {
-			// Si puso '+user_name' o '+'
-			if (
-				request.term.match(/\+\w*[^\+]/mg) ||
-				$(".new_task").val()[$(".new_task").val().length-1] === asign_user
-			) {
-								
-				var matches = request.term.match(/\+\w*[^\+]/mg);
-				
-				var discard = [];
-				if (matches) {
-					for ( var i = 0; i < matches.length; i++) {
-						if (i === (matches.length-1)) {
-							// Si es '+' es porque el ultimo match es discard
-							if ($(".new_task").val()[$(".new_task").val().length-1] === asign_user) {
-								discard[i] = matches[i].replace(asign_user,'').trim();
-							}
-							request.term = matches[i].replace(asign_user,'');						
-						} else {
-							discard[i] = matches[i].replace(asign_user,'').trim();						
-						}
-					}
-				}
-					
-				//Si puso '+'
-				if ($(".new_task").val()[$(".new_task").val().length-1] === asign_user) {
-					request.term = '';
-				}
-				
-				
-				$.ajax({
-					url : base_url + '/usuario/search',
-					data : {
-						name : request.term,
-						discard: discard
-					},
-					dataType : 'json',
-					type : 'GET',
-					success : function(data) {
-						ultimos_buscados = data;
-						response($.map(data, function(item) {
-							return {
-								label : item.name,
-								value : item.id
-							};
-						}));
-					},
-					error : function(request, status, error) {
-						alert(error);
-					}
-				});
-			} else {
-				$(".new_task").autocomplete('close');
-			}
-			
-		},
-		minLength : 1,
-		select : function(event, ui) {
-			console.log('select');
-			var value = $(".new_task").val();
-			var regex = new RegExp('\\+[\\w]*$');
-			
-			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));
-			return false;
-		},
-		focus : function(event, ui) {
-			console.log('focus');
-			var value = $(".new_task").val();
-			var regex = new RegExp('\\+[\\w]*$');
-			
-			$(".new_task").val(value.replace(regex, asign_user + ui.item.label));					
-			
-			return false;
-		},
-		response : function(event, ui) {
-		}
-	});
+
+	autocomplete_user(".new_task");
 });
 
 // CREAR DIALOG OF NEW PROJECT
@@ -645,6 +568,7 @@ $(document).on('click', '.tasks_list li .title', function(e) {
 	
 	get_subtasks(id);
 });
+
 function show_task_detail(id, li) {
     $('.detail_task').html('<div class="cargando"><img src="' + base_url + '/public/img/cargando.gif"></div>');
 	
@@ -1093,6 +1017,89 @@ function get_subtasks(parent_id) {
 					$(selector_li_parent + ' .subtask').hide();
 				});
 			}
+
+			autocomplete_user("input[name='subtask_title']");
+		}
+	});
+}
+
+function autocomplete_user(selector) {
+		$(selector).autocomplete({
+		source : function(request, response) {
+			// Si puso '+user_name' o '+'
+			if (
+				request.term.match(/\+\w*[^\+]/mg) ||
+				$(selector).val()[$(selector).val().length-1] === asign_user
+			) {
+								
+				var matches = request.term.match(/\+\w*[^\+]/mg);
+				
+				var discard = [];
+				if (matches) {
+					for ( var i = 0; i < matches.length; i++) {
+						if (i === (matches.length-1)) {
+							// Si es '+' es porque el ultimo match es discard
+							if ($(selector).val()[$(selector).val().length-1] === asign_user) {
+								discard[i] = matches[i].replace(asign_user,'').trim();
+							}
+							request.term = matches[i].replace(asign_user,'');						
+						} else {
+							discard[i] = matches[i].replace(asign_user,'').trim();						
+						}
+					}
+				}
+					
+				//Si puso '+'
+				if ($(selector).val()[$(selector).val().length-1] === asign_user) {
+					request.term = '';
+				}
+				
+				
+				$.ajax({
+					url : base_url + '/usuario/search',
+					data : {
+						name : request.term,
+						discard: discard
+					},
+					dataType : 'json',
+					type : 'GET',
+					success : function(data) {
+						var ultimos_buscados = data;
+						response($.map(data, function(item) {
+							return {
+								label : item.name,
+								value : item.id
+							};
+						}));
+					},
+					error : function(request, status, error) {
+						alert(error);
+					}
+				});
+			} else {
+				$(selector).autocomplete('close');
+			}
+			
+		},
+		minLength : 1,
+		select : function(event, ui) {
+			console.log('select');
+			var value = $(selector).val();
+			var regex = new RegExp('\\+[\\w]*$');
+			
+			$(selector).val(value.replace(regex, asign_user + ui.item.label));
+			return false;
+		},
+		focus : function(event, ui) {
+			console.log('focus');
+			var value = $(selector).val();
+			var regex = new RegExp('\\+[\\w]*$');
+			
+			$(selector).val(value.replace(regex, asign_user + ui.item.label));					
+			
+			return false;
+		},
+		response : function(event, ui) {
 		}
 	});
 }
