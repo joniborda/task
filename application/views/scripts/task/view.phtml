@@ -91,6 +91,11 @@
 	border: #9D9D9D 2px solid;
 	border-radius: 15px;
 }
+.date_end, .time_end {
+	width: 140px;
+	display: inline-block;
+}
+
 </style>
 
 <div id="view_task">
@@ -126,6 +131,16 @@ $status = $this->task->getStatus ();
         <a href="#" class="remove glyphicon glyphicon-trash"
             value="<?php echo $this->task->getId()?>"
         ></a>
+    </div>
+    <div class="end">
+    	<div>
+	    	<label for="date_end">Fecha estimada</label>
+	    	<input type="date" name="date_end" class="date_end form-control" />
+		</div>
+		<div>
+	    	<label for="time_end">Hora estimada</label>
+	    	<input type="time" name="time_end" class="time_end form-control" />
+    	</div>
     </div>
     <div class="asign">
         <span> Asignados: </span> <input type="text" name="asign"
