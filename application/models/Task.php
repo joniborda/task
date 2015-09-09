@@ -105,6 +105,28 @@ class Application_Model_Task
     	return $this;
     }
 
+    public function getStart()
+    {
+    	return $this->_start;
+    }
+    
+    public function setStart($start)
+    {
+    	$this->_start = $start;
+    	return $this;
+    }
+
+	public function getEnd()
+    {
+    	return $this->_end;
+    }
+    
+    public function setEnd($end)
+    {
+    	$this->_end = $end;
+    	return $this;
+    }
+
     public function getTime()
     {
     	return $this->_time;

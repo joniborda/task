@@ -689,39 +689,69 @@ $(document).on('focus', '.title_view_form', function(e) {
 	tmp_selected_task = ultimo_selected_task;
 });
 
-$(document).on('blur', '.title_view_form', function(e) {
-	
-	var input = $(this).find('[name="title"]');
-	var title = input.val();
-	$.post(
-		base_url + '/task/edit', 
-		{
-			id : ultimo_selected_task,
-			title : title
-		},
-		'json'
-	).done(function(response) {
-		if (response) {
-			$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
-			input.css('background-color', '#A0E0BC');
-			input.animate({backgroundColor: "#fff"}, 1000);
-		} else {
-			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
-		}
-	}).fail(function() {
-		input.css('background-color', '#FF5E5E');
-		input.animate({backgroundColor: "#fff"}, 1000);
-	});
-});
-
-
 //SUBMIT EDIT TITLE'S TASK
 $(document).on('keypress', '.title_view_form', function(e) {
 	
 	if (e.keyCode === 13) {
 		e.preventDefault();
-		$(this).blur();
+		var input = $(this).find('[name="title"]');
+		var title = input.val();
+		$.post(
+			base_url + '/task/edit', 
+			{
+				id : ultimo_selected_task,
+				title : title
+			},
+			'json'
+		).done(function(response) {
+			if (response) {
+				$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
+				input.css('background-color', '#A0E0BC');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			} else {
+				input.css('background-color', '#FF5E5E');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			}
+		}).fail(function() {
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
+		});
+	}
+});
+
+//SUBMIT TIME'S TASK
+$(document).on('keypress', '.date_end', function(e) {
+	
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		var input = $(this);
+		var date = input.val();
+
+		if (date == '') {
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
+			return;
+		}
+
+		$.post(
+			base_url + '/task/edit', 
+			{
+				id : ultimo_selected_task,
+				end : date
+			},
+			'json'
+		).done(function(response) {
+			if (response) {
+				input.css('background-color', '#A0E0BC');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			} else {
+				input.css('background-color', '#FF5E5E');
+				input.animate({backgroundColor: "#fff"}, 1000);
+			}
+		}).fail(function() {
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
+		});
 	}
 });
 

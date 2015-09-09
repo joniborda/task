@@ -169,6 +169,10 @@ class TaskController extends Zend_Controller_Action
 		$id = $this->_request->getParam('id');
 		$title = $this->_request->getParam('title');
 		$descripcion = $this->_request->getParam('description');
+		$end = $this->_request->getParam('end');
+		$start = $this->_request->getParam('start');
+		$time = $this->_request->getParam('time');
+		$sort = $this->_request->getParam('sort');
 		
 		$this->view->assign('response', false);
 		
@@ -186,6 +190,18 @@ class TaskController extends Zend_Controller_Action
 			
 			if ($sort) {
 				$data['sort'] = $sort;
+			}
+
+			if ($end) {
+				$data['end'] = $end;
+			}
+
+			if ($start) {
+				$data['start'] = $start;
+			}
+
+			if ($time) {
+				$data['time'] = $time;
 			}
 
 			$ret = $task_service->updateById($id, $data);
