@@ -695,65 +695,67 @@ $(document).on('keypress', '.title_view_form', function(e) {
 	if (e.keyCode === 13) {
 		e.preventDefault();
 		var input = $(this).find('[name="title"]');
-		var title = input.val();
-		$.post(
-			base_url + '/task/edit', 
-			{
-				id : ultimo_selected_task,
-				title : title
-			},
-			'json'
-		).done(function(response) {
-			if (response) {
-				$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(title);
-				input.css('background-color', '#A0E0BC');
-				input.animate({backgroundColor: "#fff"}, 1000);
-			} else {
-				input.css('background-color', '#FF5E5E');
-				input.animate({backgroundColor: "#fff"}, 1000);
-			}
-		}).fail(function() {
-			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
-		});
+
+		save_detail_field(input, 'title', input.val());
 	}
 });
 
-//SUBMIT TIME'S TASK
+//SUBMIT Date'S TASK
 $(document).on('keypress', '.date_end', function(e) {
 	
 	if (e.keyCode === 13) {
 		e.preventDefault();
 		var input = $(this);
-		var date = input.val();
 
-		if (date == '') {
-			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
-			return;
-		}
-
-		$.post(
-			base_url + '/task/edit', 
-			{
-				id : ultimo_selected_task,
-				end : date
-			},
-			'json'
-		).done(function(response) {
-			if (response) {
-				input.css('background-color', '#A0E0BC');
-				input.animate({backgroundColor: "#fff"}, 1000);
-			} else {
-				input.css('background-color', '#FF5E5E');
-				input.animate({backgroundColor: "#fff"}, 1000);
-			}
-		}).fail(function() {
-			input.css('background-color', '#FF5E5E');
-			input.animate({backgroundColor: "#fff"}, 1000);
-		});
+		save_detail_field(input, 'end', input.val());
 	}
 });
+
+//SUBMIT TIME'S TASK
+$(document).on('keypress', '.time_end', function(e) {
+	
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		var input = $(this);
+
+		save_detail_field(input, 'time', input.val());
+	}
+});
+
+function save_detail_field(input, key, value) {
+	if (value == '') {
+		input.css('background-color', '#FF5E5E');
+		input.animate({backgroundColor: "#fff"}, 1000);
+		return;
+	}
+
+	var values = {
+		id: ultimo_selected_task
+	};
+
+	values[key] = value;
+
+	$.post(
+		base_url + '/task/edit', 
+		values,
+		'json'
+	).done(function(response) {
+		if (response) {
+			if (key == 'title') {
+				$('.tasks_list li[value="'+ tmp_selected_task + '"] .title').html(value);
+			}
+
+			input.css('background-color', '#A0E0BC');
+			input.animate({backgroundColor: "#fff"}, 1000);
+		} else {
+			input.css('background-color', '#FF5E5E');
+			input.animate({backgroundColor: "#fff"}, 1000);
+		}
+	}).fail(function() {
+		input.css('background-color', '#FF5E5E');
+		input.animate({backgroundColor: "#fff"}, 1000);
+	});
+}
 
 //SUBMIT EDIT TASK
 $(document).on('keypress', '.description_view_form', function(e) {

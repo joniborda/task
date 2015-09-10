@@ -120,6 +120,16 @@ class Application_Model_Task
     {
     	return $this->_end;
     }
+
+    public function getEndFormat()
+    {
+        try {
+            $date = new DateTime($this->_end);
+            return $date->format('Y-m-d');
+        } catch (Exception $e) {
+            return null;
+        }
+    }
     
     public function setEnd($end)
     {

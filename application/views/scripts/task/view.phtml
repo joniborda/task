@@ -92,7 +92,7 @@
 	border-radius: 15px;
 }
 .date_end, .time_end {
-	width: 140px;
+	width: 155px;
 	display: inline-block;
 }
 
@@ -135,11 +135,11 @@ $status = $this->task->getStatus ();
     <div class="end">
     	<div>
 	    	<label for="date_end">Fecha estimada</label>
-	    	<input type="date" name="date_end" class="date_end form-control" />
+	    	<input type="date" name="date_end" class="date_end form-control" value="<?php echo $this->task->getEndFormat()?>" />
 		</div>
 		<div>
 	    	<label for="time_end">Hora estimada</label>
-	    	<input type="time" name="time_end" class="time_end form-control" />
+	    	<input type="time" name="time_end" class="time_end form-control" value="<?php echo $this->task->getTime()?>"/>
     	</div>
     </div>
     <div class="asign">
