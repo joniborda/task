@@ -173,6 +173,7 @@ class TaskController extends Zend_Controller_Action
 		$start = $this->_request->getParam('start');
 		$time = $this->_request->getParam('time');
 		$sort = $this->_request->getParam('sort');
+		$deadline = $this->_request->getParam('deadline');
 		
 		$this->view->assign('response', false);
 		
@@ -202,6 +203,10 @@ class TaskController extends Zend_Controller_Action
 
 			if ($time) {
 				$data['time'] = $time;
+			}
+
+			if ($deadline) {
+				$data['deadline'] = $deadline;
 			}
 
 			$ret = $task_service->updateById($id, $data);

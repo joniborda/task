@@ -138,6 +138,16 @@ class Application_Service_Task
     				}
     				
     				$changes[$key] =  $task->__get($key);
+
+                    // Si empezó la tarea y no la había empezado antes
+                    if ($key == 'status_id' && $data[$key] == 2) {
+                        $task = $this->getById($id);
+                        if ($task) {
+                            if ($task->getStatusId() == 1) {
+                                $data['start'] = date('c');
+                            }
+                        }
+                    }
     			}
     		}
     		

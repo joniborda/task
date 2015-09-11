@@ -707,7 +707,7 @@ $(document).on('keypress', '.date_end', function(e) {
 		e.preventDefault();
 		var input = $(this);
 
-		save_detail_field(input, 'end', input.val());
+		save_detail_field(input, 'deadline', input.val());
 	}
 });
 

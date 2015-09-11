@@ -7,16 +7,15 @@ class Application_Model_ChangeTask
     protected $_title;
     protected $_projects_id;
     protected $_status_id;
-    protected $_priorities_id;
     protected $_start;
     protected $_end;
-    protected $_realized;
     protected $_descripcion;
     protected $_types_id;
     protected $_time;
     protected $_created;
     protected $_user_id;
     protected $_revisado;
+    protected $_deadline;
     
     
     public function __construct($data = null)
@@ -29,32 +28,30 @@ class Application_Model_ChangeTask
                 $this->_title = (isset($data['title']) ? $data['title'] : null);
                 $this->_projects_id = (isset($data['projects_id']) ? $data['projects_id'] : null);
                 $this->_status_id = (isset($data['status_id']) ? $data['status_id'] : null);
-                $this->_priorities_id = (isset($data['priorities_id']) ? $data['priorities_id'] : null);
                 $this->_start = (isset($data['start']) ? $data['start'] : null);
                 $this->_end = (isset($data['end']) ? $data['end'] : null);
-                $this->_realized = (isset($data['realized']) ? $data['realized'] : null);
                 $this->_descripcion = (isset($data['descripcion']) ? $data['descripcion'] : null);
                 $this->_types_id = (isset($data['types_id']) ? $data['types_id'] : null);
                 $this->_time = (isset($data['time']) ? $data['time'] : null);
                 $this->_created = (isset($data['created']) ? $data['created'] : null);
                 $this->_user_id = (isset($data['user_id']) ? $data['user_id'] : null);
                 $this->_revisado = (isset($data['revisado']) ? $data['revisado'] : null);
+                $this->_deadline = (isset($data['deadline']) ? $data['deadline'] : null);
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_task_id = $data->task_id;
                 $this->_title = $data->title;
                 $this->_projects_id = $data->projects_id;
                 $this->_status_id = $data->status_id;
-                $this->_priorities_id = $data->priorities_id;
                 $this->_start = $data->start;
                 $this->_end = $data->end;
-                $this->_realized = $data->realized;
                 $this->_descripcion = $data->descripcion;
                 $this->_types_id = $data->types_id;
                 $this->_time = $data->time;
                 $this->_created = $data->created;
                 $this->_user_id = $data->user_id;
                 $this->_revisado = $data->revisado;
+                $this->_deadline = $data->deadline;
             }
         }
     }
@@ -263,6 +260,15 @@ class Application_Model_ChangeTask
     public function setRevisado($revisado) {
     	$this->_revisado = $revisado;
     	return $this;
+    }
+
+    public function getDeadline() {
+        return $this->_deadline;
+    }
+    
+    public function setDeadline($deadline) {
+        $this->_deadline = $deadline;
+        return $this;
     }
 }
 ?>

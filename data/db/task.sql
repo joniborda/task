@@ -1071,3 +1071,12 @@ ALTER TABLE tasks
    ADD COLUMN parent_id integer;
 COMMENT ON COLUMN tasks.parent_id
   IS 'Define el padre, si es no nulo entonces es una subtarea';
+
+
+ALTER TABLE tasks ADD COLUMN deadline timestamp without time zone;
+ALTER TABLE tasks DROP COLUMN priorities_id;
+ALTER TABLE tasks DROP COLUMN realized;
+
+ALTER TABLE change_tasks ADD COLUMN deadline timestamp without time zone;
+ALTER TABLE change_tasks DROP COLUMN priorities_id;
+ALTER TABLE change_tasks DROP COLUMN realized;
