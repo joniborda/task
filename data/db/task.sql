@@ -1080,3 +1080,4 @@ ALTER TABLE tasks DROP COLUMN realized;
 ALTER TABLE change_tasks ADD COLUMN deadline timestamp without time zone;
 ALTER TABLE change_tasks DROP COLUMN priorities_id;
 ALTER TABLE change_tasks DROP COLUMN realized;
+ALTER TABLE tasks ADD COLUMN revisado boolean NOT NULL DEFAULT false;

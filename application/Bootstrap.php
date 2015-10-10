@@ -53,7 +53,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'username' => 'appmailtransport@gmail.com',
 			'password' => 'nosenose',
     		'port' => '587',
-    		'ssl' => 'tls'
+    		'ssl' => 'tls',
 		);
     	$tr = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);    	
     	
