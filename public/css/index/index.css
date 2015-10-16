@@ -131,7 +131,9 @@
 .create_task_form,.search_form {
 	padding: 10px;
 }
-
+.search_form {
+    border-bottom: 1px solid #eee;
+}
 .search_form {
 
 }

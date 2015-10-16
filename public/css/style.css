@@ -953,7 +953,7 @@ textarea {
 	float: left;
 }
 .projects_list .active {
-	background-color: #BABBBC;
+	background-color: rgba(186, 187, 188, 0.44);
 }
 
 .users_list .active {
