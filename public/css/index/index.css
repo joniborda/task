@@ -229,27 +229,6 @@
 		width: 60%;
 	}
 }
-.search_status {
-	cursor: pointer;
-	border: solid 1px white;
-	padding: 5px;
-	display: inline;
-	border-bottom: 0;
-	border-bottom-left-radius: 0px;
-	border-bottom-right-radius: 0px;
-	width: 25%;
-	display: inline-block;
-	padding: 0 5px;
-	float: left;
-	background-color: #D5D3D8;
-}
-
-.search_status.active {
-	background-color: #FFF;
-}
-.search_status:hover {
-	font-weight: bolder;
-}
 
 .badge.closed {
 	background-color: #5ca77c;

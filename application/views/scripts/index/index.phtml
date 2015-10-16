@@ -60,23 +60,33 @@
 			<input type="hidden" name="task_id" value="">
 			<span class="glyphicon glyphicon-plus"></span>
 		</form>
-		<div class="filters">
-  			<div class="search_status" id="1">
-  				<span class="change_status glyphicon glyphicon-record tooltipstered"></span>
-  				Abiertas
-			</div>
-  			<div class="search_status"  id="2">
-	  			<span class="change_status glyphicon glyphicon-play-circle tooltipstered"></span>
-  				Empezadas
-			</div>
-  			<div class="search_status" id="3">
-  				<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
-  				Hechas
-			</div>
-			<div class="search_status">
-  				<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
-  				Todas
-			</div>
+		<div class="filters ">
+			<ul class="nav nav-tabs">
+				<li role="presentation" class="active search_status" id="1">
+					<a href="#">
+  						<span class="change_status glyphicon glyphicon-record tooltipstered"></span>
+						Abiertas
+					</a>
+				</li>
+				<li role="presentation" class="search_status"  id="2">
+					<a href="#">
+			  			<span class="change_status glyphicon glyphicon-play-circle tooltipstered"></span>
+						Empezadas
+					</a>
+				</li>
+				<li role="presentation" class="search_status" id="3">
+					<a href="#">
+						<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+  						Hechas
+					</a>
+				</li>
+				<li role="presentation" class="search_status">
+					<a href="#">
+						<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+  						Todas
+					</a>
+				</li>
+			</ul>
   		</div>
 		<ul class="tasks_list list-unstyled">
 		</ul>
