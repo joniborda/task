@@ -102,7 +102,6 @@
 .tasks_list .title {
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	width: 80%;
 	overflow: hidden;
 	display: inline-block;
 	vertical-align: middle;
@@ -276,4 +275,16 @@ div.subtask {
 
 .container {
 	padding-left: 0px;
+}
+
+.remove_task {
+	width: 4%;
+}
+
+.tasks_list .title {
+	width: 75%;
+}
+
+.subtask .title {
+	width: 80%;
 }

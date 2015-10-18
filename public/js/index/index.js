@@ -311,7 +311,12 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 
 	var ret = '<li value="'+ id +'" class="' + class_status + '" sort="' + sort + '">' +
 			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' +
-			'<span class="title">' + title + '</span><div class="task_users">';
+			'<span class="title">' + title + '</span>';
+	if (!parent_id) {
+		ret += '<a href="#" class="remove_task glyphicon glyphicon-trash"></a>';
+	}
+	
+	ret += '<div class="task_users">';
 	
 	var date = new Date(created);
 	var current_date = new Date(Date());
@@ -593,6 +598,7 @@ function show_task_detail(id, li) {
 				$(this).height($(this).height());
 			}
 		});
+		add_tooltip();
 	}).fail(function() {
 	    alert( "No se puede cargar" );
 	});
@@ -1039,6 +1045,8 @@ function get_subtasks(parent_id) {
 				$(selector_li_parent).height(curHeight).animate({
 					left: "slide",
 				    height: autoHeight
+				}, function() {
+					add_tooltip();
 				});
 			} else {
 
