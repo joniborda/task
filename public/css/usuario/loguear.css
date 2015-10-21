@@ -14,10 +14,6 @@
 	padding: 10px;
 }
 
-#loguear input {
-	width: 130px;
-	display: inline-block;
-}
 .border {
 	margin-right: 0;
     margin-left: 0;
@@ -28,4 +24,15 @@
     border-radius: 4px 4px 0 0;
     padding: 45px 15px 15px;
     margin: 0 -15px 15px;
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,.19),0 1px 10px 0 rgba(0,0,0,.24);
+}
+
+.container-center {
+    margin: auto;
+    width: 100%;
+    display: block;
+}
+.container-center .border {
+    float: none;
+    margin: auto;
 }

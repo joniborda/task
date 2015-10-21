@@ -1081,3 +1081,6 @@ ALTER TABLE change_tasks DROP COLUMN priorities_id;
 ALTER TABLE change_tasks DROP COLUMN realized;
 ALTER TABLE tasks ADD COLUMN revisado boolean NOT NULL DEFAULT false;
 -- ejecutar desde aca
+
+ALTER TABLE users
+   ADD COLUMN fb_key bigint;
