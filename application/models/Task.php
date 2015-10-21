@@ -281,5 +281,17 @@ class Application_Model_Task {
 		$this->_revisado = $revisado;
 		return $this;
 	}
+
+	/**
+	 * Get project
+	 *
+	 * @return Application_Model_Project
+	 */
+	public function getProject() {
+		if ($this->_projects_id) {
+			return Application_Service_Locator::getProjectService()
+				->getById($this->_projects_id);
+		}
+	}
 }
 ?>

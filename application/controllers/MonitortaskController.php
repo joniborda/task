@@ -54,20 +54,21 @@ class MonitortaskController extends Zend_Controller_Action {
 	}
 
 	private function getTableHtml($task_new) {
-		return '
-		<table>
-			<tr>
-				<th>Número</th>
-				<th>Título</th>
-				<th>Estado</th>
-			</tr>
-			<tr>
-				<td>' . $task_new->getId() . '</td>
-				<td>' . $task_new->getTitle() . '</td>
-				<td>' . $task_new->getStatus() . '</td>
-			</tr>
-		</table>
-		';
+		$ret =
+		'<h3>' .
+		'<a href="' . $_SERVER['SERVER_NAME'] . '/task">#' . $task_new->getId() . '</a> ' .
+		$task_new->getTitle() .
+		'</h3>' .
+		'<div>Estado: ' . $task_new->getStatus() . '</div>' .
+		'<div>Asignado: ';
+
+		foreach ($task_new->getUsers() as $user) {
+			$ret .= ' ' . $user;
+		}
+
+		$ret .= '</div>';
+
+		return $ret;
 	}
 
 	public function newtaskAction() {
@@ -96,7 +97,14 @@ class MonitortaskController extends Zend_Controller_Action {
 
 						$mail = new Zend_Mail();
 						$mail->addTo($user->getMail(), $user->getName());
-						$mail->setSubject('Nueva tarea');
+
+						$project = $task->getProject();
+						$project_name = '';
+						if ($project) {
+							$project_name = $project->getName();
+						}
+
+						$mail->setSubject($project_name . ' - Nueva tarea #' . $task->getId());
 						$mail->setBodyHtml(utf8_decode($text));
 						try {
 							$mail->send();
