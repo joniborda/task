@@ -10,7 +10,7 @@ class MonitortaskController extends Zend_Controller_Action {
 		if (!empty($change_tasks)) {
 			$ret = array();
 			foreach ($change_tasks as $change_task) {
-				$task_new = Application_Service_Locator::getTaskService()->getById($change_task->getTaskId());
+				$task_new = $change_task->getTask();
 
 				if ($task_new) {
 					$text = $this->getTableHtml($task_new);
@@ -36,7 +36,13 @@ class MonitortaskController extends Zend_Controller_Action {
 
 							$mail = new Zend_Mail();
 							$mail->addTo($user->getMail(), $user->getName());
-							$mail->setSubject('Tarea modificada');
+							$project = $task_new->getProject();
+							$project_name = '';
+							if ($project) {
+								$project_name = $project->getName();
+							}
+
+							$mail->setSubject($project_name . ' - Tarea Modificada #' . $change_task->getTaskId());
 							$mail->setBodyHtml(utf8_decode($text));
 							try {
 								$mail->send();
