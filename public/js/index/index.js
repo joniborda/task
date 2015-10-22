@@ -289,17 +289,17 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 	switch(status_id) {
 	default:
 	case 1:
-		status = 'Abierto';
+		status = status_list[1];
 		class_status = 'background_openned';
 		icon = 'glyphicon-record';
 		break;
 	case 2:
-		status = 'Empezado';
+		status = status_list[2];
 		class_status = 'background_started';
 		icon = 'glyphicon-play-circle';
 		break;
 	case 3:
-		status = 'Terminado';
+		status = status_list[3];
 		class_status = 'background_done';
 		icon = 'glyphicon-ok-circle';
 		break;
@@ -488,37 +488,37 @@ function add_tooltip() {
 			var html_tooltip = 
 				'<div class="tooltip_status"><ul class="list-unstyled">';
 			switch($(origin).attr('value')) {
-				case 'Abierto': 
+				case status_list[1]: 
 					html_tooltip += 
 						'<li>' + 
 							'<span class="glyphicon glyphicon-play-circle"></span>' + 
-							'<a href="#" class="change_status" id="Empezado" status_id="' + 2 + '" value="'+task_id+'">Empezada</a>' +
+							'<a href="#" class="change_status" id="' + status_list[2]+'" status_id="' + 2 + '" value="'+task_id+'">' + status_list[2] + '</a>' +
 						'</li>' +
 						'<li>' +
 							'<span class="glyphicon glyphicon-ok-circle"></span>' +
-							'<a href="#" class="change_status" id="Terminado" status_id="' + 3 + '" value="'+task_id+'">Hecha</a>' +
+							'<a href="#" class="change_status" id="' + status_list[3] +'" status_id="' + 3 + '" value="'+task_id+'">' + status_list[3] + '</a>' +
 						'</li>';
 					break;
-				case 'Terminado':
+				case status_list[3]:
 					html_tooltip += 
 						'<li>' +
 							'<span class="glyphicon glyphicon-record"></span>' +
-							'<a href="#" class="change_status" id="Abierto" status_id="' + 1 + '" value="'+task_id+'">Abierta</a>' +
+							'<a href="#" class="change_status" id="' + status_list[1] +'" status_id="' + 1 + '" value="'+task_id+'">' + status_list[1] + '</a>' +
 						'</li>' +
 						'<li>' + 
 							'<span class="glyphicon glyphicon-play-circle"></span>' +
-							'<a href="#" class="change_status" id="Empezado" status_id="' + 2 + '"  value="'+task_id+'">Empezada</a>' + 
+							'<a href="#" class="change_status" id="' + status_list[2] + '" status_id="' + 2 + '"  value="'+task_id+'">' + status_list[2] + '</a>' + 
 						'</li>';
 					break;
-				case 'Empezado':
+				case status_list[2]:
 					html_tooltip += 
 						'<li>' + 
 							'<span class="glyphicon glyphicon-record"></span>' + 
-							'<a href="#" class="change_status" id="Abierto" status_id="' + 1 + '" value="'+task_id+'">Abierta</a>' + 
+							'<a href="#" class="change_status" id="' + status_list[1] + '" status_id="' + 1 + '" value="'+task_id+'">' + status_list[1] + '</a>' + 
 						'</li>' +
 						'<li>' + 
 							'<span class="glyphicon glyphicon-ok-circle"></span>' + 
-							'<a href="#" class="change_status" id="Terminado" status_id="' + 3 + '" value="'+task_id+'">Hecha</a>' + 
+							'<a href="#" class="change_status" id="' + status_list[3] + '" status_id="' + 3 + '" value="'+task_id+'">' + status_list[3] + '</a>' + 
 						'</li>';
 					break;
 			}
@@ -660,18 +660,18 @@ $(document).on('click', '#view_task .remove', function(e) {
 				var status = $('.tasks_list li[value="'+ id + '"]').find('.show_status').attr('value');
 				
 				switch (status) {
-				case 'Abierto':
-					var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
-					var count_task_openned = badge_project.html();
-					
-					if (count_task_openned != '0') {
-						badge_project.html(parseInt(count_task_openned)-1);
+					case status_list[1]:
+						var badge_project = $('.project[value="' + project_selected_id + '"]').parent().find('span.badge');
+						var count_task_openned = badge_project.html();
 						
-						if (count_task_openned === '1') {
-							badge_project.removeClass('openned');
-							badge_project.addClass('closed');
+						if (count_task_openned != '0') {
+							badge_project.html(parseInt(count_task_openned)-1);
+							
+							if (count_task_openned === '1') {
+								badge_project.removeClass('openned');
+								badge_project.addClass('closed');
+							}
 						}
-					}
 					break;
 				}
 				$('.tasks_list li[value="'+ id + '"]').remove();

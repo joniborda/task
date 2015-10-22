@@ -96,6 +96,7 @@
 	
 </div>
 <script type="text/javascript">
-	var current_user_id = <?php echo (!empty($this->user) ? $this->user->getId() : '');?>;
-	var current_user_name = '<?php echo (!empty($this->user) ? $this->user->getName() : '');?>';
+	var current_user_id = <?php echo (!empty($this->user) ? $this->user->getId() : 'null');?>;
+	var current_user_name = "<?php echo (!empty($this->user) ? $this->user->getName() : '');?>";
+	var status_list = <?php echo (!empty($this->status) ? json_encode($this->status) : '[]'); ?>;
 </script>
