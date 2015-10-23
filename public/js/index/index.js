@@ -313,7 +313,7 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' +
 			'<span class="title">' + title + '</span>';
 	if (!parent_id) {
-		ret += '<a href="#" class="remove_task glyphicon glyphicon-trash"></a>';
+		ret += '<a href="#" value="' + id + '" class="remove_task glyphicon glyphicon-trash"></a>';
 	}
 	
 	ret += '<div class="task_users">';
@@ -644,12 +644,12 @@ $(document).on('click', '#form_edit_project .remove',function(e){
 });
 
 // CLICK REMOVE TASK
-$(document).on('click', '#view_task .remove', function(e) {
+$(document).on('click', '#view_task .remove, .remove_task', function(e) {
 	e.preventDefault();
 	var id = $(this).attr('value');
 	if (confirm('¿Está seguro que desea borrar la tarea?')) {		
 		$.post(
-				base_url + '/task/remove', 
+				base_url + '/task/remove',
 				{
 					id : id
 				},
@@ -674,7 +674,7 @@ $(document).on('click', '#view_task .remove', function(e) {
 						}
 					break;
 				}
-				$('.tasks_list li[value="'+ id + '"]').remove();
+				$('.tasks_list li[value="'+ id + '"]').hide('slow');
 				$('.detail_task').animate({
 					left: "slide",
 				    width: "hide",
@@ -1013,7 +1013,7 @@ function get_subtasks(parent_id) {
 	        return false;
 	    }
 
-		var selector_li_parent = '.tasks_list [value=' + parent_id + ']';
+		var selector_li_parent = '.tasks_list li[value=' + parent_id + ']';
 	    cerrar_cargando();
 	    $(selector_li_parent + ' li.subtask').remove();
 		if (status === 'success') {
