@@ -30,7 +30,11 @@ class ProjectController extends Zend_Controller_Action
 		if (
 				($name = $this->getRequest()->getParam('name'))
 		) {
-			if (($project = Application_Service_Locator::getProjectService()->crear($name))) {
+
+			$site_url = $this->getRequest()->getParam('site_url', null);
+			$description = $this->getRequest()->getParam('description', null);
+
+			if (($project = Application_Service_Locator::getProjectService()->crear($name, $site_url, $description))) {
 				$this->view->assign('response', array(
 						'response' => true,
 						'id' => $project->getId()
@@ -58,9 +62,12 @@ class ProjectController extends Zend_Controller_Action
 		$this->_helper->layout->setLayout('empty');
 		$id = $this->_request->getParam('id');
 		$name = $this->_request->getParam('name');
+		$site_url = $this->_request->getParam('site_url');
+		$description = $this->_request->getParam('description');
+		
 		if ($id != null && $name != null) {
 				
-			Application_Service_Locator::getProjectService()->update($id, $name);
+			Application_Service_Locator::getProjectService()->update($id, $name, $site_url, $description);
 			$this->view->assign('error', false);
 		}
 		$this->view->assign('error', true);

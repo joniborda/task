@@ -71,12 +71,21 @@ class Application_Dao_Project
      * 
      * @return Application_Model_Project
      */
-    public function crear($name)
+    public function crear($name, $site_url = null, $description = null)
     {
     	$data = array(
     		'name' => $name
     	);
     	
+        if ($site_url) {
+            $data['site_url'] = $site_url;
+        }
+
+        if ($description) {
+            $data['description'] = $description;
+        }
+
+
     	$data['id'] = $this->getDbTable()->insert($data);
     	
     	return new Application_Model_Project($data);
@@ -90,11 +99,14 @@ class Application_Dao_Project
      *
      * @return void
      */
-    public function update($id, $name)
+    public function update($id, $name, $site_url, $description)
     {
     	$data = array(
-    			'name' => $name
+			'name' => $name,
+            'site_url' => $site_url,
+            'description' => $description
     	);
+
     	$this->getDbTable()->update($data, array('id = ?'=> (int)$id));
     }
     

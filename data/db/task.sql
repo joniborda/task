@@ -1084,3 +1084,8 @@ ALTER TABLE tasks ADD COLUMN revisado boolean NOT NULL DEFAULT false;
 
 ALTER TABLE users
    ADD COLUMN fb_key bigint;
+
+ALTER TABLE projects
+  ADD COLUMN site_url character varying(500);
+ALTER TABLE projects
+  ADD COLUMN description text;

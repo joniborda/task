@@ -393,18 +393,22 @@ $(document).on('click', '.edit_project', function(e) {
 $(document).on('submit', '#form_edit_project', function(e) {
 	e.preventDefault();
 	abrir_cargando();
-	var name = $(this).find('input[name="name"]').val();
-	var id = $(this).find('input[name="id"]').val();
+	var id = $(this).find('input[name="id"]').val(),
+		name = $(this).find('input[name="name"]').val(),
+		site_url = $(this).find('input[name="site_url"]').val(),
+		description = $(this).find('textarea[name="description"]').val();
 
 	$.post('project/edit', {
 		id : id,
-		name : name
+		name : name,
+		site_url: site_url,
+		description: description
 	}).complete(function(response, status) {
 		cerrar_cargando();
 		if (status === 'success') {
 			var ret = $.parseJSON(response.responseText);
 			if (ret) {
-				$('#div_form_project').dialog('destroy');
+				$('#div_form_project').remove();
 				$('.project[value="' + id + '"]').html(name);
 			}
 		}

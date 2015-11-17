@@ -21,6 +21,15 @@
 			<a href="#" class="remove glyphicon glyphicon-trash" value="<?php echo $this->project->getId();?>"></a>
 		</h1>
 		<input name="name" class="name_project form-control" type="text" value="<?php echo $this->project->getName()?>"/>
+
+
+		<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-link"></span></span>
+			<input name="site_url" type="text" class="form-control" placeholder="Site Url" aria-describedby="basic-addon1" value="<?php echo $this->project->getSiteUrl()?>">
+		</div>
+
+		<textarea name="description" class="name_project form-control" placeholder="Description" ><?php echo $this->project->getDescription()?></textarea>
+
 		<input name="id" type="hidden" value="<?php echo $this->project->getId()?>"/>
 		<a href="#" class="btn btn-default cancel_edit_project" >Cancelar</a>
 		<input type="submit" class="btn btn-primary" value="Editar"/>

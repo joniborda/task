@@ -4,6 +4,8 @@ class Application_Model_Project
 {
     protected $_id;
     protected $_name;
+    protected $_site_url;
+    protected $_description;
  
     public function __construct($data = null)
     {
@@ -12,9 +14,13 @@ class Application_Model_Project
             if (is_array($data)) {
                 $this->_id = $data['id'];
                 $this->_name = $data['name'];
+                $this->_site_url = $data['site_url'];
+                $this->_description = $data['description'];
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_name = $data->name;
+                $this->_site_url = $data->site_url;
+                $this->_description = $data->description;
             }
         }
     }
@@ -65,6 +71,28 @@ class Application_Model_Project
     public function __toString()
     {
     	return $this->_name;
+    }
+
+    public function getSiteUrl()
+    {
+        return $this->_site_url;
+    }
+    
+    public function setSiteUrl($SiteUrl)
+    {
+        $this->_site_url = $SiteUrl;
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->_description;
+    }
+    
+    public function setDescription($Description)
+    {
+        $this->_description = $Description;
+        return $this;
     }
 }
 ?>

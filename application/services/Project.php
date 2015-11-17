@@ -82,9 +82,9 @@ class Application_Service_Project
      * 
      * @return Application_Model_Project
      */
-    public function crear($name)
+    public function crear($name, $site_url = null, $description = null)
     {
-    	return $this->_ProjectDao->crear($name);
+    	return $this->_ProjectDao->crear($name, $site_url, $description);
     }
     
     /**
@@ -93,9 +93,9 @@ class Application_Service_Project
      * @param Integer $id
      * @param String  $name
      */
-    public function update($id, $name)
+    public function update($id, $name, $site_url = null, $description = null)
     {
-    	$this->_ProjectDao->update($id, $name);
+    	$this->_ProjectDao->update($id, $name, $site_url, $description);
     }
     
     /**
