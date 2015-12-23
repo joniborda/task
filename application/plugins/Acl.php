@@ -89,8 +89,9 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
             $role, $path, $request->getActionName()
         );
        if (!$allowed) {
+            $url = Application_Service_Session::get('redirect');
            Zend_Controller_Action_HelperBroker::getStaticHelper('redirector')
-               ->gotoUrlAndExit('/usuario/loguear');
+               ->gotoUrlAndExit('/usuario/loguear/redirect/' . str_replace('%2F', '___', urlencode($url)));
        }
     }
 }

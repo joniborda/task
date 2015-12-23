@@ -41,6 +41,7 @@ class UsuarioController extends Zend_Controller_Action {
 
 	public function loguearAction() {
 		$request = $this->getRequest();
+
 		if ($request->isPost()) {
 
 			$user_name = $request->getParam('user_name');
@@ -51,14 +52,11 @@ class UsuarioController extends Zend_Controller_Action {
 					->login($user_name, $password, true);
 				if (null !== $user) {
 
-					if (Application_Service_Session::get('redirect')) {
-						$url = Application_Service_Session::get('redirect');
+					$redirect = $request->getParam('redirect');
+					$redirect = urldecode(str_replace('___', '%2F', $redirect));
+					
+					$this->_redirect($redirect);
 
-						Application_Service_Session::set('redirect', '');
-						$this->_redirect($url);
-					} else {
-						$this->_redirect('/');
-					}
 				}
 			} catch (Zend_Validate_Exception $e) {
 				$this->view->error = $e->getMessage();
@@ -72,8 +70,9 @@ class UsuarioController extends Zend_Controller_Action {
 
 	public function salirAction() {
 		$url = Application_Service_Session::get('redirect');
+
 		Application_Service_Session::logout();
-		$this->_redirect('/?redirect=' . $url);
+		$this->_redirect('/usuario/loguear/redirect/' . str_replace('%2F', '___', urlencode($url)));
 	}
 
 	public function searchAction() {
