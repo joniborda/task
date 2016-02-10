@@ -1179,7 +1179,7 @@ $(document).on('click', '.edit_title', function(e) {
 
 	$(
 		'<form class="form_edit_title">' +
-			'<input type="text" name="title" value="' + title + '" class="input_title_edited form-control" title="Enter para guardar" />' +
+			'<input type="text" name="title" value="' + title + '" class="input_title_edited form-control" title="ENTER para guardar, ESC para cancelar" />' +
 			'<input type="hidden" name="task_id" value="' + task_id + '" />' +
 		'</form>'
 	).insertAfter(li.find('.show_status'));
@@ -1201,6 +1201,15 @@ $(document).on('submit', '.form_edit_title', function(e) {
 
 	$(this).remove();
 	$(li).find('.title').html(title).removeClass('hide');
+});
+
+$(document).on('keyup', '.input_title_edited', function(e) {
+	console.log(e.keyCode);
+	if (e.keyCode === 27) {
+		e.preventDefault();
+		$(this).closest('li').find('.title').removeClass('hide');
+		$(this).closest('.form_edit_title').remove();		
+	}
 });
 
 })(jQuery);
