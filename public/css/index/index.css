@@ -106,6 +106,7 @@
 	display: inline-block;
 	vertical-align: middle;
 	cursor: move;
+	cursor: -webkit-grab;
 }
 
 .tasks_list li {
