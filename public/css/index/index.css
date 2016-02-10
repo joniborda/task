@@ -110,7 +110,6 @@
 }
 
 .tasks_list li {
-	line-height: 2;
 	height: 30px;
 	margin: 10px;
     background-color: #fff;
@@ -159,6 +158,13 @@
 
 .glyphicon-play-circle {
 	color: #E1DE00;
+}
+
+.filters .glyphicon-ok-circle,
+.filters .glyphicon-record,
+.filters .glyphicon-play-circle {
+	display: inline;
+    width: 0px;
 }
 
 .tasks_list .task_users {
