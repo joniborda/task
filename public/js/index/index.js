@@ -124,7 +124,6 @@ $(document).on('click', '#create_project', function(e) {
 				modal : true,
 				close: function(e, ui) {
 					prevent_close_detail = true;
-					console.log('cerrando dialog');
 				}
 			});
 		}
@@ -611,13 +610,11 @@ function show_task_detail(id, li) {
 }
 
 $(document).on('focus', '.search_task', function() {
-	console.log('focus');
-	
+
 	$(this).animate({width: "320px"});
 	$('.search_form .glyphicon').animate({left: "298px"});
 });
 $(document).on('blur', '.search_task', function() {
-	console.log('blur');
 	
 	$(this).animate({width: "200px"});
 	$('.search_form .glyphicon').animate({left: "178px"});
@@ -987,7 +984,6 @@ function get_task_list(title_project, user_id) {
 				$('.search_status').removeClass('active');
 				if (ret.status_id === null) {
 				    // ver como dejar active el ALL 
-				    console.log('busco por todos');
 				} else {
 				    $('.search_status[id=' + ret.status_id + ']').addClass('active');
 				    
@@ -1129,7 +1125,6 @@ function autocomplete_user(selector) {
 		},
 		minLength : 1,
 		select : function(event, ui) {
-			console.log('select');
 			var value = $(selector).val();
 			var regex = new RegExp('\\+[\\w]*$');
 			
@@ -1137,7 +1132,6 @@ function autocomplete_user(selector) {
 			return false;
 		},
 		focus : function(event, ui) {
-			console.log('focus');
 			var value = $(selector).val();
 			var regex = new RegExp('\\+[\\w]*$');
 			
@@ -1204,7 +1198,7 @@ $(document).on('submit', '.form_edit_title', function(e) {
 });
 
 $(document).on('keyup', '.input_title_edited', function(e) {
-	console.log(e.keyCode);
+
 	if (e.keyCode === 27) {
 		e.preventDefault();
 		$(this).closest('li').find('.title').removeClass('hide');
