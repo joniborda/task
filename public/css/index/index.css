@@ -283,10 +283,22 @@ div.subtask {
 	width: 4%;
 }
 
-.tasks_list .title {
+.tasks_list .title, .tasks_list .form_edit_title {
 	width: 75%;
 }
 
 .subtask .title {
 	width: 80%;
+}
+.tasks_list .edit_title {
+	position: relative;
+    width: 0px;
+    right: 38px;
+    display: inline-block;
+}
+
+.tasks_list .input_title_edited, .tasks_list .form_edit_title {
+    display: inline-block;
+    height: auto;
+    padding: 1px 5px;
 }

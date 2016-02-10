@@ -313,7 +313,9 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 			'<a href="#" class="show_status glyphicon ' + icon +'" value="' + status + '" ></a> ' +
 			'<span class="title">' + title + '</span>';
 	if (!parent_id) {
-		ret += '<a href="#" value="' + id + '" class="remove_task glyphicon glyphicon-trash"></a>';
+		ret += 
+		'<a href="#" class="edit_title hide"><span class="glyphicon glyphicon-pencil"></span></a>' +
+		'<a href="#" value="' + id + '" class="remove_task glyphicon glyphicon-trash"></a>';
 	}
 	
 	ret += '<div class="task_users">';
@@ -1147,4 +1149,58 @@ function autocomplete_user(selector) {
 		}
 	});
 }
+
+// SUBMIT EDIT PROJECT
+$(document).on('mouseover', '.title, .edit_title', function(e) {
+	e.preventDefault();
+
+	var edit_title = $(this).closest('li').find('.edit_title');
+
+	edit_title.removeClass('hide');
+});
+
+$(document).on('mouseleave', '.title, .edit_title', function(e) {
+	e.preventDefault();
+
+	var edit_title = $(this).closest('li').find('.edit_title');
+
+	edit_title.addClass('hide');
+});
+
+$(document).on('click', '.edit_title', function(e) {
+	
+	var li = $(this).closest('li'),
+		title = li.find('.title').text(),
+		task_id = $(li).val();
+
+	e.preventDefault();
+	$(this).addClass('hide');
+	li.find('.title').addClass('hide');
+
+	$(
+		'<form class="form_edit_title">' +
+			'<input type="text" name="title" value="' + title + '" class="input_title_edited form-control" title="Enter para guardar" />' +
+			'<input type="hidden" name="task_id" value="' + task_id + '" />' +
+		'</form>'
+	).insertAfter(li.find('.show_status'));
+
+	$(li).find('[name="title"]').focus();
+	$(li).find('[name="title"]').tooltipster();
+});
+
+// SUBMIT NEW TASK
+$(document).on('submit', '.form_edit_title', function(e) {
+	var input = $(this).find('[name="title"]'),
+		title = input.val(),
+		task_id = $(this).find('[name="task_id"]').val(),
+		li = $(this).closest('li');
+
+	e.preventDefault();
+	ultimo_selected_task = task_id;
+	save_detail_field(input, 'title', title);
+
+	$(this).remove();
+	$(li).find('.title').html(title).removeClass('hide');
+});
+
 })(jQuery);
