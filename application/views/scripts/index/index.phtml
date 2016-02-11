@@ -35,7 +35,7 @@
 			<ul class="projects_list">
 			<?php foreach ($this->projects as $project):?>
 				<li>
-					<a href="#<?php echo $project->getName();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
+					<a href="/task/index/index/<?php echo $project->getId();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
 					<?php $count_openned = $project->getCountOpenned();?>
 					<?php if ($count_openned > 0) :?>
 						<span class="badge openned"><?php echo $count_openned?></span>

@@ -3,6 +3,8 @@ var asign_user = '+';
 var prevent_close_detail = false;
 var project_selected_id;
 var status_selected_id = 1;
+
+
 (function($) {
 	'use strict';
 
@@ -264,8 +266,8 @@ function create_new_task(input_name, title, parent_id) {
 }
 // CLICK SELECT PROJECT
 $(document).on('click', '.project', function(e) {
-
-	e.preventDefault();
+return;
+	//e.preventDefault();
 	abrir_cargando();
 	project_selected_id = $(this).attr('value');
 
@@ -1019,7 +1021,7 @@ function get_task_list(title_project, user_id) {
 
 			}
 	
-			location.hash = title_project;
+			//location.hash = title_project;
 						
 			$(".search_status").removeClass('active');
 			$(".search_status[id=" + ret.status_id + "]").addClass('active');
@@ -1229,28 +1231,42 @@ $(document).on('keyup', '.input_title_edited', function(e) {
 		$(this).closest('.form_edit_title').remove();		
 	}
 });
+window.jQuery = $;
+$(function () {
+var AppRouter = Backbone.Router.extend({
+	    routes: {
+	        "task/index/index/:id": function(id) {
+	        	//console.log(project);
+	        	
+	        	abrir_cargando();
+				project_selected_id = id;
 
-/*
-Backbone.history.start({pushState: true, root:'/'});
+				// cerrar el detalle de la tarea
+				$('.detail_task').animate({
+					left: "slide",
+					width: "hide",
+				});
 
-$(document).on('click', 'a:not([data-bypass])', function (event) {
-    var href = $(this).attr('href');
-    var protocol = this.protocol + '//';
+				$('.project').closest('li').removeClass('active');
+				//$(this).closest('li').addClass('active');
 
-    if (href.slice(protocol.length) !== protocol) {
-        event.preventDefault();
-        Backbone.history.navigate(href, {trigger: true});
-   }
+				get_task_list('');
+        	},
+	    },
+	});
+	var app_router = new AppRouter;
+
+	Backbone.history.start({pushState: true, root:'/'});
+
+	$(document).on('click', 'a:not([data-bypass])', function (event) {
+	    var href = $(this).attr('href');
+	    var protocol = this.protocol + '//';
+
+	    if (href.slice(protocol.length) !== protocol) {
+	        event.preventDefault();
+	        Backbone.history.navigate(href, {trigger: true});
+	        console.log(href);
+	   }
+	});
 });
-
-var PresentesRouter = Backbone.Router.extend({
-        routes: {
-            "/": victim_views.homePage,
-        },
-        search: function(query, page) {
-            return;
-        }
-});
-*/
-
 })(jQuery);
