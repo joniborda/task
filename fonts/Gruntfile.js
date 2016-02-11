@@ -28,6 +28,8 @@ module.exports = function (grunt) {
                     './public/js/autosize/jquery.autosize.js',
                     './public/js/jquery.hotkeys.js',
 //                    './bower_components/modernizr/modernizr.js',
+                    './node_modules/backbone/node_modules/underscore/underscore.js',
+                    './node_modules/backbone/backbone.js',
                 ],
                 dest: './public/js/libs.js'
             },

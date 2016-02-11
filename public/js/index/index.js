@@ -1206,4 +1206,27 @@ $(document).on('keyup', '.input_title_edited', function(e) {
 	}
 });
 
+/*
+Backbone.history.start({pushState: true, root:'/'});
+
+$(document).on('click', 'a:not([data-bypass])', function (event) {
+    var href = $(this).attr('href');
+    var protocol = this.protocol + '//';
+
+    if (href.slice(protocol.length) !== protocol) {
+        event.preventDefault();
+        Backbone.history.navigate(href, {trigger: true});
+   }
+});
+
+var PresentesRouter = Backbone.Router.extend({
+        routes: {
+            "/": victim_views.homePage,
+        },
+        search: function(query, page) {
+            return;
+        }
+});
+*/
+
 })(jQuery);
