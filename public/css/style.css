@@ -1076,3 +1076,15 @@ textarea {
 		top: 5px;
 	}
 }
+
+.nav-tabs>li {
+	width: 25%;
+}
+
+.nav-tabs>li>a {
+
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+}

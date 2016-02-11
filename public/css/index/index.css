@@ -106,10 +106,10 @@
 	display: inline-block;
 	vertical-align: middle;
 	cursor: move;
+	cursor: -webkit-grab;
 }
 
 .tasks_list li {
-	line-height: 2;
 	height: 30px;
 	margin: 10px;
     background-color: #fff;
@@ -158,6 +158,13 @@
 
 .glyphicon-play-circle {
 	color: #E1DE00;
+}
+
+.filters .glyphicon-ok-circle,
+.filters .glyphicon-record,
+.filters .glyphicon-play-circle {
+	display: inline;
+    width: 0px;
 }
 
 .tasks_list .task_users {
@@ -282,10 +289,22 @@ div.subtask {
 	width: 4%;
 }
 
-.tasks_list .title {
+.tasks_list .title, .tasks_list .form_edit_title {
 	width: 75%;
 }
 
 .subtask .title {
 	width: 80%;
+}
+.tasks_list .edit_title {
+	position: relative;
+    width: 0px;
+    right: 38px;
+    display: inline-block;
+}
+
+.tasks_list .input_title_edited, .tasks_list .form_edit_title {
+    display: inline-block;
+    height: auto;
+    padding: 1px 5px;
 }

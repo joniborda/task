@@ -59,7 +59,7 @@ class Application_Service_Session
      *
      * @return void
      */
-    public static function login(Application_Model_Usuario $user, $rememberMe = false)
+    public static function login(Application_Model_Usuario $user, $rememberMe = true)
     {
         /**
          * The user just changed privileges level,
