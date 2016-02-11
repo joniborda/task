@@ -1,0 +1,373 @@
+<?php if (isset($this->task)) :?>
+<!-- Pongo el css aca porque sino tarda en dar respuesta -->
+<style type="text/css">
+@CHARSET "ISO-8859-1";
+
+#view_task {
+	padding-right: 10px;
+	font-size: 1.2em;
+}
+
+#view_task .glyphicon,#view_task .glyphicon:hover {
+	text-decoration: none;
+}
+
+#view_task .remove {
+	float: right;
+	font-size: 18px;
+}
+
+#view_task .title_view_form {
+	width: 80%;
+}
+
+#view_task textarea {
+	border: 0;
+	width: 100%;
+	height: 100px;
+}
+
+#view_task .asign {
+	clear: both;
+}
+
+#view_task .asign_user {
+	display: initial;
+	width: auto;
+}
+
+.user_asigned {
+	margin-top: 10px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.user_asigned li {
+	list-style-type: none;
+	color: #000;
+	border: 1px solid #ccc;
+	display: inline;
+	padding: 2px 9px;
+	border-radius: 5px;
+}
+
+.user_asigned li:hover {
+	border-width: 2px;
+}
+
+.user_asigned li .glyphicon {
+	margin-right: 5px;
+	vertical-align: text-top;
+}
+
+#view_task .changes {
+	font-size: 0.8em;
+}
+.btn-file {
+	position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+	position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block
+}
+
+.load_image {
+	cursor: pointer;
+}
+.image_link img {
+	max-height: 275px;
+	border: #9D9D9D 2px solid;
+	border-radius: 15px;
+}
+.date_end, .time_end {
+	width: 155px;
+	display: inline-block;
+}
+
+</style>
+
+<div id="view_task">
+		<?php
+	
+$status = $this->task->getStatus ();
+	if ($status) {
+		switch ($status->getDescripcion ()) {
+			case 'Abierto' :
+				$class = 'glyphicon-record';
+				break;
+			case 'Empezado' :
+				$class = 'glyphicon-play-circle';
+				break;
+			case 'Terminado' :
+				$class = 'glyphicon-ok-circle';
+				break;
+			default :
+				$class = 'glyphicon-record';
+				break;
+		}
+	} else {
+		$class = 'glyphicon-record';
+	}
+	?>
+		<div>
+        <a href="#" class="left show_status glyphicon <?php echo $class?>"
+            value="<?php echo $this->task->getStatusId()?>"
+        ></a>
+        <form class="title_view_form left ">
+            <textarea name="title" class="autosize"><?php echo $this->task->getTitle();?></textarea>
+        </form>
+        <a href="#" class="remove glyphicon glyphicon-trash"
+            value="<?php echo $this->task->getId()?>"
+        ></a>
+    </div>
+    <div class="end">
+    	<div>
+	    	<label for="date_end">Fecha estimada</label>
+	    	<input type="date" name="date_end" class="date_end form-control" value="<?php echo $this->task->getDeadlineFormat()?>" />
+		</div>
+		<div>
+	    	<label for="time_end">Hora estimada</label>
+	    	<input type="time" name="time_end" class="time_end form-control" value="<?php echo $this->task->getTime()?>"/>
+    	</div>
+    </div>
+    <div class="asign">
+        <span> Asignados: </span> <input type="text" name="asign"
+            placeholder="Ingrese usuario" class="asign_user form-control"
+        >
+			<?php $users = $this->task->getUsers();?>
+			<ul class="user_asigned">
+			<?php foreach ($users as $user):?>
+				<li><a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>
+                <span class="user_name"><?php echo $user;?></span></li>
+			<?php endforeach;?>
+			</ul>
+    </div>
+    <div class="number">
+    	#<?php echo $this->task->getId();?>
+    </div>
+    <div class="description">
+    	<form class="description_view_form">
+	        <textarea name="description" placeholder="Agregar una descripción" class="autosize"><?php echo $this->task->getDescripcion();?></textarea>
+        </form>
+	</div>
+    <div class="changes">
+			<?php if (!empty($this->changes)):?>
+			<?php foreach ($this->changes as $change):?>
+				<div>
+				<?php if ($change->getTitle() !== null):?>
+					<span>Cambio de título</span> <span><?php echo $change->getTitle();?></span>
+            <span><?php echo $change->getCreated(true);?></span>
+				<?php endif;?>
+				<?php if ($change->getStatusId() !== null):?>
+					<span>Cambio de estado</span> <span><?php echo $change->getStatus()->getDescripcion();?></span>
+            <span><?php echo $change->getCreated(true);?></span>
+				<?php endif;?>
+					<span><?php echo ($change->getUser()? $change->getUser()->getName() : '');?></span>
+        </div>
+			<?php endforeach;?>
+			<?php endif;?>
+		</div>
+	<div class="create_image">
+		<form class="create_image_form" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="<?php echo $this->task->getId()?>" />
+			<span class="btn btn-default btn-file" style="">
+			Elegir imagen<input type="file" name="file" id="file_image"/>
+			</span>
+		</form>
+	</div>
+    <div class="images">
+<?php
+	$images = $this->task->getImages();
+	if (!empty( $images )) {
+		foreach ($images as $image) :
+?>
+		<a href="#" class="image_link"> <img
+            src="<?php echo $this->webApp . $image .'?'. rand(0,10);?>"
+            width="400px"
+        >
+        </a>
+<?php
+ 		endforeach;
+	} else {
+		// echo $this->Html->image('/img/no_image.jpg');
+	}
+?>
+		</div>
+    <script type="text/javascript">
+$(document).ready(function() {
+
+	$('#view_task .image_link').click(function(e) {
+		e.preventDefault();
+		var src = $(this).find('img').attr('src');
+		$(
+			'<div>' +
+				'<img '+
+					'src="' + src + '" ' +
+					'width="100%" >' +
+			'</div>')
+			.dialog({
+				height: $('#view_task .image_link img').height()*1.7, 
+				width: $('#view_task .image_link img').width()*1.7
+			});
+		return false;
+	});
+	
+	// AUTOCOMPLETE ASIGN USERS IN DETAILS
+	$(".detail_task .asign_user").autocomplete({
+		source : function(request, response) {
+
+			discard = [];
+			$('.user_asigned li').each(function(index,element) {
+				discard[discard.length] = $(element).html();
+			}); 
+			$.ajax({
+				url : base_url + '/usuario/search',
+				data : {
+					name : request.term,
+					discard: discard
+				},
+				dataType : 'json',
+				type : 'GET',
+				success : function(data) {
+					ultimos_buscados = data;
+					response($.map(data, function(item) {
+						return {
+							label : item.name,
+							value : item.id
+						};
+					}));
+				},
+				error : function(request, status, error) {
+					alert(error);
+				}
+			});
+		},
+		minLength : 1,
+		focus: function(event,ui) {
+			return false;
+		},
+		select : function(event, ui) {
+			abrir_cargando();
+
+			$.post(
+				base_url + '/task/asign', 
+				{
+					id : ultimo_selected_task,
+					name: ui.item.label
+				},
+				'json'
+			).done(function(response) {
+				if (response) {
+					$('.user_asigned').append(
+						'<li>' +
+							'<a href="#" class="remove_user_asign glyphicon glyphicon-remove-circle"></a>' + 
+							'<span class="user_name">' +
+								ui.item.label +
+							'</span>' + 
+						'</li>'
+					);
+					
+					$(".detail_task .asign_user").val('');
+					$('.tasks_list li[value="'+ ultimo_selected_task + '"] .task_users').append(
+						'<a href="#' + ui.item.id + '" class="right user">' + ui.item.label + '</a>'
+					);
+				}
+			}).fail(function() {
+				
+			}).always(function() {
+				cerrar_cargando();
+			});;
+			return false;
+		},
+		response : function(event, ui) {
+		}
+	});
+});
+
+// CLICK REMOVE USER ASIGN
+$('.remove_user_asign').on('click', function(e) {
+		abrir_cargando();
+		e.preventDefault();
+		var _this = $(this);
+		var user_name = _this.closest('li').find('.user_name').html();
+		$.post(
+			base_url + '/task/removeasign', 
+			{
+				id : ultimo_selected_task,
+				name: user_name
+			},
+			'json'
+		).done(function(response) {
+			if (response) {
+				_this.closest('li').remove();
+				var task_users = $('.tasks_list li[value="'+ ultimo_selected_task + '"] .task_users a');
+				task_users.each(function(index, element) {
+					console.log(element);
+					if ($(element).html() == user_name) {
+						$(element).remove();
+					}
+				});
+			}
+		}).fail(function() {
+			
+		}).always(function() {
+			cerrar_cargando();
+		});;
+		return false;
+});
+
+// IMAGEN
+$(document).on('submit', '.create_image_form', function(e) {
+	e.preventDefault();
+});
+$(document).on('change', '.create_image_form input[name="file"]', function(e) {
+	$('.load_image').remove();
+	$(this).parent().after('<span class="glyphicon glyphicon-upload load_image"></span>');
+});
+$(document).on('click', '.load_image', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	var files = document.getElementById('file_image').files;
+	var formData = new FormData();
+
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		
+		  // Check the file type.
+		if (!file.type.match('image.*')) {
+			continue;
+		}
+		
+		// Add the file to the request.
+		formData.append('file[]', file, file.name);
+	}
+	formData.append('id', $('input[name="id"]').val());
+	jQuery.ajax({
+	    url: base_url + '/task/load_image', 
+	    data: formData,
+	    cache: false,
+	    contentType: false,
+	    processData: false,
+	    type: 'POST',
+	    success: function(data){
+		    
+			cerrar_cargando();
+	    }
+	});
+});
+
+</script>
+</div>
+<?php endif;?>

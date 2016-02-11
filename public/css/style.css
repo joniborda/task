@@ -1033,7 +1033,6 @@ textarea {
 }
 @media (max-width: 800px) {
 	body {
-		font-size: 20px;
 		margin: 0;
 		padding: 0;
 	}
@@ -1060,7 +1059,7 @@ textarea {
 	}
 	
 	.projects_list .project {
-		width: 75%;
+		width: 70%;
 		display: inline-block;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -1069,11 +1068,34 @@ textarea {
 	}
 	
 	.projects_list .glyphicon-edit {
-		width: 13%;
+		width: 10%;
 	}
 	
 	.projects_list .edit_project {
 		position: relative;
 		top: 5px;
 	}
+}
+
+@media (max-width: 640px) {
+	.projects_list .project {
+		width: 60%;
+	}
+	.projects_list .glyphicon-edit {
+		width: 13%;
+	}
+	.users_list .glyphicon-edit {
+		width: 13%;
+	}
+}
+
+.nav-tabs>li {
+	width: 25%;
+}
+
+.nav-tabs>li>a {
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
 }

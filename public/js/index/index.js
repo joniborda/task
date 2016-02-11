@@ -932,6 +932,29 @@ $(document).on(
 		);
 });
 
+
+//DOBLE CLICK
+$(document).on(
+	'dblclick',
+	'.tasks_list>li',
+	function(e) {
+		var url = base_url + '/task/detail/id/' + $(this).val();
+		e.preventDefault();
+		abrir_cargando();
+		$.ajax({
+			url : url,
+			type : 'GET',
+			success : function(data) {
+				$('.menu_right').html(data);
+			},
+			error : function(request, status, error) {
+				alert(error);
+			}
+		});
+		
+		return false;
+	}
+);
 function get_task_list(title_project, user_id) {
 	var task_to_sort;
 
@@ -995,8 +1018,9 @@ function get_task_list(title_project, user_id) {
 				}
 
 			}
+	
 			location.hash = title_project;
-			
+						
 			$(".search_status").removeClass('active');
 			$(".search_status[id=" + ret.status_id + "]").addClass('active');
 		}

@@ -309,4 +309,22 @@ class TaskController extends Zend_Controller_Action {
 
 		$this->view->assign('response', array('response' => true));
 	}
+
+	public function detailAction() {
+		$this->_helper->layout->setLayout('empty');
+
+		$id = $this->_request->getParam('id');
+
+		if ($id != null) {
+			$task_service = Application_Service_Locator::getTaskService();
+
+			$task = $task_service->getById($id);
+
+			if ($task != null) {
+				$this->view->assign('task', $task);
+				$changesTask = Application_Service_Locator::getChangeTaskService()->getAllByTask($task->getId());
+				$this->view->assign('changes', $changesTask);
+			}
+		}
+	}
 }
