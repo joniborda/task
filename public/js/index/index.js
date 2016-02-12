@@ -1180,19 +1180,19 @@ $(document).on('mouseleave', '.title, .edit_title', function(e) {
 $(document).on('click', '.edit_title', function(e) {
 	
 	var li = $(this).closest('li'),
-		title = li.find('.title').text(),
+		title = li.find('.title:first').text(),
 		task_id = $(li).val();
 
 	e.preventDefault();
 	$(this).addClass('hide');
-	li.find('.title').addClass('hide');
+	li.find('.title:first').addClass('hide');
 
 	$(
 		'<form class="form_edit_title">' +
 			'<input type="text" name="title" value="' + title + '" class="input_title_edited form-control" title="ENTER para guardar, ESC para cancelar" />' +
 			'<input type="hidden" name="task_id" value="' + task_id + '" />' +
 		'</form>'
-	).insertAfter(li.find('.show_status'));
+	).insertAfter(li.find('.show_status:first'));
 
 	$(li).find('[name="title"]').focus();
 	$(li).find('[name="title"]').tooltipster();
@@ -1210,14 +1210,14 @@ $(document).on('submit', '.form_edit_title', function(e) {
 	save_detail_field(input, 'title', title);
 
 	$(this).remove();
-	$(li).find('.title').html(title).removeClass('hide');
+	$(li).find('.title:first').html(title).removeClass('hide');
 });
 
 $(document).on('keyup', '.input_title_edited', function(e) {
 
 	if (e.keyCode === 27) {
 		e.preventDefault();
-		$(this).closest('li').find('.title').removeClass('hide');
+		$(this).closest('li').find('.title:first').removeClass('hide');
 		$(this).closest('.form_edit_title').remove();		
 	}
 });
