@@ -14,16 +14,6 @@ $(document).ready(function(e) {
 	if (typeof location.search === 'undefined') {
 		alert('Tu navegador no es soportado');
 	}
-	
-	// AUTO CLICK SELECT PROJECT
-	if (location.search === '') {
-		
-		if (location.hash) {
-			$('.projects_list').find('[href="' + location.hash + '"]').click();
-		} else {
-			$('.project:first').click();
-		}
-	}
 
 	$('.tasks_list').sortable({
 		axis: 'y',
@@ -217,7 +207,7 @@ function create_new_task(input_name, title, parent_id) {
 
 				var selector_to_append = '.tasks_list';
 				if (parent_id) {
-					var selector_to_append_parent = '.tasks_list [value=' + parent_id + ']';
+					var selector_to_append_parent = '.tasks_list li[value=' + parent_id + ']';
 					selector_to_append = selector_to_append_parent + ' div.subtask';
 				}
 
@@ -1233,11 +1223,18 @@ $(document).on('keyup', '.input_title_edited', function(e) {
 });
 window.jQuery = $;
 $(function () {
-var AppRouter = Backbone.Router.extend({
+	var AppRouter = Backbone.Router.extend({
 	    routes: {
+	    	"task/": function() {
+	    		/**
+	    		 * Index to first project
+	    		 */
+	    		Backbone.history.navigate(
+	    			$('.project:first').attr('href'), 
+	    			{trigger: true}
+    			);
+	    	},
 	        "task/index/index/:id": function(id) {
-	        	//console.log(project);
-	        	
 	        	abrir_cargando();
 				project_selected_id = id;
 
@@ -1263,9 +1260,9 @@ var AppRouter = Backbone.Router.extend({
 	    var protocol = this.protocol + '//';
 
 	    if (href.slice(protocol.length) !== protocol) {
+	    
 	        event.preventDefault();
 	        Backbone.history.navigate(href, {trigger: true});
-	        console.log(href);
 	   }
 	});
 });
