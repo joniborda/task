@@ -802,22 +802,6 @@ $(document).keyup(function(e){
 	}
 });
 
-//CLICK SELECT STATUS
-$(document).on('click', '.search_status', function(e) {
-	e.preventDefault();
-	abrir_cargando();
-
-	$('.tasks_list').html('');
-	// cerrar el detalle de la tarea
-	$('.detail_task').animate({
-		left: 'slide',
-	    width: 'hide'
-	});
-	status_selected_id = $(this).attr('id');
-	
-	get_task_list();
-});
-
 // CLICK USER
 $(document).on('click', '.users_list .user', function(e) {
 	e.preventDefault();
@@ -1233,6 +1217,25 @@ $(function () {
 	    			$('.project:first').attr('href'), 
 	    			{trigger: true}
     			);
+	    	},
+	    	"task/index/index/state/:state/(:project_id)": function(state, project_id) {
+				abrir_cargando();
+
+				status_selected_id = state;
+				if (project_id != undefined) {
+					project_selected_id = project_id;
+				}
+
+				$('.tasks_list').html('');
+				// cerrar el detalle de la tarea
+				$('.detail_task').animate({
+					left: 'slide',
+				    width: 'hide'
+				});
+				
+				app_router.navigate("task/index/index/state/" + state + "/" + project_selected_id, {trigger: true, replace: true});
+
+				get_task_list();
 	    	},
 	        "task/index/index/:id": function(id) {
 	        	abrir_cargando();
