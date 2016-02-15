@@ -98,7 +98,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->baseUrl = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/task';
         $view->webApp = $view->baseUrl . '/public';
         $view->pathCss = $view->baseUrl . '/public/css';
-
+        $view->projectName = '/task';
         
 //        	$view->user = Application_Service_Session::getUser();
        	
