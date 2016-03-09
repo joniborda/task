@@ -802,33 +802,6 @@ $(document).keyup(function(e){
 	}
 });
 
-//CLICK SELECT STATUS
-/*
-$(document).on('click', '.search_status', function(e) {
-	e.preventDefault();
-	abrir_cargando();
-
-	$('.tasks_list').html('');
-	// cerrar el detalle de la tarea
-	$('.detail_task').animate({
-		left: 'slide',
-	    width: 'hide'
-	});
-	status_selected_id = $(this).attr('id');
-	
-	get_task_list();
-});
-*/
-// CLICK USER
-$(document).on('click', '.users_list .user', function(e) {
-	e.preventDefault();
-	abrir_cargando();
-	
-	var user_id = $(this).attr('value');
-	var user = $(this).html();
-	get_task_list('', user_id);
-});
-
 //SEARCH TASK
 $(document).on('submit', '.search_form', function(e) {
 	var title;
@@ -949,13 +922,23 @@ $(document).on(
 	}
 );
 function get_task_list(title_project, user_id) {
-	var task_to_sort;
+	var task_to_sort,
+		data = {};
 
-	$.post(base_url + '/task/list', {
-		'project_id' : project_selected_id,
-		'status_id' : status_selected_id,
-		'user_id': user_id
-	}).complete(function(response, status) {
+	if (project_selected_id != undefined && project_selected_id != "undefined") {
+		data['project_id'] = project_selected_id;
+	}
+
+	if (status_selected_id != undefined && status_selected_id != "undefined") {
+		data['status_id'] = status_selected_id;
+	}
+
+
+	if (user_id != undefined && user_id != "undefined") {
+		data['user_id'] = user_id;
+	}
+
+	$.post(base_url + '/task/list', data).complete(function(response, status) {
 
 	    if ($('#loguear',jQuery.parseHTML(response.responseText)).length > 0) {
 	        window.location = 'usuario/loguear';
@@ -1273,7 +1256,12 @@ $(function () {
 				$('.project').closest('li').removeClass('active');
 
 				status_selected_id = status;
-				get_task_list();
+				console.log(status);
+				if (user_id) {
+					get_task_list('', user_id);
+				} else {
+					get_task_list();
+				}
 			}
 	    },
 	});

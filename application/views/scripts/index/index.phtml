@@ -18,7 +18,7 @@
 			<ul class="users_list">
 			<?php foreach ($this->users as $user):?>
 				<li>
-					<a href="#<?php echo $user->getName();?>" class="user" value="<?php echo $user->getId();?>">
+					<a href="/task/index/index/project/undefined/status/1/user/<?php echo $user->getId();?>" class="user" value="<?php echo $user->getId();?>">
 						<?php echo $user->getName();?>
 					</a>
 					<span class="badge openned"><?php echo $user->getLastModified();?></span>
