@@ -802,19 +802,6 @@ $(document).keyup(function(e){
 	}
 });
 
-<<<<<<< HEAD
-=======
-// CLICK USER
-$(document).on('click', '.users_list .user', function(e) {
-	e.preventDefault();
-	abrir_cargando();
-	
-	var user_id = $(this).attr('value');
-	var user = $(this).html();
-	get_task_list('', user_id);
-});
-
->>>>>>> 5d305b6c111464294e550516cfcdec6198d918d6
 //SEARCH TASK
 $(document).on('submit', '.search_form', function(e) {
 	var title;
@@ -1288,7 +1275,6 @@ $(function () {
 				$('.project').closest('li').removeClass('active');
 
 				status_selected_id = status;
-				console.log(status);
 				if (user_id) {
 					get_task_list('', user_id);
 				} else {
