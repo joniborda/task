@@ -802,6 +802,19 @@ $(document).keyup(function(e){
 	}
 });
 
+<<<<<<< HEAD
+=======
+// CLICK USER
+$(document).on('click', '.users_list .user', function(e) {
+	e.preventDefault();
+	abrir_cargando();
+	
+	var user_id = $(this).attr('value');
+	var user = $(this).html();
+	get_task_list('', user_id);
+});
+
+>>>>>>> 5d305b6c111464294e550516cfcdec6198d918d6
 //SEARCH TASK
 $(document).on('submit', '.search_form', function(e) {
 	var title;
@@ -1226,6 +1239,25 @@ $(function () {
 	    			$('.project:first').attr('href'), 
 	    			{trigger: true}
     			);
+	    	},
+	    	"task/index/index/state/:state/(:project_id)": function(state, project_id) {
+				abrir_cargando();
+
+				status_selected_id = state;
+				if (project_id != undefined) {
+					project_selected_id = project_id;
+				}
+
+				$('.tasks_list').html('');
+				// cerrar el detalle de la tarea
+				$('.detail_task').animate({
+					left: 'slide',
+				    width: 'hide'
+				});
+				
+				app_router.navigate("task/index/index/state/" + state + "/" + project_selected_id, {trigger: true, replace: true});
+
+				get_task_list();
 	    	},
 	        "task/index/index/:id": function(id) {
 	        	abrir_cargando();
