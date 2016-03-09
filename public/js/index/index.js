@@ -803,6 +803,7 @@ $(document).keyup(function(e){
 });
 
 //CLICK SELECT STATUS
+/*
 $(document).on('click', '.search_status', function(e) {
 	e.preventDefault();
 	abrir_cargando();
@@ -817,7 +818,7 @@ $(document).on('click', '.search_status', function(e) {
 	
 	get_task_list();
 });
-
+*/
 // CLICK USER
 $(document).on('click', '.users_list .user', function(e) {
 	e.preventDefault();
@@ -962,6 +963,16 @@ function get_task_list(title_project, user_id) {
 	    }
 	    
 		cerrar_cargando();
+
+		$('.link_serach_status').each(function(index, value) {
+			var status_id = $(this).attr('id');
+
+			$(this).attr('href', '/task/index/index/project/' + 
+				project_selected_id + '/status/' +
+				status_id + '/user/' +
+				user_id);
+		});
+
 		$('.tasks_list').html('');
 		if (status === 'success') {
 			var ret = $.parseJSON(response.responseText);
@@ -1000,8 +1011,7 @@ function get_task_list(title_project, user_id) {
 				if (ret.status_id === null) {
 				    // ver como dejar active el ALL 
 				} else {
-				    $('.search_status[id=' + ret.status_id + ']').addClass('active');
-				    
+				    $('.search_status [id=' + ret.status_id + ']').closest('li').addClass('active');
 				}
 
 				$('.users_list .user').removeClass('active');
@@ -1014,7 +1024,7 @@ function get_task_list(title_project, user_id) {
 			//location.hash = title_project;
 						
 			$(".search_status").removeClass('active');
-			$(".search_status[id=" + ret.status_id + "]").addClass('active');
+			$(".search_status [id=" + ret.status_id + "]").closest('li').addClass('active');
 		}
 		
 		$('.detail_task').html('');
@@ -1245,10 +1255,26 @@ $(function () {
 				});
 
 				$('.project').closest('li').removeClass('active');
-				//$(this).closest('li').addClass('active');
 
+				status_selected_id = 1;
 				get_task_list('');
         	},
+        	"task/index/index/project/:project_id/status/:status/user/:user_id": function(project_id, status, user_id) {
+	        	abrir_cargando();
+				project_selected_id = project_id;
+
+	        	$('.tasks_list').html('');
+				// cerrar el detalle de la tarea
+				$('.detail_task').animate({
+					left: 'slide',
+				    width: 'hide'
+				});
+
+				$('.project').closest('li').removeClass('active');
+
+				status_selected_id = status;
+				get_task_list();
+			}
 	    },
 	});
 	var app_router = new AppRouter;
