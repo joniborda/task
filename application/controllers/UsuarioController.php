@@ -54,7 +54,7 @@ class UsuarioController extends Zend_Controller_Action {
 
 					$redirect = $request->getParam('redirect');
 					$redirect = urldecode(str_replace('___', '%2F', $redirect));
-					
+
 					$this->_redirect($redirect);
 
 				}
@@ -69,8 +69,7 @@ class UsuarioController extends Zend_Controller_Action {
 	}
 
 	public function salirAction() {
-		$url = Application_Service_Session::get('redirect');
-
+		$url = $_SERVER['HTTP_REFERER'];
 		Application_Service_Session::logout();
 		$this->_redirect('/usuario/loguear/redirect/' . str_replace('%2F', '___', urlencode($url)));
 	}
