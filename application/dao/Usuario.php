@@ -153,7 +153,6 @@ class Application_Dao_Usuario {
 		              ->where('fb_key = ?', $fb_key);
 
 		$resultSet = $this->getDbTable()->fetchRow($where);
-
 		if ($resultSet != null) {
 			return new Application_Model_Usuario($resultSet);
 		}

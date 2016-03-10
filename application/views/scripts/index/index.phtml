@@ -5,7 +5,11 @@
 			<div class="user_logged">
 				<div class="right">
 				<?php if ($this->user != null):?>
-				<?php echo $this->user->getName();?>
+				<?php if ($this->user->getFbKey()): ?>
+					<img src="//graph.facebook.com/<?php echo $this->user->getFbKey();?>/picture" class="user_photo">
+				<?php else: ?>
+					<?php echo $this->user->getName();?>
+				<?php endif; ?>
 				<a class="glyphicon glyphicon-off" href="/task/usuario/salir" data-bypass="data-bypass">
 				</a>
 				<?php endif;?>

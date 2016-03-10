@@ -309,3 +309,8 @@ div.subtask {
     height: auto;
     padding: 1px 5px;
 }
+.user_photo {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
