@@ -1007,7 +1007,7 @@ function get_task_list(title_project, user_id) {
 			//location.hash = title_project;
 						
 			$(".search_status").removeClass('active');
-			$(".search_status [id=" + ret.status_id + "]").closest('li').addClass('active');
+			$(".search_status [id=" + status_selected_id + "]").closest('li').addClass('active');
 		}
 		
 		$('.detail_task').html('');
