@@ -14,6 +14,12 @@ class IndexController extends Zend_Controller_Action {
 		     ->appendStylesheet($this->view->pathCss . '/index/index.css');
 		$this->view->deny = $this->getRequest()->getParam('deny');
 
+		if (!file_exists(Application_Config_Application::getProfilePath() . DIRECTORY_SEPARATOR .
+			Application_Service_Session::getUser()->getId() . DIRECTORY_SEPARATOR .
+			'./profile.png')) {
+			$this->_redirect('usuario/generate_image');
+		}
+
 		$this->view->assign(
 			'projects',
 			Application_Service_Locator::getProjectService()->fetchAll()

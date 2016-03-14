@@ -205,4 +205,12 @@ class UsuarioController extends Zend_Controller_Action {
 		}
 
 	}
+
+	public function generateimageAction() {
+		if (Application_Service_Locator::getUsuarioService()->generateImage()) {
+			$this->_redirect('/index/index/');
+		} else {
+			$this->view->error = 'Verifique que tiene permisos sobre la carpeta de avatars';
+		}
+	}
 }

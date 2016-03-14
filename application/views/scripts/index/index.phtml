@@ -9,7 +9,21 @@
 				<?php if ($this->user->getFbKey()): ?>
 					<img src="//graph.facebook.com/<?php echo $this->user->getFbKey();?>/picture" class="user_photo">
 				<?php else: ?>
-					<?php echo $this->user->getName();?>
+					<?php
+					$image = $this->baseUrl . DIRECTORY_SEPARATOR .
+					'../task_profiles' . DIRECTORY_SEPARATOR .
+					$this->user->getId() . DIRECTORY_SEPARATOR .
+					'profile.png';
+
+
+$path_image = Application_Config_Application::getProfilePath() . DIRECTORY_SEPARATOR . Application_Service_Session::getUser()->getId() . DIRECTORY_SEPARATOR . 'profile.png';
+
+
+					if (file_exists($path_image)) : ?>
+						<img src="<?php echo $image;	?>" class="user_photo">
+					<?php else: ?>
+						<?php echo $this->user->getName();?>
+					<?php endif; ?>
 				<?php endif; ?>
 					</a>
 				<a class="glyphicon glyphicon-off" href="/task/usuario/salir" data-bypass="data-bypass">
