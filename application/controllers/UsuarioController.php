@@ -145,13 +145,29 @@ class UsuarioController extends Zend_Controller_Action {
 			$fb_key = $request->getParam('fb_key');
 			$fb_name = $request->getParam('fb_name');
 			try {
+
+				$user = Application_Service_Locator::getUsuarioService()
+					->getByFbKey($fb_key);
+
+				$response = array(
+					'response' => false,
+					'redirect' => $this->getFrontController()->getBaseUrl() . '/usuario/profile',
+				);
+
+				if ($user) {
+					$response['redirect'] = $this->getFrontController()->getBaseUrl() . '/index';
+				}
+
 				$user = Application_Service_Locator::getUsuarioService()
 					->fblogin($fb_key, $fb_name);
 
 				if (null !== $user) {
-					echo json_encode(true);
+
+					$response['response'] = true;
+					echo json_encode($response);
 					die;
 				}
+
 			} catch (Zend_Validate_Exception $e) {
 				echo json_encode($e->getMessage());
 				die;
@@ -160,6 +176,33 @@ class UsuarioController extends Zend_Controller_Action {
 	}
 
 	public function profileAction() {
+
+		$this->view
+		     ->headLink()
+		     ->appendStylesheet($this->view->pathCss . '/usuario/profile.css');
+
+		if ($this->_request->isPost()) {
+			$email = $this->_request->getParam('mail');
+			$password = $this->_request->getParam('password');
+			$repeat_password = $this->_request->getParam('repeat_password');
+			try {
+				$user = Application_Service_Session::getUser();
+
+				Application_Service_Locator::getUsuarioService()
+					->update($user->getId(), $email, $password, $repeat_password);
+
+				$this->_redirect('/index/index/');
+			} catch (Zend_Exception $e) {
+				if ($e instanceof Zend_Validate_Exception) {
+					$this->view->error = $e->getMessage();
+				}
+
+				if ($e instanceof Zend_Db_Statement_Mysqli_Exception) {
+					$this->view->error = 'No se pudieron guardar los datos';
+				}
+				return;
+			}
+		}
 
 	}
 }

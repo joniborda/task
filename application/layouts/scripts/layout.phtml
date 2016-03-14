@@ -20,6 +20,21 @@
       ?>
       <script type="text/javascript">
       	var base_url = '<?php echo $this->baseUrl;?>';
+        var error = "<?php echo $this->error;?>";
+        $(function() {
+
+          if (error.length) {
+
+            var dialog_error = $('<div>', {
+              "html": error,
+              "id": "dialog_error"
+            });
+
+            $('body').append(dialog_error);
+
+            $('#dialog_error').dialog();
+          }
+        });
       </script>
     </head>
     <body>

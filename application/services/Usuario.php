@@ -127,4 +127,34 @@ class Application_Service_Usuario {
 
 		throw new Zend_Validate_Exception('No se puede registrar');
 	}
+
+	/**
+	 * Get by FB key
+	 *
+	 * @param String $fb_key
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function getByFbKey($fb_key) {
+		return $this->_usuarioDao->getByFbKey($fb_key);
+	}
+
+	/**
+	 * Resistra un usuario
+	 *
+	 * @param String $email
+	 * @param String $user_name
+	 * @param String $password
+	 * @param String $repeat_password
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function update($id, $email, $password, $repeat_password) {
+		if ($password == $repeat_password) {
+			$this->_usuarioDao->update($id, $email, $password);
+			return;
+		}
+
+		throw new Zend_Validate_Exception('La contraseña no coincide');
+	}
 }

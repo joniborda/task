@@ -76,7 +76,7 @@ class Application_Dao_Usuario {
 	}
 
 	/**
-	 * Resistra un usuario
+	 * Registra un usuario
 	 *
 	 * @param String $email
 	 * @param String $user_name
@@ -161,7 +161,7 @@ class Application_Dao_Usuario {
 	}
 
 	/**
-	 * Resistra por fb
+	 * Registra por fb
 	 *
 	 * @param String $fb_key
 	 * @param String $fb_name
@@ -169,24 +169,10 @@ class Application_Dao_Usuario {
 	 * @return Application_Model_Usuario
 	 */
 	public function registrar_fb($fb_key, $fb_name) {
-/*        if ($fb_key) {
-$validator = new Zend_Validate_EmailAddress();
 
-if (!$validator->isValid($email)) {
-throw new Zend_Validate_Exception('Ingrese un mail correcto');
-}
-}
-
-$validator = new Zend_Validate_StringLength();
-$validator->setMin(6);
-
-if (!$validator->isValid($password)) {
-throw new Zend_Validate_Exception('Ingrese una contraseña de más de 6 caracteres');
-}
- */
 		$data = array(
 			'fb_key' => $fb_key,
-			'fb_name' => $fb_name,
+			'name' => str_replace(' ', '.', strtolower($fb_name)),
 			'created' => 'NOW()',
 			'profile_id' => 1,
 		);
@@ -195,6 +181,38 @@ throw new Zend_Validate_Exception('Ingrese una contraseña de más de 6 caracter
 		$data['id'] = $id;
 
 		return new Application_Model_Usuario($data);
+	}
+
+	/**
+	 * Registra un usuario
+	 *
+	 * @param String $email
+	 * @param String $password
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function update($id, $email, $password) {
+		if ($email) {
+			$validator = new Zend_Validate_EmailAddress();
+
+			if (!$validator->isValid($email)) {
+				throw new Zend_Validate_Exception('Ingrese un mail correcto');
+			}
+		}
+
+		$validator = new Zend_Validate_StringLength();
+		$validator->setMin(6);
+
+		if (!$validator->isValid($password)) {
+			throw new Zend_Validate_Exception('Ingrese una contraseña de más de 6 caracteres');
+		}
+
+		$data = array(
+			'mail' => $email,
+			'password' => $password,
+		);
+
+		$this->getDbTable()->update($data, array('id = ?' => (int) $id));
 	}
 }
 ?>

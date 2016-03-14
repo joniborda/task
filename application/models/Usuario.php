@@ -13,10 +13,18 @@ class Application_Model_Usuario {
 			if (is_array($data)) {
 				$this->_id = $data['id'];
 				$this->_name = $data['name'];
-				$this->_password = $data['password'];
-				$this->_profile_id = $data['profile_id'];
-				$this->_mail = $data['mail'];
-				$this->_fb_key = $data['fb_key'];
+				if (isset($data['password'])) {
+					$this->_password = $data['password'];
+				}
+				if (isset($data['profile_id'])) {
+					$this->_profile_id = $data['profile_id'];
+				}
+				if (isset($data['mail'])) {
+					$this->_mail = $data['mail'];
+				}
+				if (isset($data['fb_key'])) {
+					$this->_fb_key = $data['fb_key'];
+				}
 			} else if ($data instanceof Zend_Db_Table_Row) {
 				$this->_id = $data->id;
 				$this->_name = $data->name;

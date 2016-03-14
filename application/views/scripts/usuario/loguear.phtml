@@ -92,12 +92,14 @@
         {
           fb_key  : response.id,
           fb_name : response.name
-        }
-      ).done(function(response) {
-        if (response == "true") {
-          window.location = base_url + '/index';
-        }
-      });
+        },
+        function(ret) {
+          if (ret.response) {
+            window.location = ret.redirect;
+          }
+        },
+        'json'
+      );
     });
   }
 </script>
