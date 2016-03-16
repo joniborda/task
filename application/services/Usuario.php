@@ -195,6 +195,40 @@ class Application_Service_Usuario {
 			}
 		}
 
+		$path = $this->_createPathImage();
+
+		// Save the image
+		imagepng($img, $path . DIRECTORY_SEPARATOR . 'profile.png');
+		imagedestroy($img);
+
+		return true;
+	}
+
+	/**
+	 * Login By twitter
+	 *
+	 * @param String $twitter_id
+	 * @param String $screen_name
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function twlogin($twitter_id, $screen_name) {
+		$user = $this->_usuarioDao->getByTwitterId($twitter_id);
+
+		if ($user !== null) {
+			Application_Service_Session::login($user, true);
+			return $user;
+		}
+		$user = $this->_usuarioDao->registrar_tw($twitter_id, $screen_name);
+		if ($user !== null) {
+			Application_Service_Session::login($user, true);
+			return $user;
+		}
+
+		throw new Zend_Validate_Exception('No se puede registrar');
+	}
+
+	private function _createPathImage() {
 		$path =
 		Application_Config_Application::getProfilePath() . DIRECTORY_SEPARATOR .
 		Application_Service_Session::getUser()->getId();
@@ -203,10 +237,15 @@ class Application_Service_Usuario {
 			mkdir($path);
 		}
 
-		// Save the image
-		imagepng($img, $path . DIRECTORY_SEPARATOR . './profile.png');
-		imagedestroy($img);
+		return $path;
+	}
 
-		return true;
+	public function saveImageTw($image_url_tw) {
+
+		file_put_contents(
+			$this->_createPathImage() . DIRECTORY_SEPARATOR .
+			'profile.png',
+			file_get_contents($image_url_tw)
+		);
 	}
 }

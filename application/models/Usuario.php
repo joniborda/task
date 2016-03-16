@@ -6,6 +6,7 @@ class Application_Model_Usuario {
 	protected $_profile_id;
 	protected $_mail;
 	protected $_fb_key;
+	protected $_twitter_id;
 
 	public function __construct($data = null) {
 		if ($data != null) {
@@ -25,6 +26,9 @@ class Application_Model_Usuario {
 				if (isset($data['fb_key'])) {
 					$this->_fb_key = $data['fb_key'];
 				}
+				if (isset($data['twitter_id'])) {
+					$this->_twitter_id = $data['twitter_id'];
+				}
 			} else if ($data instanceof Zend_Db_Table_Row) {
 				$this->_id = $data->id;
 				$this->_name = $data->name;
@@ -32,6 +36,7 @@ class Application_Model_Usuario {
 				$this->_profile_id = $data->profile_id;
 				$this->_mail = $data->mail;
 				$this->_fb_key = $data->fb_key;
+				$this->_twitter_id = $data->twitter_id;
 			}
 		}
 	}
@@ -92,6 +97,14 @@ class Application_Model_Usuario {
 
 	public function getFbKey() {
 		return $this->_fb_key;
+	}
+
+	public function setTwitterId($twitter_id) {
+		$this->_twitter_id = $twitter_id;
+	}
+
+	public function getTwitterId() {
+		return $this->_twitter_id;
 	}
 }
 ?>

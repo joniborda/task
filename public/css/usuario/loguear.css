@@ -36,3 +36,14 @@
     float: none;
     margin: auto;
 }
+
+.fb_button {
+    background-color: #3a5795;
+}
+
+.tw_button {
+    background-color: #55acee;
+}
+.tw_button:hover {
+    background-color: #2F99E9;
+}

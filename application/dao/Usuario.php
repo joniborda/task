@@ -214,5 +214,48 @@ class Application_Dao_Usuario {
 
 		$this->getDbTable()->update($data, array('id = ?' => (int) $id));
 	}
+
+	/**
+	 * Registra por twitter
+	 *
+	 * @param String $twitter_id
+	 * @param String $screen_name
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function registrar_tw($twitter_id, $screen_name) {
+
+		$data = array(
+			'twitter_id' => $twitter_id,
+			'name' => str_replace(' ', '.', strtolower($screen_name)),
+			'created' => 'NOW()',
+			'profile_id' => 1,
+		);
+
+		$id = $this->getDbTable()->insert($data);
+		$data['id'] = $id;
+
+		return new Application_Model_Usuario($data);
+	}
+
+	/**
+	 * Consigue por twitter_id
+	 *
+	 * @param String $twitter_id
+	 *
+	 * @return Application_Model_Usuario
+	 */
+	public function getByTwitterId($twitter_id) {
+		$where = $this->getDbTable()
+		              ->select()
+		              ->where('twitter_id = ?', $twitter_id);
+
+		$resultSet = $this->getDbTable()->fetchRow($where);
+		if ($resultSet != null) {
+			return new Application_Model_Usuario($resultSet);
+		}
+
+		return null;
+	}
 }
 ?>

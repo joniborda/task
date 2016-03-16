@@ -1089,3 +1089,5 @@ ALTER TABLE projects
 ALTER TABLE projects
   ADD COLUMN description text;
 -- ejecutar desde aca
+ALTER TABLE users
+   ADD COLUMN twitter_id bigint;

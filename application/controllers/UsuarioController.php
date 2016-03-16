@@ -213,4 +213,50 @@ class UsuarioController extends Zend_Controller_Action {
 			$this->view->error = 'Verifique que tiene permisos sobre la carpeta de avatars';
 		}
 	}
+
+	public function twitterconnectAction() {
+
+		$consumer_key = 'UxnnweOnFrOAgFgddGYErPloI';
+		$consumer_secret = 'qHyxcMDw9rB9kIgyevHRb3YoCQcHxU15yJJG8YAMYPYZaGQO1m';
+
+		//$access_token = '3941172137-i5D8sbD9CfbdVKiIXGkQrdKJe7m9dDfxAWamZ4A';
+		//$access_token_secret = 'VGS08DiH3qMXeBpy4FOaJ2be6oa6cHqHCMc4mN4as2szq';
+
+		if (isset($_SESSION['oauth_token'])) {
+			$oauth_token = $_SESSION['oauth_token'];
+			unset($_SESSION['oauth_token']);
+
+			$connection = new Zend_Twitter_TwitterOAuth($consumer_key, $consumer_secret);
+			//necessary to get access token other wise u will not have permision to get user info
+			$params = array("oauth_verifier" => $_GET['oauth_verifier'], "oauth_token" => $_GET['oauth_token']);
+			$access_token = $connection->oauth("oauth/access_token", $params);
+			//now again create new instance using updated return oauth_token and oauth_token_secret because old one expired if u dont u this u will also get token expired error
+			$connection = new Zend_Twitter_TwitterOAuth($consumer_key, $consumer_secret,
+				$access_token['oauth_token'], $access_token['oauth_token_secret']);
+			$content = $connection->get("account/verify_credentials");
+
+			$_SESSION['twitter_data'] = $content;
+
+			$user = Application_Service_Locator::getUsuarioService()
+				->twLogin($content->id, $content->screen_name);
+			if ($user) {
+				Application_Service_Locator::getUsuarioService()->saveImageTw($content->profile_image_url);
+				$this->_redirect('/index/index/');
+			}
+			$this->view->error = 'No se pudo loguear con Twitter';
+			$this->_redirect('/usuario/login');
+
+		} else {
+			// main startup code
+			//this code will return your valid url which u can use in iframe src to popup or can directly view the page as its happening in this example
+
+			$connection = new Zend_Twitter_TwitterOAuth($consumer_key, $consumer_secret);
+			$temporary_credentials = $connection->oauth('oauth/request_token', array("oauth_callback" => 'http://localhost/task/usuario/twitterConnect'));
+			$_SESSION['oauth_token'] = $temporary_credentials['oauth_token'];
+			$_SESSION['oauth_token_secret'] = $temporary_credentials['oauth_token_secret'];
+			$url = $connection->url("oauth/authorize", array("oauth_token" => $temporary_credentials['oauth_token']));
+			// REDIRECTING TO THE URL
+			header('Location: ' . $url);
+		}
+	}
 }
