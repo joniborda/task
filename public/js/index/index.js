@@ -911,14 +911,15 @@ $(document).on(
 	'dblclick',
 	'.tasks_list>li',
 	function(e) {
-		var url = base_url + '/task/detail/id/' + $(this).val();
+		var url = '/task/detail/id/' + $(this).val();
 		e.preventDefault();
 		abrir_cargando();
 		$.ajax({
-			url : url,
+			url : base_url + url,
 			type : 'GET',
 			success : function(data) {
-				$('.menu_right').html(data);
+				$('.menu_right .nano-content').html(data);
+				Backbone.history.navigate('/task' + url);
 			},
 			error : function(request, status, error) {
 				alert(error);
@@ -1079,7 +1080,7 @@ function get_subtasks(parent_id) {
 
 			autocomplete_user("input[name='subtask_title']");
 		}
-		
+
 		$(".nano").nanoScroller();
 	});
 }
