@@ -1,121 +1,125 @@
 <div id="index">
-	<div class="menu_left">
-		<h1>MARCADOR DE TAREAS</h1>
-		<div class="projects">
-			<div class="user_logged">
-				<div class="right">
-				<?php if ($this->user != null):?>
-					<a href="/task/usuario/profile" data-bypass="data-bypass">
-				<?php if ($this->user->getFbKey()): ?>
-					<img src="//graph.facebook.com/<?php echo $this->user->getFbKey();?>/picture" class="user_photo">
-				<?php else: ?>
-					<?php
-					$image = $this->baseUrl . DIRECTORY_SEPARATOR .
-					'../task_profiles' . DIRECTORY_SEPARATOR .
-					$this->user->getId() . DIRECTORY_SEPARATOR .
-					'profile.png';
-
-
-$path_image = Application_Config_Application::getProfilePath() . DIRECTORY_SEPARATOR . Application_Service_Session::getUser()->getId() . DIRECTORY_SEPARATOR . 'profile.png';
-
-
-					if (file_exists($path_image)) : ?>
-						<img src="<?php echo $image;	?>" class="user_photo">
+	<div class="menu_left nano">
+			<div class="nano-content">
+			<h1>MARCADOR DE TAREAS</h1>
+			<div class="projects">
+				<div class="user_logged">
+					<div class="right">
+					<?php if ($this->user != null):?>
+						<a href="/task/usuario/profile" data-bypass="data-bypass">
+					<?php if ($this->user->getFbKey()): ?>
+						<img src="//graph.facebook.com/<?php echo $this->user->getFbKey();?>/picture" class="user_photo">
 					<?php else: ?>
-						<?php echo $this->user->getName();?>
+						<?php
+						$image = $this->baseUrl . DIRECTORY_SEPARATOR .
+						'../task_profiles' . DIRECTORY_SEPARATOR .
+						$this->user->getId() . DIRECTORY_SEPARATOR .
+						'profile.png';
+
+
+	$path_image = Application_Config_Application::getProfilePath() . DIRECTORY_SEPARATOR . Application_Service_Session::getUser()->getId() . DIRECTORY_SEPARATOR . 'profile.png';
+
+
+						if (file_exists($path_image)) : ?>
+							<img src="<?php echo $image;	?>" class="user_photo">
+						<?php else: ?>
+							<?php echo $this->user->getName();?>
+						<?php endif; ?>
 					<?php endif; ?>
-				<?php endif; ?>
+						</a>
+					<a class="glyphicon glyphicon-off" href="/task/usuario/salir" data-bypass="data-bypass">
 					</a>
-				<a class="glyphicon glyphicon-off" href="/task/usuario/salir" data-bypass="data-bypass">
-				</a>
-				<?php endif;?>
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div class="users_title" >
-				Usuarios
-				<span class="glyphicon glyphicon-plus btn" id="create_user"></span>
-			</div>
-			<ul class="users_list">
-			<?php foreach ($this->users as $user):?>
-				<li>
-					<a href="/task/index/index/project/undefined/status/1/user/<?php echo $user->getId();?>" class="user" value="<?php echo $user->getId();?>">
-						<?php echo $user->getName();?>
-					</a>
-					<span class="badge openned"><?php echo $user->getLastModified();?></span>
-					<a href="#" class="edit_user" value="<?php echo $user->getId();?>">
-						<span class="right glyphicon glyphicon-edit"></span>
-					</a>
-				</li>
-			<?php endforeach;?>
-			</ul>
-			<div class="project_title" >
-				<a href="#" class="title_my_projects">Mis Proyectos</a>
-				<span class="glyphicon glyphicon-plus btn" id="create_project"></span>
-			</div>
-			<ul class="projects_list">
-			<?php foreach ($this->projects as $project):?>
-				<li>
-					<a href="/task/index/index/<?php echo $project->getId();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
-					<?php $count_openned = $project->getCountOpenned();?>
-					<?php if ($count_openned > 0) :?>
-						<span class="badge openned"><?php echo $count_openned?></span>
-					<?php else:?>
-						<span class="badge closed"><?php echo $count_openned?></span>
 					<?php endif;?>
-					<a href="#" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
-				</li>
-			<?php endforeach;?>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="users_title" >
+					Usuarios
+					<span class="glyphicon glyphicon-plus btn" id="create_user"></span>
+				</div>
+				<ul class="users_list">
+				<?php foreach ($this->users as $user):?>
+					<li>
+						<a href="/task/index/index/project/undefined/status/1/user/<?php echo $user->getId();?>" class="user" value="<?php echo $user->getId();?>">
+							<?php echo $user->getName();?>
+						</a>
+						<span class="badge openned"><?php echo $user->getLastModified();?></span>
+						<a href="#" class="edit_user" value="<?php echo $user->getId();?>">
+							<span class="right glyphicon glyphicon-edit"></span>
+						</a>
+					</li>
+				<?php endforeach;?>
+				</ul>
+				<div class="project_title" >
+					<a href="#" class="title_my_projects">Mis Proyectos</a>
+					<span class="glyphicon glyphicon-plus btn" id="create_project"></span>
+				</div>
+				<ul class="projects_list">
+				<?php foreach ($this->projects as $project):?>
+					<li>
+						<a href="/task/index/index/<?php echo $project->getId();?>" class="project" value="<?php echo $project->getId();?>"><?php echo $project->getName();?></a>
+						<?php $count_openned = $project->getCountOpenned();?>
+						<?php if ($count_openned > 0) :?>
+							<span class="badge openned"><?php echo $count_openned?></span>
+						<?php else:?>
+							<span class="badge closed"><?php echo $count_openned?></span>
+						<?php endif;?>
+						<a href="#" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
+					</li>
+				<?php endforeach;?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="menu_right nano">
+		<div class="nano-content">
+			<form class="search_form">
+				<input type="text" name="title" placeholder="Buscar una tarea" class="search_task form-control">
+				<span class="glyphicon glyphicon-search"></span>
+			</form>
+			<form class="create_task_form">
+				<input type="text" name="title" placeholder="Ingrese una nueva tarea      + para asignar usuario" 
+				class="new_task form-control">
+				<input type="hidden" name="task_id" value="">
+				<span class="glyphicon glyphicon-plus"></span>
+			</form>
+			<div class="filters ">
+				<ul class="nav nav-tabs">
+					<li role="presentation" class="active search_status">
+						<a href="#" class="link_serach_status" id="1">
+	  						<span class="change_status glyphicon glyphicon-record tooltipstered"></span>
+							Abiertas
+						</a>
+					</li>
+					<li role="presentation" class="search_status">
+						<a href="#" class="link_serach_status" id="2">
+				  			<span class="change_status glyphicon glyphicon-play-circle tooltipstered"></span>
+							Empezadas
+						</a>
+					</li>
+					<li role="presentation" class="search_status">
+						<a href="#" class="link_serach_status" id="3">
+							<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+	  						Hechas
+						</a>
+					</li>
+					<li role="presentation" class="search_status">
+						<a href="#" class="link_serach_status" id="4">
+							<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+	  						Todas
+						</a>
+					</li>
+				</ul>
+	  		</div>
+			<ul class="tasks_list list-unstyled">
 			</ul>
 		</div>
-		
-	</div>
-	<div class="menu_right">
-		<form class="search_form">
-			<input type="text" name="title" placeholder="Buscar una tarea" class="search_task form-control">
-			<span class="glyphicon glyphicon-search"></span>
-		</form>
-		<form class="create_task_form">
-			<input type="text" name="title" placeholder="Ingrese una nueva tarea      + para asignar usuario" 
-			class="new_task form-control">
-			<input type="hidden" name="task_id" value="">
-			<span class="glyphicon glyphicon-plus"></span>
-		</form>
-		<div class="filters ">
-			<ul class="nav nav-tabs">
-				<li role="presentation" class="active search_status">
-					<a href="#" class="link_serach_status" id="1">
-  						<span class="change_status glyphicon glyphicon-record tooltipstered"></span>
-						Abiertas
-					</a>
-				</li>
-				<li role="presentation" class="search_status">
-					<a href="#" class="link_serach_status" id="2">
-			  			<span class="change_status glyphicon glyphicon-play-circle tooltipstered"></span>
-						Empezadas
-					</a>
-				</li>
-				<li role="presentation" class="search_status">
-					<a href="#" class="link_serach_status" id="3">
-						<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
-  						Hechas
-					</a>
-				</li>
-				<li role="presentation" class="search_status">
-					<a href="#" class="link_serach_status" id="4">
-						<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
-  						Todas
-					</a>
-				</li>
-			</ul>
-  		</div>
-		<ul class="tasks_list list-unstyled">
-		</ul>
 	</div>
 </div>
 <div class="detail_task">
 	
 </div>
+
 <script type="text/javascript">
 	var current_user_id = <?php echo (!empty($this->user) ? $this->user->getId() : 'null');?>;
 	var current_user_name = "<?php echo (!empty($this->user) ? $this->user->getName() : '');?>";
