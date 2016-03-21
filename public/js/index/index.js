@@ -15,6 +15,8 @@ $(document).ready(function(e) {
 		alert('Tu navegador no es soportado');
 	}
 
+	$(".nano").nanoScroller();
+
 	$('.tasks_list').sortable({
 		axis: 'y',
 		over: function( event, ui ) {
@@ -252,6 +254,7 @@ function create_new_task(input_name, title, parent_id) {
 			}
 		}
 		add_tooltip();
+		$(".nano").nanoScroller();
 	});
 }
 // CLICK SELECT PROJECT
@@ -277,6 +280,7 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 	
 	var class_status = '';
 	var icon = '';
+
 	switch(status_id) {
 	default:
 	case 1:
@@ -361,6 +365,7 @@ function task_in_list(id, title, users, status_id, created, sort, parent_id) {
 	}
 
 	ret += '</li>';
+
 	return ret;
 }
 // CLICK EDIT PROJECT
@@ -833,6 +838,8 @@ $(document).on('submit', '.search_form', function(e) {
 				}
 			}
 		}
+
+		$(".nano").nanoScroller();
 		
 		$('.detail_task').html('');
 		add_tooltip();
@@ -1010,6 +1017,7 @@ function get_task_list(title_project, user_id) {
 			$(".search_status [id=" + status_selected_id + "]").closest('li').addClass('active');
 		}
 		
+		$(".nano").nanoScroller();
 		$('.detail_task').html('');
 		add_tooltip();
 	});
@@ -1071,6 +1079,8 @@ function get_subtasks(parent_id) {
 
 			autocomplete_user("input[name='subtask_title']");
 		}
+		
+		$(".nano").nanoScroller();
 	});
 }
 
