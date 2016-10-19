@@ -34,6 +34,7 @@
 	width: 20%;
 	color: #000;
 	padding: 7px;
+	font-weight: 700;
 }
 
 .menu_left .nano-content {
@@ -91,6 +92,7 @@
 	font-size: 0.7em;
 	color: #5D5A5A;
 	width: 50%;
+	font-weight: 700;
 }
 
 .tasks_list .show_status {
@@ -127,6 +129,7 @@
 .tasks_list .created {
 	font-size: 0.6em;
 	width: 50%;
+	font-weight: 700;
 }
 
 .create_task_form,.search_form {
@@ -211,6 +214,10 @@
 
 .user_logged {
 	padding-right: 10px;
+}
+
+.user_logged a {
+	text-decoration: none;
 }
 
 @media ( max-width : 1300px) {

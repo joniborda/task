@@ -35,7 +35,7 @@
 				</div>
 				<div class="users_title" >
 					Usuarios
-					<span class="glyphicon glyphicon-plus btn" id="create_user"></span>
+					<span class="glyphicon glyphicon-plus btn" id="create_user" title="Crear usuario"></span>
 				</div>
 				<ul class="users_list">
 				<?php foreach ($this->users as $user):?>
@@ -52,8 +52,8 @@
 				</ul>
 				<div class="project_title" >
 					<a href="#" class="title_my_projects">Mis Proyectos</a>
-					<span class="glyphicon glyphicon-plus" id="create_project"></span>
-					<a href="/task/project/gantt"  data-bypass="data-bypass"><span class="glyphicon glyphicon-tasks"></span></a>
+					<span class="glyphicon glyphicon-plus" id="create_project" title="Crear Proyecto"></span>
+					<a href="/task/project/gantt" data-bypass="data-bypass" title="Diagrama de Gantt"><span class="glyphicon glyphicon-tasks"></span></a>
 				</div>
 				<ul class="projects_list">
 				<?php foreach ($this->projects as $project):?>

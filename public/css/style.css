@@ -1137,3 +1137,7 @@ textarea {
 .event-font .fc-title {
 	color: black;
 }
+
+.nav-tabs>li>a {
+	font-weight: 700;
+}

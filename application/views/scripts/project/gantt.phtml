@@ -1,7 +1,11 @@
 <br>
 &nbsp;
-<a href="/task/project/task"  data-bypass="data-bypass"><span class="glyphicon glyphicon-pencil"></span></a>
 <div id="calendar" class="col-md-offset-3" style="width: 50%; display: inline-block; float:left;">
+</div>
+<div class="clear" style="text-align: center;">
+	<br>
+	<a href="/task/project/task"  data-bypass="data-bypass" class="btn btn-primary">Editar</a>
+	<a href="/task/"  data-bypass="data-bypass" class="btn btn-primary">Volver</a>
 </div>
 <?php echo $this->headLink()->prependStylesheet($this->webApp . '/css/fullcalendar.css');?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/fullcalendar.min.js'); ?>
