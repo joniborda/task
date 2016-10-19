@@ -17,11 +17,11 @@ class Application_Model_Project
             if (is_array($data)) {
                 $this->_id = $data['id'];
                 $this->_name = $data['name'];
-                $this->_site_url = $data['site_url'];
-                $this->_description = $data['description'];
-                $this->_date_start = $data['date_start'];
-                $this->_date_end = $data['date_end'];
-                $this->_active = $data['active'];
+                @$this->_site_url = $data['site_url'];
+                @$this->_description = $data['description'];
+                @$this->_date_start = $data['date_start'];
+                @$this->_date_end = $data['date_end'];
+                @$this->_active = $data['active'];
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_name = $data->name;

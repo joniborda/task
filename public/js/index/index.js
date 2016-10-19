@@ -111,7 +111,7 @@ $(document).on('click', '#create_project', function(e) {
 	e.preventDefault();
 	abrir_cargando();
 	
-	$.post('project/create').complete(function(response, status) {
+	$.post(base_url + '/project/create').complete(function(response, status) {
 		cerrar_cargando();
 		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
@@ -131,7 +131,7 @@ $(document).on(
 	function(e) {
 		e.preventDefault();
 		var name = $(this).find('[name="name"]').val();
-		$.post('project/add', {
+		$.post(base_url + '/project/add', {
 			'name' : name
 		}).complete(function(response, status) {
 			if (status === 'success') {
@@ -142,7 +142,7 @@ $(document).on(
 					$('#div_form_project').dialog('destroy');
 					$('.projects_list').append(
 						'<li>' + 
-							'<a href="#' + name + '" class="project" value="' + ret.id + '">' + 
+							'<a href="/task/index/index/' + ret.id + '" class="project" value="' + ret.id + '">' + 
 								name +
 							'</a>&nbsp;' +
 							'<span class="badge closed">0</span>' +
@@ -374,7 +374,7 @@ $(document).on('click', '.edit_project', function(e) {
 	abrir_cargando();
 	var id = $(this).attr('value');
 
-	$.post('project/editform', {
+	$.post(base_url + '/project/editform', {
 		id : id
 	}).complete(function(response, status) {
 		cerrar_cargando();
@@ -396,7 +396,7 @@ $(document).on('submit', '#form_edit_project', function(e) {
 		site_url = $(this).find('input[name="site_url"]').val(),
 		description = $(this).find('textarea[name="description"]').val();
 
-	$.post('project/edit', {
+	$.post(base_url + '/project/edit', {
 		id : id,
 		name : name,
 		site_url: site_url,
@@ -851,7 +851,7 @@ $(document).on('click', '#create_user', function(e) {
 	e.preventDefault();
 	abrir_cargando();
 	
-	$.post('usuario/create').complete(function(response, status) {
+	$.post(base_url + '/usuario/create').complete(function(response, status) {
 		cerrar_cargando();
 		if (status === 'success' && response.responseText) {
 			$(response.responseText).dialog({
@@ -871,7 +871,7 @@ $(document).on(
 	function(e) {
 		e.preventDefault();
 		var name = $(this).find('[name="name"]').val();
-		$.post('usuario/add', {
+		$.post(base_url + '/usuario/add', {
 			'name' : name,
 			'password' : $(this).find('[name="password"]').val(),
 			'repeat_password' : $(this).find('[name="repeat_password"]').val(),
