@@ -1,0 +1,32 @@
+<br>
+<div id="calendar" class="col-md-offset-3" style="width: 50%; display: inline-block; float:left;">
+</div>
+<?php echo $this->headLink()->prependStylesheet($this->webApp . '/css/fullcalendar.css');?>
+<?php echo $this->headScript()->prependFile($this->webApp . '/js/fullcalendar.min.js'); ?>
+<?php echo $this->headScript()->prependFile($this->webApp . '/js/moment.min.js'); ?>
+<script type="text/javascript">
+	
+$('#calendar').fullCalendar({
+	header: {
+		left: 'prev,next today',
+		center: 'title',
+		right: 'month,basicWeek,basicDay'
+	},
+	navLinks: true, // can click day/week names to navigate views
+	editable: true,
+	eventLimit: true, // allow "more" link when too many events
+	events: [
+<?php foreach ($this->projects as $project) : ?>
+	<?php if ($project->getDateStart()): ?>
+		{
+			title: '<?php echo $project->getName();?>',
+			start: '<?php echo $project->getDateStart();?>',
+			end: '<?php echo $project->getDateEnd();?>',
+			color: 'rgba(' + parseInt(Math.random()*255) + ',' + parseInt(Math.random()*255) + ',' + parseInt(Math.random()*255) + ', 0.5)',
+			className: 'event-font'
+		},
+	<?php endif; ?>
+<?php endforeach; ?>
+	]
+});
+</script>

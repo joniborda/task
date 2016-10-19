@@ -1131,4 +1131,8 @@ textarea {
 		position: relative;
 		top: 5px;
 	}
+
+}
+.event-font .fc-title {
+	color: black;
 }

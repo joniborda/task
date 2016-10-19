@@ -1088,6 +1088,10 @@ ALTER TABLE projects
   ADD COLUMN site_url character varying(500);
 ALTER TABLE projects
   ADD COLUMN description text;
--- ejecutar desde aca
 ALTER TABLE users
    ADD COLUMN twitter_id bigint;
+
+ALTER TABLE projects ADD COLUMN date_start date;
+ALTER TABLE projects ADD COLUMN date_end date;
+ALTER TABLE projects ADD COLUMN active boolean NOT NULL DEFAULT false;
+-- ejecutar desde aca

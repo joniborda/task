@@ -6,6 +6,9 @@ class Application_Model_Project
     protected $_name;
     protected $_site_url;
     protected $_description;
+    protected $_date_start;
+    protected $_date_end;
+    protected $_active;
  
     public function __construct($data = null)
     {
@@ -16,11 +19,17 @@ class Application_Model_Project
                 $this->_name = $data['name'];
                 $this->_site_url = $data['site_url'];
                 $this->_description = $data['description'];
+                $this->_date_start = $data['date_start'];
+                $this->_date_end = $data['date_end'];
+                $this->_active = $data['active'];
             } else if ($data instanceof Zend_Db_Table_Row) {
                 $this->_id = $data->id;
                 $this->_name = $data->name;
                 $this->_site_url = $data->site_url;
                 $this->_description = $data->description;
+                $this->_date_start = $data->date_start;
+                $this->_date_end = $data->date_end;
+                $this->_active = $data->active;
             }
         }
     }
@@ -92,6 +101,38 @@ class Application_Model_Project
     public function setDescription($Description)
     {
         $this->_description = $Description;
+        return $this;
+    }
+    
+    public function getDateStart()
+    {
+        return $this->_date_start;
+    }
+    
+    public function setDateStart($date_start)
+    {
+        $this->_date_start = $date_start;
+        return $this;
+    }
+    public function getDateEnd()
+    {
+        return $this->_date_end;
+    }
+    
+    public function setDateEnd($date_end)
+    {
+        $this->_date_end = $date_end;
+        return $this;
+    }
+
+    public function getActive()
+    {
+        return $this->_active;
+    }
+    
+    public function setActive($active)
+    {
+        $this->_active = $active;
         return $this;
     }
 }

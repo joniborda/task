@@ -109,4 +109,22 @@ class Application_Service_Project
     {
 		return $this->_ProjectDao->deleteById($id);
     }
+
+    /**
+     * Update a Project
+     * 
+     * @param Integer $id
+     * @param String  $name
+     */
+    public function save_gantt($id, $active, $date_start, $date_end)
+    {
+
+        $data = array(
+            'active' => $active,
+            'date_start' => $date_start,
+            'date_end' => $date_end
+        );
+
+        return $this->_ProjectDao->save($id, $data);
+    }
 }

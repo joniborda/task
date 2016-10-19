@@ -127,5 +127,11 @@ class Application_Dao_Project
     	}
     	return false;
     }
+
+    public function save($id, $data = array())
+    {
+        $this->getDbTable()->update($data, array('id = ?'=> (int)$id));
+        return true;
+    }
 }
 ?>

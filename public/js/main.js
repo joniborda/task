@@ -1,6 +1,18 @@
 
 $(document).ready(function() {
 'use strict';
+
+	$('.datepicker').datepicker({
+        dateFormat : "yy-mm-dd",
+        showOptions : {
+            direction : "down"
+        },
+        shortYearCutoff : 50,
+        changeYear : true,
+        yearRange : "1900:2050",
+        changeMonth : true,
+    });
+
 	$('#sidebar a').tooltip({
 		tooltipClass : 'container-tooltip'
 	});

@@ -87,4 +87,42 @@ class ProjectController extends Zend_Controller_Action
 			$this->view->assign('deleted', $ret);
 		}
 	}
+
+	public function taskAction() {
+		$project_service = Application_Service_Locator::getProjectService();
+
+		$this->view->assign(
+			'projects',
+			$project_service->fetchAll()
+		);
+	}
+
+	public function saveganttAction() {
+		$this->_helper->layout->setLayout('empty');
+		$id = $this->_request->getParam('id');
+		$active = $this->_request->getParam('active');
+		$date_start = $this->_request->getParam('date_start');
+		$date_end = $this->_request->getParam('date_end');
+
+		$this->view->assign('response', false);
+
+		if ($id != null) {
+
+			$ret = Application_Service_Locator::getProjectService()->save_gantt($id, $active, $date_start, $date_end);
+
+			if ($ret) {
+				$this->view->assign('response', true);
+			}
+		}
+
+	}
+
+	public function ganttAction() {
+		$project_service = Application_Service_Locator::getProjectService();
+
+		$this->view->assign(
+			'projects',
+			$project_service->fetchAll()
+		);
+	}
 }
