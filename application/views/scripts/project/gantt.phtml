@@ -23,13 +23,15 @@ $('#calendar').fullCalendar({
 	eventLimit: true, // allow "more" link when too many events
 	events: [
 <?php foreach ($this->projects as $project) : ?>
-	<?php if ($project->getDateStart()): ?>
+	<?php if ($project->getActive() && $project->getDateStart() && $project->getDateStart()): ?>
 		{
 			title: '<?php echo $project->getName();?>',
-			start: '<?php echo $project->getDateStart();?>',
-			end: '<?php echo $project->getDateEnd();?>',
+			start: '<?php echo $project->getDateStart();?>T00:00:00',
+			end: '<?php echo $project->getDateEnd();?>T24:00:00',
 			color: 'rgba(' + parseInt(Math.random()*255) + ',' + parseInt(Math.random()*255) + ',' + parseInt(Math.random()*255) + ', 0.5)',
-			className: 'event-font'
+			className: 'event-font',
+			url: '/task/index/index/<?php echo $project->getId();?>',
+			allDay: true
 		},
 	<?php endif; ?>
 <?php endforeach; ?>

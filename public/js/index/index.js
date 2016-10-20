@@ -1268,7 +1268,7 @@ $(function () {
 				});
 
 				$('.project').closest('li').removeClass('active');
-
+				$('.project[value="' + id + '"]').closest('li').addClass('active');
 				status_selected_id = 1;
 				get_task_list('');
         	},

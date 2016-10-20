@@ -8,7 +8,7 @@
 <?php foreach ($this->projects as $project) : ?>
 	<tr>
 		<th><?php echo $project->getName();?></th>
-		<td><input name="active" class="" type="checkbox" checked="<?php echo ($project->getCountOpenned() > 0 ? 'checked' : '');?>"></td>
+		<td><input name="active" class="" type="checkbox" <?php echo ($project->getActive()) ? 'checked="checked"' : '';?> ></td>
 		<td><input name="date_start" class="form-control datepicker" type="date" value="<?php echo $project->getDateStart(); ?>" /><td>
 		<td><input name="date_end" class="form-control datepicker" type="date" value="<?php echo $project->getDateEnd(); ?>" /><td>
 		<td><button class="btn btn-primary save" id="<?php echo $project->getId();?>">Guardar</button><td>

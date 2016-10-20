@@ -1,6 +1,6 @@
 $('.save').click(function(e) {
 	var tr = $(this).closest('tr'),
-		active = tr.find('input[name="active"]').val(),
+		active = tr.find('input[name="active"]').is(':checked'),
 		date_start = tr.find('input[name="date_start"]').val(),
 		date_end = tr.find('input[name="date_end"]').val(),
 		id = $(this).attr('id');

@@ -901,7 +901,11 @@ img {
 }
 
 a {
-	color: #563d7c;
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
 }
 
 .boton_gris {
@@ -1010,7 +1014,7 @@ textarea {
 	float: left;
 }
 .projects_list .active {
-	background-color: #BABBBC;
+	background-color: rgb(177, 232, 172);
 }
 
 .users_list .active {
