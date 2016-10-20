@@ -1229,6 +1229,10 @@ window.jQuery = $;
 $(function () {
 	var AppRouter = Backbone.Router.extend({
 	    routes: {
+	    	"task/index/index/edit_user/:user_id": function(user_id) {
+	    		console.log(user_id);
+				return false;
+			},
 	    	"task/": function() {
 	    		/**
 	    		 * Index to first project

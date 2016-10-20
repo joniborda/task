@@ -44,7 +44,7 @@
 							<?php echo $user->getName();?>
 						</a>
 						<span class="badge openned"><?php echo $user->getLastModified();?></span>
-						<a href="#" class="edit_user" value="<?php echo $user->getId();?>">
+						<a href="/task/index/index/edit_user/<?php echo $user->getId();?>" class="edit_user" value="<?php echo $user->getId();?>">
 							<span class="right glyphicon glyphicon-edit"></span>
 						</a>
 					</li>
@@ -65,7 +65,7 @@
 						<?php else:?>
 							<span class="badge closed"><?php echo $count_openned?></span>
 						<?php endif;?>
-						<a href="#" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
+						<a href="/task/index/index/<?php echo $project->getId();?>" class="edit_project" value="<?php echo $project->getId();?>"><span class="right glyphicon glyphicon-edit"></span></a>
 					</li>
 				<?php endforeach;?>
 				</ul>
