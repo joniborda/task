@@ -8,6 +8,7 @@
 	<a href="/task/"  data-bypass="data-bypass" class="btn btn-primary">Volver</a>
 </div>
 <?php echo $this->headLink()->prependStylesheet($this->webApp . '/css/fullcalendar.css');?>
+<?php echo $this->headScript()->prependFile($this->webApp . '/js/locale-all.js'); ?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/fullcalendar.min.js'); ?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/moment.min.js'); ?>
 <script type="text/javascript">
@@ -18,6 +19,7 @@ $('#calendar').fullCalendar({
 		center: 'title',
 		right: 'month,basicWeek,basicDay'
 	},
+	locale: "es",
 	navLinks: true, // can click day/week names to navigate views
 	editable: true,
 	eventLimit: true, // allow "more" link when too many events
