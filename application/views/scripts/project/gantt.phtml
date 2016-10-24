@@ -1,18 +1,85 @@
 <br>
 &nbsp;
-<div id="calendar" class="col-md-offset-3" style="width: 50%; display: inline-block; float:left;">
+<div id="tabs">
+	<ul>
+		<li><a href="#calendar">Calendario</a></li>
+		<li><a href="#gantt">Gantt</a></li>
+	</ul>
+	<div id="calendar" class="col-md-offset-3" style="width: 50%; display: inline-block; float:left;">
+	</div>
+
+	<div id="gantt" class="col-md-offset-1" style="width: 80%; display: inline-block; float:left; overflow-x:scroll;">
+	</div>
 </div>
 <div class="clear" style="text-align: center;">
 	<br>
 	<a href="/task/project/task"  data-bypass="data-bypass" class="btn btn-primary">Editar</a>
 	<a href="/task/"  data-bypass="data-bypass" class="btn btn-primary">Volver</a>
 </div>
+
 <?php echo $this->headLink()->prependStylesheet($this->webApp . '/css/fullcalendar.css');?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/locale-all.js'); ?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/fullcalendar.min.js'); ?>
 <?php echo $this->headScript()->prependFile($this->webApp . '/js/moment.min.js'); ?>
+<?php echo $this->headScript()->prependFile($this->webApp . '/js/gantt.js'); ?>
 <script type="text/javascript">
-	
+$( "#tabs" ).tabs({
+	activate: function(event, ui) {
+		if (ui.newPanel.attr('id') == 'gantt') {
+			drawChart();
+		}
+	}
+});
+
+google.charts.load('current', {'packages':['gantt']});
+
+function daysToMilliseconds(days) {
+  return days * 24 * 60 * 60 * 1000;
+}
+
+function drawChart() {
+
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Task ID');
+  data.addColumn('string', 'Task Name');
+  data.addColumn('date', 'Start Date');
+  data.addColumn('date', 'End Date');
+  data.addColumn('number', 'Duration');
+  data.addColumn('number', 'Percent Complete');
+  data.addColumn('string', 'Dependencies');
+
+  data.addRows([
+<?php foreach ($this->projects as $project) : ?>
+	<?php if ($project->getActive() && $project->getDateStart() && $project->getDateStart()): ?>
+		[
+			'<?php echo $project->getName();?>',
+			'<?php echo $project->getName();?>',
+			new Date('<?php echo $project->getDateStart();?>'),
+			new Date('<?php echo $project->getDateEnd();?>'),
+			null,
+//			url: '/task/index/index/<?php echo $project->getId();?>',
+			50,
+			null
+		],
+	<?php endif; ?>
+<?php endforeach; ?>
+  ]);
+
+	var options = {
+		height: 600,
+		width: 2000,
+		gantt: {
+			labelStyle: {
+				fontName: 'Arial'
+			}
+		}
+	};
+
+  var chart = new google.visualization.Gantt(document.getElementById('gantt'));
+
+  chart.draw(data, options);
+}
+
 $('#calendar').fullCalendar({
 	header: {
 		left: 'prev,next today',
