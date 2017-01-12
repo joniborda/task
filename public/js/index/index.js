@@ -1262,6 +1262,7 @@ $(function () {
     			);
 	    	},
 	    	"task/index/index/state/:state/(:project_id)": function(state, project_id) {
+				conseguirMenuRight();
 				abrir_cargando();
 
 				status_selected_id = state;
@@ -1269,7 +1270,6 @@ $(function () {
 					project_selected_id = project_id;
 				}
 
-				conseguirMenuRight();
 
 				$('.tasks_list').html('');
 				// cerrar el detalle de la tarea
@@ -1283,6 +1283,7 @@ $(function () {
 				get_task_list();
 	    	},
 	        "task/index/index/:id": function(id) {
+				conseguirMenuRight();
 	        	abrir_cargando();
 				project_selected_id = id;
 
@@ -1292,7 +1293,6 @@ $(function () {
 					width: "hide",
 				});
 
-				conseguirMenuRight();
 				
 				$('.project').closest('li').removeClass('active');
 				$('.project[value="' + id + '"]').closest('li').addClass('active');
@@ -1300,10 +1300,10 @@ $(function () {
 				get_task_list('');
         	},
         	"task/index/index/project/:project_id/status/:status/user/:user_id": function(project_id, status, user_id) {
+				conseguirMenuRight();
 	        	abrir_cargando();
 				project_selected_id = project_id;
 
-				conseguirMenuRight();
 
 	        	$('.tasks_list').html('');
 				// cerrar el detalle de la tarea
