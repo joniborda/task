@@ -82,6 +82,7 @@ module.exports = function (grunt) {
                     './public/css/tagit/tagit.ui-zendesk.css',
                     './public/css/boxy.css',
                     './public/css/nanoScroller.css',
+                    './public/css/font-awesome.min.css',
                     './public/css/estilo.css',
                     './public/css/estilo_celular.css',
                 ],
