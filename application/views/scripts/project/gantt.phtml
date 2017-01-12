@@ -26,7 +26,11 @@
 $( "#tabs" ).tabs({
 	activate: function(event, ui) {
 		if (ui.newPanel.attr('id') == 'gantt') {
-			drawChart();
+			setTimeout(function() {
+				drawChart();
+			},
+			1000
+			);
 		}
 	}
 });
