@@ -126,7 +126,12 @@ class Application_Dao_Task {
 		if ($parent_id === false) {
 			$select = $select->where('parent_id is null');
 		}
-		$select->bind($binds)->order('tasks.sort asc')->order('tasks.id asc');
+		$select = $select->bind($binds);
+		if ($status_id != null) {
+			$select = $select->order('tasks.sort asc');			
+		}
+
+		$select = $select->order('tasks.id desc');
 
 		$resultSet = $this->getDbTable()->fetchAll($select);
 		$entries = array();
