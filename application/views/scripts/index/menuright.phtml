@@ -1,0 +1,42 @@
+<div class="nano-content">
+	<form class="search_form">
+		<input type="text" name="title" placeholder="Buscar una tarea" class="search_task form-control">
+		<span class="glyphicon glyphicon-search"></span>
+	</form>
+	<form class="create_task_form">
+		<input type="text" name="title" placeholder="Ingrese una nueva tarea      + para asignar usuario" 
+		class="new_task form-control">
+		<input type="hidden" name="task_id" value="">
+		<span class="glyphicon glyphicon-plus"></span>
+	</form>
+	<div class="filters ">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active search_status">
+				<a href="#" class="link_serach_status" id="1">
+						<span class="change_status glyphicon glyphicon-record tooltipstered"></span>
+					Abiertas
+				</a>
+			</li>
+			<li role="presentation" class="search_status">
+				<a href="#" class="link_serach_status" id="2">
+		  			<span class="change_status glyphicon glyphicon-play-circle tooltipstered"></span>
+					Empezadas
+				</a>
+			</li>
+			<li role="presentation" class="search_status">
+				<a href="#" class="link_serach_status" id="3">
+					<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+						Hechas
+				</a>
+			</li>
+			<li role="presentation" class="search_status">
+				<a href="#" class="link_serach_status" id="4">
+					<span class="glyphicon glyphicon-ok-circle tooltipstered"></span>
+						Todas
+				</a>
+			</li>
+		</ul>
+		</div>
+	<ul class="tasks_list list-unstyled">
+	</ul>
+</div>	

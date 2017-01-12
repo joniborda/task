@@ -46,5 +46,9 @@ class IndexController extends Zend_Controller_Action {
 		     ->appendFile($this->view->webApp . '/js/index/index.js')
 		     ->appendFile($this->view->webApp . '/js/index/socket.js');
 	}
+
+	public function menurightAction() {
+		$this->_helper->layout->setLayout('empty');
+	}
 }
 ?>

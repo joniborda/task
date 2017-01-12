@@ -1225,6 +1225,20 @@ $(document).on('keyup', '.input_title_edited', function(e) {
 		$(this).closest('.form_edit_title').remove();		
 	}
 });
+
+function conseguirMenuRight() {
+	$.ajax({
+		url : base_url + '/index/menuright',
+		type : 'GET',
+		success : function(data) {
+			$('.menu_right .nano-content').html(data);
+		},
+		error : function(request, status, error) {
+			alert(error);
+		}
+	});
+}
+
 window.jQuery = $;
 $(function () {
 	var AppRouter = Backbone.Router.extend({
@@ -1250,6 +1264,8 @@ $(function () {
 					project_selected_id = project_id;
 				}
 
+				conseguirMenuRight();
+
 				$('.tasks_list').html('');
 				// cerrar el detalle de la tarea
 				$('.detail_task').animate({
@@ -1271,6 +1287,8 @@ $(function () {
 					width: "hide",
 				});
 
+				conseguirMenuRight();
+				
 				$('.project').closest('li').removeClass('active');
 				$('.project[value="' + id + '"]').closest('li').addClass('active');
 				status_selected_id = 1;
@@ -1280,6 +1298,8 @@ $(function () {
 	        	abrir_cargando();
 				project_selected_id = project_id;
 
+				conseguirMenuRight();
+				
 	        	$('.tasks_list').html('');
 				// cerrar el detalle de la tarea
 				$('.detail_task').animate({
