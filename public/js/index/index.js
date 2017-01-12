@@ -911,21 +911,10 @@ $(document).on(
 	'dblclick',
 	'.tasks_list>li',
 	function(e) {
-		var url = '/task/detail/id/' + $(this).val();
 		e.preventDefault();
 		abrir_cargando();
-		$.ajax({
-			url : base_url + url,
-			type : 'GET',
-			success : function(data) {
-				$('.menu_right .nano-content').html(data);
-				Backbone.history.navigate('/task' + url);
-			},
-			error : function(request, status, error) {
-				alert(error);
-			}
-		});
-		
+
+		conseguirDetailTask($(this).val());
 		return false;
 	}
 );
@@ -1239,6 +1228,22 @@ function conseguirMenuRight() {
 	});
 }
 
+function conseguirDetailTask(id) {
+	$.ajax({
+		url : base_url + '/task/detail/id/' + id,
+		type : 'GET',
+		success : function(data) {
+			$('.menu_right .nano-content').html(data);
+			Backbone.history.navigate('/task/index/index/detail/id/' + id);
+			cerrar_cargando();
+		},
+		error : function(request, status, error) {
+			cerrar_cargando();
+			alert(error);
+		}
+	});
+}
+
 window.jQuery = $;
 $(function () {
 	var AppRouter = Backbone.Router.extend({
@@ -1299,7 +1304,7 @@ $(function () {
 				project_selected_id = project_id;
 
 				conseguirMenuRight();
-				
+
 	        	$('.tasks_list').html('');
 				// cerrar el detalle de la tarea
 				$('.detail_task').animate({
@@ -1315,6 +1320,11 @@ $(function () {
 				} else {
 					get_task_list();
 				}
+			},
+			"task/index/index/detail/id/:id": function(id) {
+				abrir_cargando();
+				conseguirDetailTask(id);
+
 			}
 	    },
 	});
